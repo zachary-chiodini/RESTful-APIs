@@ -17,11 +17,10 @@ def get_features(entity: db.Model) -> Dict:
 
 def query_payload(
         entity: db.Model,
-        payload: Dict,
-        **features: db.Column
+        payload: Dict
         ) -> Union[List, None]:
     filters = []
-    for label, column in features.items():
+    for label, column in get_features(entity).items():
         value = payload.get(label)
         filters.append(column == value)
     return entity.query.filter(*filters).one_or_none()
@@ -40,10 +39,9 @@ def entity_get_response(
 def entity_post_response(
         entity: db.Model,
         schema: ma.SQLAlchemyAutoSchema,
-        **features: db.Column
         ) -> Response:
     payload = json.loads(request.get_json())
-    record_already_exists = query_payload(entity,payload,**features)
+    record_already_exists = query_payload(entity, payload)
     if record_already_exists:
         response = Response('Record already exists.', status=409)
         return response
@@ -58,12 +56,11 @@ def entity_post_response(
 def entity_get_or_post_response(
         entity: db.Model,
         schema: ma.SQLAlchemyAutoSchema,
-        **features: db.Column
         ) -> Response:
     if request.method == 'GET':
         return entity_get_response(entity, schema)
     if request.method == 'POST':
-        return entity_post_response(entity, schema, **features)
+        return entity_post_response(entity, schema)
     response = Response('Method not allowed.', status=405)
     return response
 
@@ -88,15 +85,14 @@ def record_id_put_response(
         primary_key: int,
         entity: db.Model,
         schema: ma.SQLAlchemyAutoSchema,
-        **features: db.Column
         ) -> Response:
     record_to_update = entity.query\
         .filter(entity.id == primary_key)\
         .one_or_none()
     if not record_to_update:
-        return entity_post_response(entity, schema, **features)
+        return entity_post_response(entity, schema)
     payload = json.loads(request.get_json())
-    existing_record = query_payload(entity, payload, **features)
+    existing_record = query_payload(entity, payload)
     if existing_record and existing_record.id != primary_key:
         response = Response('Record already exists.', status=409)
         return response
@@ -129,13 +125,11 @@ def record_id_response(
         primary_key: int,
         entity: db.Model,
         schema: ma.SQLAlchemyAutoSchema,
-        **features: db.Column
         ) -> Response:
     if request.method == 'GET':
         return record_id_get_response(primary_key, entity, schema)
     if request.method == 'PUT':
-        return record_id_put_response(
-            primary_key, entity, schema, **features)
+        return record_id_put_response(primary_key, entity, schema)
     if request.method == 'DELETE':
         return record_id_delete_response(primary_key, entity)
     response = Response('Method not allowed.', status=405)

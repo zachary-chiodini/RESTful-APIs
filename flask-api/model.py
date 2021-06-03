@@ -35,6 +35,12 @@ class KineticsSchema(ma.SQLAlchemyAutoSchema):
         model = Kinetics
         load_instance = True
 
+    uri = ma.Function(
+        lambda obj:
+        url_for('kinetics_record', kinetics_id=obj.id,
+                _external=True)
+        )
+
 
 class SubstanceRelationships(db.Model):
     __tablename__ = 'substance_relationships'
@@ -75,6 +81,12 @@ class SubstanceRelationshipsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = SubstanceRelationships
         load_instance = True
+    uri = ma.Function(
+        lambda obj:
+        url_for('substance_relationships_record',
+                relationships_id=obj.id,
+                _external=True)
+            )
 
 
 class GenericSubstances(db.Model):
@@ -120,6 +132,11 @@ class GenericSubstancesSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = GenericSubstances
         load_instance = True
+    uri = ma.Function(
+        lambda obj:
+        url_for('generic_substances_record', substances_id=obj.id,
+                _external=True)
+        )
 
 
 author_cited = db.Table(
@@ -203,3 +220,8 @@ class CitationSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Citation
         load_instance = True
+    uri = ma.Function(
+        lambda obj:
+        url_for('citation_record', citation_id=obj.id,
+                _external=True)
+        )
