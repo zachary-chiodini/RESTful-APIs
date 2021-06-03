@@ -10,7 +10,8 @@ def get_features(entity: db.Model) -> Dict:
     instantiated = entity()
     for attr, value in entity.__dict__.items():
         if (isinstance(value, InstrumentedAttribute)
-                and getattr(instantiated, attr) is None):
+                and getattr(instantiated, attr) is None
+                and attr != 'id'):
             features[attr] = value
     return features
 
@@ -45,7 +46,7 @@ def entity_post_response(
     if record_already_exists:
         response = Response('Record already exists.', status=409)
         return response
-    entity_schema = schema(many=True)
+    entity_schema = schema()
     new_record = entity_schema.load(payload, session=db.session)
     db.session.add(new_record)
     db.session.commit()
@@ -76,7 +77,7 @@ def record_id_get_response(
     if not record:
         response = Response('Record id not found.', status=404)
         return response
-    entity_schema = schema(many=True)
+    entity_schema = schema()
     response = jsonify(entity_schema.dump(record))
     return response
 
