@@ -1,0 +1,79 @@
+swagger: "2.0"
+info:
+  description: Swagger documentation for RESTful API
+  version: "1.0.0"
+  title: Swagger Rest Article
+consumes:
+  - application/json
+produces:
+  - applications/json
+
+basePath: /api
+
+paths:
+  /author:
+    get:
+      operationId: author
+      tags:
+        - Author
+      summary: Retrieves all data in author table
+      description: Retrieves all data in author table
+      responses:
+        200:
+          description: Successfully retrieved data
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                  description: ID of the record
+                first_name:
+                  type: string
+                  description: First name of author
+                middle_name:
+                  type: string
+                  description: Middle name of author
+                last_name:
+                  type: string
+                  description: Last name of author
+    post:
+      operationId: author
+      tags:
+        - Author
+      summary: Creates a new author record
+      description: Creates a new author record
+      parameters:
+        - name: author
+          in: body
+          description: New author to create
+          required: True
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+                description: First name of author
+              middle_name:
+                type: string
+                description: Middle name of author
+              last_name:
+                type: string
+                description: Last name of author
+      responses:
+        201:
+          description: Seccessfully create new author record
+          schema:
+            properties:
+              id:
+                type: integer
+                description: ID of the record
+              first_name:
+                type: string
+                description: First name of author
+              middle_name:
+                type: string
+                description: Middle name of author
+              last_name:
+                type: string
+                description: Last name of author

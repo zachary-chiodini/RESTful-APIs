@@ -7,6 +7,8 @@ from utils import entity_get_or_post_response, record_id_response
 HOST = '127.0.0.1'
 PORT = '5000'
 
+# connexion_app.add_api('swagger.yaml')
+
 
 @app.route('/kinetics/', methods=['GET', 'POST'])
 def kinetics() -> Response:

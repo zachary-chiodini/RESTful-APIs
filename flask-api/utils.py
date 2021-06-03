@@ -34,12 +34,13 @@ def entity_get_response(
     select_all = entity.query.all()
     entity_schema = schema(many=True)
     response = jsonify(entity_schema.dump(select_all))
+    response.status_code = 200
     return response
 
 
 def entity_post_response(
         entity: db.Model,
-        schema: ma.SQLAlchemyAutoSchema,
+        schema: ma.SQLAlchemyAutoSchema
         ) -> Response:
     payload = json.loads(request.get_json())
     record_already_exists = query_payload(entity, payload)
@@ -51,12 +52,13 @@ def entity_post_response(
     db.session.add(new_record)
     db.session.commit()
     response = jsonify(entity_schema.dump(new_record))
+    response.status_code = 201
     return response
 
 
 def entity_get_or_post_response(
         entity: db.Model,
-        schema: ma.SQLAlchemyAutoSchema,
+        schema: ma.SQLAlchemyAutoSchema
         ) -> Response:
     if request.method == 'GET':
         return entity_get_response(entity, schema)
@@ -69,7 +71,7 @@ def entity_get_or_post_response(
 def record_id_get_response(
         primary_key: int,
         entity: db.Model,
-        schema: ma.SQLAlchemyAutoSchema,
+        schema: ma.SQLAlchemyAutoSchema
         ) -> Response:
     record = entity.query\
         .filter(entity.id == primary_key) \
@@ -79,13 +81,14 @@ def record_id_get_response(
         return response
     entity_schema = schema()
     response = jsonify(entity_schema.dump(record))
+    response.status_code = 200
     return response
 
 
 def record_id_put_response(
         primary_key: int,
         entity: db.Model,
-        schema: ma.SQLAlchemyAutoSchema,
+        schema: ma.SQLAlchemyAutoSchema
         ) -> Response:
     record_to_update = entity.query\
         .filter(entity.id == primary_key)\
@@ -103,12 +106,13 @@ def record_id_put_response(
     db.session.merge(updated_record)
     db.session.commit()
     response = jsonify(entity_schema.dump(updated_record))
+    response.status_code = 200
     return response
 
 
 def record_id_delete_response(
         primary_key: int,
-        entity: db.Model,
+        entity: db.Model
         ) -> Response:
     record_to_delete = entity.query\
         .filter(entity.id == primary_key)\
@@ -125,7 +129,7 @@ def record_id_delete_response(
 def record_id_response(
         primary_key: int,
         entity: db.Model,
-        schema: ma.SQLAlchemyAutoSchema,
+        schema: ma.SQLAlchemyAutoSchema
         ) -> Response:
     if request.method == 'GET':
         return record_id_get_response(primary_key, entity, schema)
