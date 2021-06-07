@@ -5,3 +5,4 @@ flask-mysqldb==0.2.0
 marshmallow-sqlalchemy==0.26.0
 sshtunnel==0.4.0
 requests==2.25.1
+connexion==2.7.1
