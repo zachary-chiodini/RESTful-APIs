@@ -39,7 +39,7 @@ def entity_get_response(
 
 def entity_post_response(
         entity: db.Model,
-        schema: ma.SQLAlchemyAutoSchema,
+        schema: ma.SQLAlchemyAutoSchema
         ) -> Response:
     payload = json.loads(request.get_json())
     record_already_exists = query_payload(entity, payload)
@@ -56,7 +56,7 @@ def entity_post_response(
 
 def entity_get_or_post_response(
         entity: db.Model,
-        schema: ma.SQLAlchemyAutoSchema,
+        schema: ma.SQLAlchemyAutoSchema
         ) -> Response:
     if request.method == 'GET':
         return entity_get_response(entity, schema)

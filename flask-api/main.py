@@ -2,7 +2,7 @@ import json
 import model
 from flask import Response
 from config import app, connect_db, db
-from utils import entity_get_or_post_response, record_id_response
+from responses import entity_get_or_post_response, record_id_response
 
 HOST = '127.0.0.1'
 PORT = '5000'

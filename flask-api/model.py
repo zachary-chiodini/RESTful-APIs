@@ -9,7 +9,7 @@ class Kinetics(db.Model):
         db.Integer, primary_key=True,
         autoincrement=True, nullable=False
         )
-    fk_substance_relationships_id = db.Column(
+    fk_substance_relationship_id = db.Column(
         db.Integer, db.ForeignKey('substance_relationships.id'),
         nullable=False
         )
