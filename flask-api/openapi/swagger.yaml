@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: Swagger documentation for RESTful API
+  description: Documentation for the API for the chemical transformation database
   version: "1.0.0"
-  title: Swagger Rest Article
+  title: Chemical Transformation API
 consumes:
   - application/json
 produces:
@@ -13,27 +13,27 @@ basePath: /api
 paths:
   /author:
     get:
-      operationId: author
+      operationId: operations.author.get
       tags:
         - Author
       summary: Retrieves all data from the author table
       description: Retrieves all data from the author table
       responses:
         200:
-          description: Successfully retrieved data
+          description: Successful
           schema:
             type: array
             items:
               properties:
                 id:
                   type: integer
-                  description: ID of the record
+                  description: Primary key of the record
                 first_name:
                   type: string
-                  description: First name of author
+                  description: First name of the author
                 middle_name:
                   type: string
-                  description: Middle name of author
+                  description: Middle name of the author
                 last_name:
                   type: string
-                  description: Last name of author
+                  description: Last name of the author

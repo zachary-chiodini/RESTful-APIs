@@ -1,10 +1,12 @@
 import connexion
-from os import urandom
+from os import path, urandom
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from sshtunnel import SSHTunnelForwarder
 from typing import Dict
+
+PATH = ''
 
 
 def url_encoded(s: str) -> str:
@@ -46,7 +48,8 @@ def connect_db(application: Flask,
 
 
 # This creates the connexion application instance.
-connexion_app = connexion.App(__name__)
+connexion_app = connexion.App(
+    __name__, specification_dir=path.join(PATH, 'openapi'))
 # This gets the underlying flask app instance.
 app = connexion_app.app
 app.secret_key = urandom(16)

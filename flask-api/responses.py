@@ -56,18 +56,6 @@ def entity_post_response(
     return response
 
 
-def entity_get_or_post_response(
-        entity: db.Model,
-        schema: ma.SQLAlchemyAutoSchema
-        ) -> Response:
-    if request.method == 'GET':
-        return entity_get_response(entity, schema)
-    if request.method == 'POST':
-        return entity_post_response(entity, schema)
-    response = Response('Method not allowed.', status=405)
-    return response
-
-
 def record_id_get_response(
         primary_key: int,
         entity: db.Model,
@@ -123,19 +111,4 @@ def record_id_delete_response(
     db.session.delete(record_to_delete)
     db.session.commit()
     response = Response('Record deleted.', status=200)
-    return response
-
-
-def record_id_response(
-        primary_key: int,
-        entity: db.Model,
-        schema: ma.SQLAlchemyAutoSchema
-        ) -> Response:
-    if request.method == 'GET':
-        return record_id_get_response(primary_key, entity, schema)
-    if request.method == 'PUT':
-        return record_id_put_response(primary_key, entity, schema)
-    if request.method == 'DELETE':
-        return record_id_delete_response(primary_key, entity)
-    response = Response('Method not allowed.', status=405)
     return response
