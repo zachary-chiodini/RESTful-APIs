@@ -16,11 +16,11 @@ class Entity:
     def get(self) -> Response:
         return entity_get_response(self.entity, self.schema)
 
-    def get_record(self, primary_key: int) -> Response:
-        return record_id_get_response(primary_key, self.entity, self.schema)
-
     def post(self) -> Response:
         return entity_post_response(self.entity, self.schema)
+
+    def get_record(self, primary_key: int) -> Response:
+        return record_id_get_response(primary_key, self.entity, self.schema)
 
     def put(self, primary_key: int) -> Response:
         return record_id_put_response(primary_key, self.entity, self.schema)

@@ -10,7 +10,7 @@ PATH = 'flask-api'
 connexion_app.add_api('swagger.yaml')
 
 
-@connexion_app.route('/connect/', methods=['GET'])
+@connexion_app.route('/api/connect/', methods=['GET'])
 def connect() -> Response:
     try:
         with open(path.join(PATH, 'config.json')) as file:

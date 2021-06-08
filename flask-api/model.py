@@ -37,8 +37,8 @@ class KineticsSchema(ma.SQLAlchemyAutoSchema):
 
     uri = ma.Function(
         lambda obj:
-        url_for('kinetics_record', kinetics_id=obj.id,
-                _external=True)
+        url_for('/api.operations_kinetics_get_record',
+                primary_key=obj.id, _external=True)
         )
 
 
@@ -83,9 +83,8 @@ class SubstanceRelationshipsSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
     uri = ma.Function(
         lambda obj:
-        url_for('substance_relationships_record',
-                relationships_id=obj.id,
-                _external=True)
+        url_for('/api.operations_substance_relationships_get_record',
+                primary_key=obj.id, _external=True)
             )
 
 
@@ -134,8 +133,8 @@ class GenericSubstancesSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
     uri = ma.Function(
         lambda obj:
-        url_for('generic_substances_record', substances_id=obj.id,
-                _external=True)
+        url_for('/api.operations_generic_substances_get_record',
+                primary_key=obj.id, _external=True)
         )
 
 
@@ -181,8 +180,8 @@ class AuthorSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
     uri = ma.Function(
         lambda obj:
-        url_for('author_record', author_id=obj.id,
-                _external=True)
+        url_for('/api.operations_author_get_record',
+                primary_key=obj.id, _external=True)
         )
 
 
@@ -222,6 +221,6 @@ class CitationSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
     uri = ma.Function(
         lambda obj:
-        url_for('citation_record', citation_id=obj.id,
-                _external=True)
+        url_for('/api.operations_citation_get_record',
+                primary_key=obj.id, _external=True)
         )
