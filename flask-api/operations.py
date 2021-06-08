@@ -1,9 +1,12 @@
 import model
 from config import db, ma
 from flask import Response
-from responses import (entity_post_response, entity_get_response,
-                       record_id_get_response, record_id_put_response,
-                       record_id_delete_response)
+from responses import (
+    entity_post_response, entity_get_response,
+    record_id_get_response, record_id_put_response,
+    record_id_patch_response, record_id_delete_response
+    )
+from typing import Optional
 
 
 class Entity:
@@ -16,14 +19,17 @@ class Entity:
     def get(self) -> Response:
         return entity_get_response(self.entity, self.schema)
 
-    def post(self) -> Response:
-        return entity_post_response(self.entity, self.schema)
+    def post(self, primary_key: Optional[int] = None) -> Response:
+        return entity_post_response(self.entity, self.schema, primary_key)
 
     def get_record(self, primary_key: int) -> Response:
         return record_id_get_response(primary_key, self.entity, self.schema)
 
     def put(self, primary_key: int) -> Response:
         return record_id_put_response(primary_key, self.entity, self.schema)
+
+    def patch(self, primary_key: int) -> Response:
+        return record_id_patch_response(primary_key, self.entity, self.schema)
 
     def delete(self, primary_key) -> Response:
         return record_id_delete_response(primary_key, self.entity)

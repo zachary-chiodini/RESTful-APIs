@@ -34,7 +34,6 @@ class KineticsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Kinetics
         load_instance = True
-
     uri = ma.Function(
         lambda obj:
         url_for('/api.operations_kinetics_get_record',
