@@ -16,8 +16,8 @@ paths:
       operationId: author
       tags:
         - Author
-      summary: Retrieves all data in author table
-      description: Retrieves all data in author table
+      summary: Retrieves all data from the author table
+      description: Retrieves all data from the author table
       responses:
         200:
           description: Successfully retrieved data
@@ -37,43 +37,3 @@ paths:
                 last_name:
                   type: string
                   description: Last name of author
-    post:
-      operationId: author
-      tags:
-        - Author
-      summary: Creates a new author record
-      description: Creates a new author record
-      parameters:
-        - name: author
-          in: body
-          description: New author to create
-          required: True
-          schema:
-            type: object
-            properties:
-              first_name:
-                type: string
-                description: First name of author
-              middle_name:
-                type: string
-                description: Middle name of author
-              last_name:
-                type: string
-                description: Last name of author
-      responses:
-        201:
-          description: Seccessfully create new author record
-          schema:
-            properties:
-              id:
-                type: integer
-                description: ID of the record
-              first_name:
-                type: string
-                description: First name of author
-              middle_name:
-                type: string
-                description: Middle name of author
-              last_name:
-                type: string
-                description: Last name of author

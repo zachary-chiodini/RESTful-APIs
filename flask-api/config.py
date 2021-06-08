@@ -1,9 +1,8 @@
-# import connexion
+import connexion
 from os import urandom
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-# from flask_login import LoginManager
 from sshtunnel import SSHTunnelForwarder
 from typing import Dict
 
@@ -47,9 +46,9 @@ def connect_db(application: Flask,
 
 
 # This creates the connexion application instance.
-app = Flask(__name__)
+connexion_app = connexion.App(__name__)
 # This gets the underlying flask app instance.
-
+app = connexion_app.app
 app.secret_key = urandom(16)
 app.config['USERNAME'] = ''
 app.config['SQLALCHEMY_DATABASE_URI'] = ''
@@ -58,4 +57,3 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
-# lm = LoginManager(app)
