@@ -3,6 +3,8 @@ flask-sqlalchemy==2.5.1
 flask-marshmallow==0.14.0
 flask-mysqldb==0.2.0
 marshmallow-sqlalchemy==0.26.0
+connexion==2.7.0
+swagger-ui-bundle==0.0.8
 sshtunnel==0.4.0
 requests==2.25.1
 connexion==2.7.1

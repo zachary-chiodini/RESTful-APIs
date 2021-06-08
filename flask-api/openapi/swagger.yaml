@@ -1,0 +1,1691 @@
+swagger: "2.0"
+info:
+  description: Documentation for the API for the chemical transformation database
+  version: "1.0.0"
+  title: Chemical Transformation API
+consumes:
+  - application/json
+produces:
+  - applications/json
+
+basePath: /api
+
+paths:
+  /kinetics:
+    get:
+      operationId: operations.kinetics.get
+      tags:
+        - Kinetics
+      summary: Gets all records
+      description: Gets all records
+      responses:
+        200:
+          description: Successfully got records
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                fk_substance_relationship_id:
+                  type: string
+                  description: Forign key references 'substance_relationships.id'
+                pH:
+                  type: string
+                  description: The pH at which the reaction occured
+                pH_min:
+                  type: string
+                  description: Minimum of the pH at which the reaction occured
+                pH_max:
+                  type: string
+                  description: Maximum of the pH at which the reaction occured
+                half_life:
+                  type: string
+                  description: Half-life of the reaction
+                half_life_min:
+                  type: string
+                  description: Half-life minimum value
+                half_life_max:
+                  type: string
+                  description: Half-life maximum value
+                half_life_units:
+                  type: string
+                  description: Half-life units
+                rate:
+                  type: string
+                  description: Rate of the reaction
+                rate_min:
+                  type: string
+                  description: Rate minimum value
+                rate_max:
+                  type: string
+                  description: Rate maximum value
+                rate_units:
+                  type: string
+                  description: Units of the rate
+                reaction:
+                  type: string
+                  description: Reaction type
+                temp_C:
+                  type: string
+                  description: Temperature at which the reaction occured in degrees Celsius
+                activation_kcal_per_mol:
+                  type: string
+                  description: Activation energy in kilocalories per mole
+                comments:
+                  type: string
+                  description: Record comments
+    post:
+      operationId: operations.kinetics.post
+      tags:
+        - Kinetics
+      summary: Posts a new record
+      description: Posts a new record
+      parameters:
+        - name: kinetics
+          in: body
+          description: The record to post
+          required: True
+          schema:
+            properties:
+              fk_substance_relationship_id:
+                type: string
+                description: Forign key references 'substance_relationships.id'
+              pH:
+                type: string
+                description: The pH at which the reaction occured
+              pH_min:
+                type: string
+                description: Minimum of the pH at which the reaction occured
+              pH_max:
+                type: string
+                description: Maximum of the pH at which the reaction occured
+              half_life:
+                type: string
+                description: Half-life of the reaction
+              half_life_min:
+                type: string
+                description: Half-life minimum value
+              half_life_max:
+                type: string
+                description: Half-life maximum value
+              half_life_units:
+                type: string
+                description: Half-life units
+              rate:
+                type: string
+                description: Rate of the reaction
+              rate_min:
+                type: string
+                description: Rate minimum value
+              rate_max:
+                type: string
+                description: Rate maximum value
+              rate_units:
+                type: string
+                description: Units of the rate
+              reaction:
+                type: string
+                description: Reaction type
+              temp_C:
+                type: string
+                description: Temperature at which the reaction occured in degrees Celsius
+              activation_kcal_per_mol:
+                type: string
+                description: Activation energy in kilocalories per mole
+              comments:
+                type: string
+                description: Record comments
+      responses:
+        201:
+          description: Sucessfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_substance_relationship_id:
+                type: string
+                description: Forign key references 'substance_relationships.id'
+              pH:
+                type: string
+                description: The pH at which the reaction occured
+              pH_min:
+                type: string
+                description: Minimum of the pH at which the reaction occured
+              pH_max:
+                type: string
+                description: Maximum of the pH at which the reaction occured
+              half_life:
+                type: string
+                description: Half-life of the reaction
+              half_life_min:
+                type: string
+                description: Half-life minimum value
+              half_life_max:
+                type: string
+                description: Half-life maximum value
+              half_life_units:
+                type: string
+                description: Half-life units
+              rate:
+                type: string
+                description: Rate of the reaction
+              rate_min:
+                type: string
+                description: Rate minimum value
+              rate_max:
+                type: string
+                description: Rate maximum value
+              rate_units:
+                type: string
+                description: Units of the rate
+              reaction:
+                type: string
+                description: Reaction type
+              temp_C:
+                type: string
+                description: Temperature at which the reaction occured in degrees Celsius
+              activation_kcal_per_mol:
+                type: string
+                description: Activation energy in kilocalories per mole
+              comments:
+                type: string
+                description: Record comments
+        409:
+          description: Record already exists
+  /kinetics/{primary_key}:
+    get:
+      operationId: operations.kinetics.get_record
+      tags:
+        - Kinetics
+      summary: Get record by primary key
+      description: Get record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully got record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_substance_relationship_id:
+                type: string
+                description: Forign key references 'substance_relationships.id'
+              pH:
+                type: string
+                description: The pH at which the reaction occured
+              pH_min:
+                type: string
+                description: Minimum of the pH at which the reaction occured
+              pH_max:
+                type: string
+                description: Maximum of the pH at which the reaction occured
+              half_life:
+                type: string
+                description: Half-life of the reaction
+              half_life_min:
+                type: string
+                description: Half-life minimum value
+              half_life_max:
+                type: string
+                description: Half-life maximum value
+              half_life_units:
+                type: string
+                description: Half-life units
+              rate:
+                type: string
+                description: Rate of the reaction
+              rate_min:
+                type: string
+                description: Rate minimum value
+              rate_max:
+                type: string
+                description: Rate maximum value
+              rate_units:
+                type: string
+                description: Units of the rate
+              reaction:
+                type: string
+                description: Reaction type
+              temp_C:
+                type: string
+                description: Temperature at which the reaction occured in degrees Celsius
+              activation_kcal_per_mol:
+                type: string
+                description: Activation energy in kilocalories per mole
+              comments:
+                type: string
+                description: Record comments
+        404:
+          description: Record not found
+    put:
+      operationId: operations.kinetics.put
+      tags:
+        - Kinetics
+      summary: Updates an existing record or posts a new record
+      description: Updates an existing record by primary key or posts a new record if the primary key is not found
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record to update
+          type: integer
+          required: True
+        - name: author
+          in: body
+          schema:
+            properties:
+              fk_substance_relationship_id:
+                type: string
+                description: Forign key references 'substance_relationships.id'
+              pH:
+                type: string
+                description: The pH at which the reaction occured
+              pH_min:
+                type: string
+                description: Minimum of the pH at which the reaction occured
+              pH_max:
+                type: string
+                description: Maximum of the pH at which the reaction occured
+              half_life:
+                type: string
+                description: Half-life of the reaction
+              half_life_min:
+                type: string
+                description: Half-life minimum value
+              half_life_max:
+                type: string
+                description: Half-life maximum value
+              half_life_units:
+                type: string
+                description: Half-life units
+              rate:
+                type: string
+                description: Rate of the reaction
+              rate_min:
+                type: string
+                description: Rate minimum value
+              rate_max:
+                type: string
+                description: Rate maximum value
+              rate_units:
+                type: string
+                description: Units of the rate
+              reaction:
+                type: string
+                description: Reaction type
+              temp_C:
+                type: string
+                description: Temperature at which the reaction occured in degrees Celsius
+              activation_kcal_per_mol:
+                type: string
+                description: Activation energy in kilocalories per mole
+              comments:
+                type: string
+                description: Record comments
+      responses:
+        200:
+          description: Successfully updated record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_substance_relationship_id:
+                type: string
+                description: Forign key references 'substance_relationships.id'
+              pH:
+                type: string
+                description: The pH at which the reaction occured
+              pH_min:
+                type: string
+                description: Minimum of the pH at which the reaction occured
+              pH_max:
+                type: string
+                description: Maximum of the pH at which the reaction occured
+              half_life:
+                type: string
+                description: Half-life of the reaction
+              half_life_min:
+                type: string
+                description: Half-life minimum value
+              half_life_max:
+                type: string
+                description: Half-life maximum value
+              half_life_units:
+                type: string
+                description: Half-life units
+              rate:
+                type: string
+                description: Rate of the reaction
+              rate_min:
+                type: string
+                description: Rate minimum value
+              rate_max:
+                type: string
+                description: Rate maximum value
+              rate_units:
+                type: string
+                description: Units of the rate
+              reaction:
+                type: string
+                description: Reaction type
+              temp_C:
+                type: string
+                description: Temperature at which the reaction occured in degrees Celsius
+              activation_kcal_per_mol:
+                type: string
+                description: Activation energy in kilocalories per mole
+              comments:
+                type: string
+                description: Record comments
+        201:
+          description: Successfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_substance_relationship_id:
+                type: string
+                description: Forign key references 'substance_relationships.id'
+              pH:
+                type: string
+                description: The pH at which the reaction occured
+              pH_min:
+                type: string
+                description: Minimum of the pH at which the reaction occured
+              pH_max:
+                type: string
+                description: Maximum of the pH at which the reaction occured
+              half_life:
+                type: string
+                description: Half-life of the reaction
+              half_life_min:
+                type: string
+                description: Half-life minimum value
+              half_life_max:
+                type: string
+                description: Half-life maximum value
+              half_life_units:
+                type: string
+                description: Half-life units
+              rate:
+                type: string
+                description: Rate of the reaction
+              rate_min:
+                type: string
+                description: Rate minimum value
+              rate_max:
+                type: string
+                description: Rate maximum value
+              rate_units:
+                type: string
+                description: Units of the rate
+              reaction:
+                type: string
+                description: Reaction type
+              temp_C:
+                type: string
+                description: Temperature at which the reaction occured in degrees Celsius
+              activation_kcal_per_mol:
+                type: string
+                description: Activation energy in kilocalories per mole
+              comments:
+                type: string
+                description: Record comments
+        409:
+          description: Record already exists
+    delete:
+      operationId: operations.kinetics.delete
+      tags:
+        - Kinetics
+      summary: Delete record by primary key
+      description: Delete record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          type: integer
+          description: Primary key of the record to delete
+          required: True
+      responses:
+        200:
+          description: Seccesfully deleted record
+        404:
+          description: Record not found
+  /substance-relationships:
+    get:
+      operationId: operations.substance_relationships.get
+      tags:
+        - Substance Relationships
+      summary: Gets all records
+      description: Gets all records
+      responses:
+        200:
+          description: Successfully got records
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                fk_generic_substance_id_predecessor:
+                  type: string
+                  description: Foreign key references 'generic_substances.id'
+                fk_generic_substance_id_successor:
+                  type: string
+                  description: Foreign key references 'generic_substances.id'
+                relationship:
+                  type: string
+                  description: How are the two substances related
+                fk_substance_relationship_type_id:
+                  type: string
+                  description: The realtionship type between the two substances
+                source:
+                  type: string
+                  description: Source of the relationship
+                qc_notes:
+                  type: string
+                  description: Notes on the quality control of the record
+                mixture_percentage:
+                  type: string
+                  description: Percent of mixture
+                percentage_type:
+                  type: string
+                  description: Type of percentage
+                is_nearest_structure:
+                  type: string
+                  description: Nearest structure
+                is_nearest_casrn:
+                  type: string
+                  description: Neatest CASRN
+                created_by:
+                  type: string
+                  description: User who created the record
+                updated_by:
+                  type: string
+                  description: User who updated the record
+                created_at:
+                  type: string
+                  description: When the record was created
+                updated_at:
+                  type: string
+                  description: When the record was last updated
+    post:
+      operationId: operations.substance_relationships.post
+      tags:
+        - Substance Relationships
+      summary: Posts a new record
+      description: Posts a new record
+      parameters:
+        - name: substance relationship
+          in: body
+          description: The record to post
+          required: True
+          schema:
+            properties:
+              fk_generic_substance_id_predecessor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              fk_generic_substance_id_successor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              relationship:
+                type: string
+                description: How are the two substances related
+              fk_substance_relationship_type_id:
+                type: string
+                description: The realtionship type between the two substances
+              source:
+                type: string
+                description: Source of the relationship
+              qc_notes:
+                type: string
+                description: Notes on the quality control of the record
+              mixture_percentage:
+                type: string
+                description: Percent of mixture
+              percentage_type:
+                type: string
+                description: Type of percentage
+              is_nearest_structure:
+                type: string
+                description: Nearest structure
+              is_nearest_casrn:
+                type: string
+                description: Neatest CASRN
+              created_by:
+                type: string
+                description: User who created the record
+              updated_by:
+                type: string
+                description: User who updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: When the record was last updated
+      responses:
+        201:
+          description: Sucessfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_generic_substance_id_predecessor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              fk_generic_substance_id_successor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              relationship:
+                type: string
+                description: How are the two substances related
+              fk_substance_relationship_type_id:
+                type: string
+                description: The realtionship type between the two substances
+              source:
+                type: string
+                description: Source of the relationship
+              qc_notes:
+                type: string
+                description: Notes on the quality control of the record
+              mixture_percentage:
+                type: string
+                description: Percent of mixture
+              percentage_type:
+                type: string
+                description: Type of percentage
+              is_nearest_structure:
+                type: string
+                description: Nearest structure
+              is_nearest_casrn:
+                type: string
+                description: Neatest CASRN
+              created_by:
+                type: string
+                description: User who created the record
+              updated_by:
+                type: string
+                description: User who updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: When the record was last updated
+        409:
+          description: Record already exists
+  /substance-relationships/{primary_key}:
+    get:
+      operationId: operations.substance_relationships.get_record
+      tags:
+        - Substance Relationships
+      summary: Get record by primary key
+      description: Get record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully got record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_generic_substance_id_predecessor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              fk_generic_substance_id_successor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              relationship:
+                type: string
+                description: How are the two substances related
+              fk_substance_relationship_type_id:
+                type: string
+                description: The realtionship type between the two substances
+              source:
+                type: string
+                description: Source of the relationship
+              qc_notes:
+                type: string
+                description: Notes on the quality control of the record
+              mixture_percentage:
+                type: string
+                description: Percent of mixture
+              percentage_type:
+                type: string
+                description: Type of percentage
+              is_nearest_structure:
+                type: string
+                description: Nearest structure
+              is_nearest_casrn:
+                type: string
+                description: Neatest CASRN
+              created_by:
+                type: string
+                description: User who created the record
+              updated_by:
+                type: string
+                description: User who updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: When the record was last updated
+        404:
+          description: Record not found
+    put:
+      operationId: operations.substance_relationships.put
+      tags:
+        - Substance Relationships
+      summary: Updates an existing record or posts a new record
+      description: Updates an existing record by primary key or posts a new record if the primary key is not found
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record to update
+          type: integer
+          required: True
+        - name: substance relationship
+          in: body
+          schema:
+            properties:
+              fk_generic_substance_id_predecessor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              fk_generic_substance_id_successor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              relationship:
+                type: string
+                description: How are the two substances related
+              fk_substance_relationship_type_id:
+                type: string
+                description: The realtionship type between the two substances
+              source:
+                type: string
+                description: Source of the relationship
+              qc_notes:
+                type: string
+                description: Notes on the quality control of the record
+              mixture_percentage:
+                type: string
+                description: Percent of mixture
+              percentage_type:
+                type: string
+                description: Type of percentage
+              is_nearest_structure:
+                type: string
+                description: Nearest structure
+              is_nearest_casrn:
+                type: string
+                description: Neatest CASRN
+              created_by:
+                type: string
+                description: User who created the record
+              updated_by:
+                type: string
+                description: User who updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: When the record was last updated
+      responses:
+        200:
+          description: Successfully updated record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_generic_substance_id_predecessor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              fk_generic_substance_id_successor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              relationship:
+                type: string
+                description: How are the two substances related
+              fk_substance_relationship_type_id:
+                type: string
+                description: The realtionship type between the two substances
+              source:
+                type: string
+                description: Source of the relationship
+              qc_notes:
+                type: string
+                description: Notes on the quality control of the record
+              mixture_percentage:
+                type: string
+                description: Percent of mixture
+              percentage_type:
+                type: string
+                description: Type of percentage
+              is_nearest_structure:
+                type: string
+                description: Nearest structure
+              is_nearest_casrn:
+                type: string
+                description: Neatest CASRN
+              created_by:
+                type: string
+                description: User who created the record
+              updated_by:
+                type: string
+                description: User who updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: When the record was last updated
+        201:
+          description: Successfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_generic_substance_id_predecessor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              fk_generic_substance_id_successor:
+                type: string
+                description: Foreign key references 'generic_substances.id'
+              relationship:
+                type: string
+                description: How are the two substances related
+              fk_substance_relationship_type_id:
+                type: string
+                description: The realtionship type between the two substances
+              source:
+                type: string
+                description: Source of the relationship
+              qc_notes:
+                type: string
+                description: Notes on the quality control of the record
+              mixture_percentage:
+                type: string
+                description: Percent of mixture
+              percentage_type:
+                type: string
+                description: Type of percentage
+              is_nearest_structure:
+                type: string
+                description: Nearest structure
+              is_nearest_casrn:
+                type: string
+                description: Neatest CASRN
+              created_by:
+                type: string
+                description: User who created the record
+              updated_by:
+                type: string
+                description: User who updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: When the record was last updated
+        409:
+          description: Record already exists
+    delete:
+      operationId: operations.substance_relationships.delete
+      tags:
+        - Substance Relationships
+      summary: Delete record by primary key
+      description: Delete record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          type: integer
+          description: Primary key of the record to delete
+          required: True
+      responses:
+        200:
+          description: Seccesfully deleted record
+        404:
+          description: Record not found
+  /generic-substances:
+    get:
+      operationId: operations.generic_substances.get
+      tags:
+        - Generic Substances
+      summary: Gets all records
+      description: Gets all records
+      responses:
+        200:
+          description: Successfully got records
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                fk_qc_level_id:
+                  type: string
+                  description: Foreign key references quality control table
+                dsstox_substance_id:
+                  type: string
+                  description: DSSTox substance ID
+                casrn:
+                  type: string
+                  description: CASRN
+                preferred_name:
+                  type: string
+                  description: Preferred name of chemical
+                substance_type:
+                  type: string
+                  description: Type of substance
+                qc_notes:
+                  type: string
+                  description: Quality control notes
+                qc_notes_private:
+                  type: string
+                  description: Private quality control notes
+                source:
+                  type: string
+                  description: Source of preferred name, structure and CASRN assignment
+                created_at:
+                  type: string
+                  description: When the record was created
+                updated_by:
+                  type: string
+                  description: User who last updated the record
+    post:
+      operationId: operations.generic_substances.post
+      tags:
+        - Generic Substances
+      summary: Posts a new record
+      description: Posts a new record
+      parameters:
+        - name: generic substance
+          in: body
+          description: The record to post
+          required: True
+          schema:
+            properties:
+              fk_qc_level_id:
+                type: string
+                description: Foreign key references quality control table
+              dsstox_substance_id:
+                type: string
+                description: DSSTox substance ID
+              casrn:
+                type: string
+                description: CASRN
+              preferred_name:
+                type: string
+                description: Preferred name of chemical
+              substance_type:
+                type: string
+                description: Type of substance
+              qc_notes:
+                type: string
+                description: Quality control notes
+              qc_notes_private:
+                type: string
+                description: Private quality control notes
+              source:
+                type: string
+                description: Source of preferred name, structure and CASRN assignment
+              created_at:
+                type: string
+                description: When the record was created
+              updated_by:
+                type: string
+                description: User who last updated the record
+      responses:
+        201:
+          description: Sucessfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_qc_level_id:
+                type: string
+                description: Foreign key references quality control table
+              dsstox_substance_id:
+                type: string
+                description: DSSTox substance ID
+              casrn:
+                type: string
+                description: CASRN
+              preferred_name:
+                type: string
+                description: Preferred name of chemical
+              substance_type:
+                type: string
+                description: Type of substance
+              qc_notes:
+                type: string
+                description: Quality control notes
+              qc_notes_private:
+                type: string
+                description: Private quality control notes
+              source:
+                type: string
+                description: Source of preferred name, structure and CASRN assignment
+              created_at:
+                type: string
+                description: When the record was created
+              updated_by:
+                type: string
+                description: User who last updated the record
+        409:
+          description: Record already exists
+  /generic-substances/{primary_key}:
+    get:
+      operationId: operations.generic_substances.get_record
+      tags:
+        - Generic Substances
+      summary: Get record by primary key
+      description: Get record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully got record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_qc_level_id:
+                type: string
+                description: Foreign key references quality control table
+              dsstox_substance_id:
+                type: string
+                description: DSSTox substance ID
+              casrn:
+                type: string
+                description: CASRN
+              preferred_name:
+                type: string
+                description: Preferred name of chemical
+              substance_type:
+                type: string
+                description: Type of substance
+              qc_notes:
+                type: string
+                description: Quality control notes
+              qc_notes_private:
+                type: string
+                description: Private quality control notes
+              source:
+                type: string
+                description: Source of preferred name, structure and CASRN assignment
+              created_at:
+                type: string
+                description: When the record was created
+              updated_by:
+                type: string
+                description: User who last updated the record
+        404:
+          description: Record not found
+    put:
+      operationId: operations.generic_substances.put
+      tags:
+        - Generic Substances
+      summary: Updates an existing record or posts a new record
+      description: Updates an existing record by primary key or posts a new record if the primary key is not found
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record to update
+          type: integer
+          required: True
+        - name: generic substance
+          in: body
+          schema:
+            properties:
+              fk_qc_level_id:
+                type: string
+                description: Foreign key references quality control table
+              dsstox_substance_id:
+                type: string
+                description: DSSTox substance ID
+              casrn:
+                type: string
+                description: CASRN
+              preferred_name:
+                type: string
+                description: Preferred name of chemical
+              substance_type:
+                type: string
+                description: Type of substance
+              qc_notes:
+                type: string
+                description: Quality control notes
+              qc_notes_private:
+                type: string
+                description: Private quality control notes
+              source:
+                type: string
+                description: Source of preferred name, structure and CASRN assignment
+              created_at:
+                type: string
+                description: When the record was created
+              updated_by:
+                type: string
+                description: User who last updated the record
+      responses:
+        200:
+          description: Successfully updated record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_qc_level_id:
+                type: string
+                description: Foreign key references quality control table
+              dsstox_substance_id:
+                type: string
+                description: DSSTox substance ID
+              casrn:
+                type: string
+                description: CASRN
+              preferred_name:
+                type: string
+                description: Preferred name of chemical
+              substance_type:
+                type: string
+                description: Type of substance
+              qc_notes:
+                type: string
+                description: Quality control notes
+              qc_notes_private:
+                type: string
+                description: Private quality control notes
+              source:
+                type: string
+                description: Source of preferred name, structure and CASRN assignment
+              created_at:
+                type: string
+                description: When the record was created
+              updated_by:
+                type: string
+                description: User who last updated the record
+        201:
+          description: Successfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              fk_qc_level_id:
+                type: string
+                description: Foreign key references quality control table
+              dsstox_substance_id:
+                type: string
+                description: DSSTox substance ID
+              casrn:
+                type: string
+                description: CASRN
+              preferred_name:
+                type: string
+                description: Preferred name of chemical
+              substance_type:
+                type: string
+                description: Type of substance
+              qc_notes:
+                type: string
+                description: Quality control notes
+              qc_notes_private:
+                type: string
+                description: Private quality control notes
+              source:
+                type: string
+                description: Source of preferred name, structure and CASRN assignment
+              created_at:
+                type: string
+                description: When the record was created
+              updated_by:
+                type: string
+                description: User who last updated the record
+        409:
+          description: Record already exists
+    delete:
+      operationId: operations.generic_substances.delete
+      tags:
+        - Generic Substances
+      summary: Delete record by primary key
+      description: Delete record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          type: integer
+          description: Primary key of the record to delete
+          required: True
+      responses:
+        200:
+          description: Seccesfully deleted record
+        404:
+          description: Record not found
+  /author:
+    get:
+      operationId: operations.author.get
+      tags:
+        - Author
+      summary: Gets all records
+      description: Gets all records
+      responses:
+        200:
+          description: Successfully got records
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of the record
+                first_name:
+                  type: string
+                  description: First name of the author
+                middle_name:
+                  type: string
+                  description: Middle name of the author
+                last_name:
+                  type: string
+                  description: Last name of the author
+    post:
+      operationId: operations.author.post
+      tags:
+        - Author
+      summary: Posts a new record
+      description: Posts a new record
+      parameters:
+        - name: author
+          in: body
+          description: The record to post
+          required: True
+          schema:
+            properties:
+              first_name:
+                type: string
+                description: First name of the author
+              middle_name:
+                type: string
+                description: Middle name of the author
+              last_name:
+                type: string
+                description: Last name of the author
+      responses:
+        201:
+          description: Sucessfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of the record
+              first_name:
+                type: string
+                description: First name of the author
+              middle_name:
+                type: string
+                description: Middle name of the author
+              last_name:
+                type: string
+                description: Last name of the author
+        409:
+          description: Record already exists
+  /author/{primary_key}:
+    get:
+      operationId: operations.author.get_record
+      tags:
+        - Author
+      summary: Get record by primary key
+      description: Get record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully got record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of the record
+              first_name:
+                type: string
+                description: First name of the author
+              middle_name:
+                type: string
+                description: Middle name of the author
+              last_name:
+                type: string
+                description: Last name of the author
+        404:
+          description: Record not found
+    put:
+      operationId: operations.author.put
+      tags:
+        - Author
+      summary: Updates an existing record or posts a new record
+      description: Updates an existing record by primary key or posts a new record if the primary key is not found
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record to update
+          type: integer
+          required: True
+        - name: author
+          in: body
+          schema:
+            properties:
+              first_name:
+                type: string
+                description: First name of the author
+              middle_name:
+                type: string
+                description: Middle name of the author
+              last_name:
+                type: string
+                description: Last name of the author
+      responses:
+        200:
+          description: Successfully updated record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of the record
+              first_name:
+                type: string
+                description: First name of the author
+              middle_name:
+                type: string
+                description: Middle name of the author
+              last_name:
+                type: string
+                description: Last name of the author
+        201:
+          description: Successfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of the record
+              first_name:
+                type: string
+                description: First name of the author
+              middle_name:
+                type: string
+                description: Middle name of the author
+              last_name:
+                type: string
+                description: Last name of the author
+        409:
+          description: Record already exists
+    delete:
+      operationId: operations.author.delete
+      tags:
+        - Author
+      summary: Delete record by primary key
+      description: Delete record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          type: integer
+          description: Primary key of the record to delete
+          required: True
+      responses:
+        200:
+          description: Seccesfully deleted record
+        404:
+          description: Record not found
+  /citation:
+    get:
+      operationId: operations.citation.get
+      tags:
+        - Citation
+      summary: Gets all records
+      description: Gets all records
+      responses:
+        200:
+          description: Successfully got records
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                doi:
+                  type: string
+                  description: DOI of citation
+                url:
+                  type: string
+                  description: URL of citation
+                year:
+                  type: string
+                  description: Published year
+                month:
+                  type: string
+                  description: Published month
+                day:
+                  type: string
+                  description: Published day
+                volume:
+                  type: string
+                  description: Journal volume
+                issue:
+                  type: string
+                  description: Journal Issue
+                pages:
+                  type: string
+                  description: Journal Pages
+                title:
+                  type: string
+                  description: Article title
+                pdf:
+                  type: string
+                  description: Pdf of article
+    post:
+      operationId: operations.citation.post
+      tags:
+        - Citation
+      summary: Posts a new record
+      description: Posts a new record
+      parameters:
+        - name: citation
+          in: body
+          description: The record to post
+          required: True
+          schema:
+            properties:
+              doi:
+                type: string
+                description: DOI of citation
+              url:
+                type: string
+                description: URL of citation
+              year:
+                type: string
+                description: Published year
+              month:
+                type: string
+                description: Published month
+              day:
+                type: string
+                description: Published day
+              volume:
+                type: string
+                description: Journal volume
+              issue:
+                type: string
+                description: Journal Issue
+              pages:
+                type: string
+                description: Journal Pages
+              title:
+                type: string
+                description: Article title
+              pdf:
+                type: string
+                description: Pdf of article
+      responses:
+        201:
+          description: Sucessfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              doi:
+                type: string
+                description: DOI of citation
+              url:
+                type: string
+                description: URL of citation
+              year:
+                type: string
+                description: Published year
+              month:
+                type: string
+                description: Published month
+              day:
+                type: string
+                description: Published day
+              volume:
+                type: string
+                description: Journal volume
+              issue:
+                type: string
+                description: Journal Issue
+              pages:
+                type: string
+                description: Journal Pages
+              title:
+                type: string
+                description: Article title
+              pdf:
+                type: string
+                description: Pdf of article
+        409:
+          description: Record already exists
+  /citation/{primary_key}:
+    get:
+      operationId: operations.citation.get_record
+      tags:
+        - Citation
+      summary: Get record by primary key
+      description: Get record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully got record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              doi:
+                type: string
+                description: DOI of citation
+              url:
+                type: string
+                description: URL of citation
+              year:
+                type: string
+                description: Published year
+              month:
+                type: string
+                description: Published month
+              day:
+                type: string
+                description: Published day
+              volume:
+                type: string
+                description: Journal volume
+              issue:
+                type: string
+                description: Journal Issue
+              pages:
+                type: string
+                description: Journal Pages
+              title:
+                type: string
+                description: Article title
+              pdf:
+                type: string
+                description: Pdf of article
+        404:
+          description: Record not found
+    put:
+      operationId: operations.citation.put
+      tags:
+        - Citation
+      summary: Updates an existing record or posts a new record
+      description: Updates an existing record by primary key or posts a new record if the primary key is not found
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record to update
+          type: integer
+          required: True
+        - name: citation
+          in: body
+          schema:
+            properties:
+              doi:
+                type: string
+                description: DOI of citation
+              url:
+                type: string
+                description: URL of citation
+              year:
+                type: string
+                description: Published year
+              month:
+                type: string
+                description: Published month
+              day:
+                type: string
+                description: Published day
+              volume:
+                type: string
+                description: Journal volume
+              issue:
+                type: string
+                description: Journal Issue
+              pages:
+                type: string
+                description: Journal Pages
+              title:
+                type: string
+                description: Article title
+              pdf:
+                type: string
+                description: Pdf of article
+      responses:
+        200:
+          description: Successfully updated record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              doi:
+                type: string
+                description: DOI of citation
+              url:
+                type: string
+                description: URL of citation
+              year:
+                type: string
+                description: Published year
+              month:
+                type: string
+                description: Published month
+              day:
+                type: string
+                description: Published day
+              volume:
+                type: string
+                description: Journal volume
+              issue:
+                type: string
+                description: Journal Issue
+              pages:
+                type: string
+                description: Journal Pages
+              title:
+                type: string
+                description: Article title
+              pdf:
+                type: string
+                description: Pdf of article
+        201:
+          description: Successfully posted record
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              doi:
+                type: string
+                description: DOI of citation
+              url:
+                type: string
+                description: URL of citation
+              year:
+                type: string
+                description: Published year
+              month:
+                type: string
+                description: Published month
+              day:
+                type: string
+                description: Published day
+              volume:
+                type: string
+                description: Journal volume
+              issue:
+                type: string
+                description: Journal Issue
+              pages:
+                type: string
+                description: Journal Pages
+              title:
+                type: string
+                description: Article title
+              pdf:
+                type: string
+                description: Pdf of article
+        409:
+          description: Record already exists
+    delete:
+      operationId: operations.citation.delete
+      tags:
+        - Citation
+      summary: Delete record by primary key
+      description: Delete record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          type: integer
+          description: Primary key of the record to delete
+          required: True
+      responses:
+        200:
+          description: Seccesfully deleted record
+        404:
+          description: Record not found
