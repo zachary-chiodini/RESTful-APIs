@@ -5,14 +5,9 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from typing import Dict, Optional, Union
 
 
-def get_features(entity: db.Model) -> Dict:
-    features = {}
-    instantiated = entity()
-    for attr, value in entity.__dict__.items():
-        if (isinstance(value, InstrumentedAttribute)
-                and getattr(instantiated, attr) is None
-                and attr != 'id'):
-            features[attr] = value
+def get_features_except_id(entity: db.Model) -> Dict:
+    features = dict(entity.__table__.columns.items())
+    del features['id']
     return features
 
 
@@ -20,7 +15,7 @@ def query_payload(
         entity: db.Model, payload: Dict
         ) -> Union[db.Model, None]:
     filters = []
-    for label, column in get_features(entity).items():
+    for label, column in get_features_except_id(entity).items():
         value = payload.get(label)
         filters.append(column == value)
     return entity.query.filter(*filters).one_or_none()
@@ -114,7 +109,7 @@ def record_id_patch_response(
         response = Response('Record not found', status=404)
         return response
     payload = json.loads(request.get_json())
-    for feature in get_features(entity).keys():
+    for feature in get_features_except_id(entity).keys():
         if feature not in payload:
             payload[feature] = getattr(record_to_update, feature)
     existing_record = query_payload(entity, payload)
