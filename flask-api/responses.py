@@ -1,7 +1,6 @@
 import json
 from config import db, ma
 from flask import jsonify, Response, request
-from sqlalchemy.orm.attributes import InstrumentedAttribute
 from typing import Dict, Optional, Union
 
 
