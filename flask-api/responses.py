@@ -108,7 +108,7 @@ def record_id_patch_response(
         response = Response('Record not found', status=404)
         return response
     payload = json.loads(request.get_json())
-    for feature in get_features_except_id(entity).keys():
+    for feature in get_features_except_id(entity):
         if feature not in payload:
             payload[feature] = getattr(record_to_update, feature)
     existing_record = query_payload(entity, payload)
