@@ -20,8 +20,11 @@ class Entity:
     def get(self) -> Response:
         return entity_get_response(self.entity, self.schema)
 
-    def post(self, primary_key: Optional[int] = None) -> Response:
-        return entity_post_response(self.entity, self.schema, primary_key)
+    def post(self) -> Response:
+        return entity_post_response(self.entity, self.schema)
+
+    def search(self) -> Response:
+        return entity_search_response(self.entity, self.schema)
 
     def get_record(self, primary_key: int) -> Response:
         return record_id_get_response(primary_key, self.entity, self.schema)
@@ -34,9 +37,6 @@ class Entity:
 
     def delete(self, primary_key) -> Response:
         return record_id_delete_response(primary_key, self.entity)
-
-    def search(self, **kwargs) -> Response:
-        return entity_search_response(self.entity, self.schema)
 
 
 kinetics = Entity(model.Kinetics, model.KineticsSchema)
