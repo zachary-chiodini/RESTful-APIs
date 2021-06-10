@@ -7,7 +7,6 @@ from responses import (
     record_id_patch_response, record_id_delete_response,
     entity_search_response
     )
-from typing import Optional
 
 
 class Entity:
