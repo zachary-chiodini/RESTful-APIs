@@ -141,15 +141,6 @@ def record_id_delete_response(
     return response
 
 
-'''
-filters = []
-    for label, column in get_features_except_id(entity).items():
-        value = payload.get(label)
-        filters.append(column == value)
-    return entity.query.filter(*filters).one_or_none()
-'''
-
-
 def entity_search_response(
         entity: db.Model,
         schema: ma.SQLAlchemyAutoSchema
