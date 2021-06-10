@@ -101,11 +101,13 @@ class GenericSubstances(db.Model):
     qc_notes = db.Column(db.String)
     qc_notes_private = db.Column(db.String)
     source = db.Column(db.String)
+    created_by = db.Column(db.String, nullable=False)
+    updated_by = db.Column(db.String, nullable=False)
     created_at = db.Column(
         db.DateTime, default=datetime.utcnow,
         onupdate=datetime.utcnow, nullable=False
         )
-    updated_by = db.Column(
+    updated_at = db.Column(
         db.DateTime, default=datetime.utcnow,
         onupdate=datetime.utcnow, nullable=False
         )
@@ -145,6 +147,18 @@ author_cited = db.Table(
         ),
     db.Column(
         'fk_author_id', db.Integer, db.ForeignKey('author.id'),
+        primary_key=True
+        )
+    )
+
+journal_cited = db.Table(
+    'journal_cited',
+    db.Column(
+        'fk_citation_id', db.Integer, db.ForeignKey('citation.id'),
+        primary_key=True
+        ),
+    db.Column(
+        'fk_journal_id', db.Integer, db.ForeignKey('journal.id'),
         primary_key=True
         )
     )
@@ -195,10 +209,12 @@ class Citation(db.Model):
     year = db.Column(db.Integer)
     month = db.Column(db.Integer)
     day = db.Column(db.Integer)
+    publisher = db.Column(db.String)
     volume = db.Column(db.Integer)
     issue = db.Column(db.String)
     pages = db.Column(db.String)
     title = db.Column(db.String)
+    journal = db.Column(db.String)
     pdf = db.Column(db.LargeBinary)
     author = db.relationship(
         'Author',

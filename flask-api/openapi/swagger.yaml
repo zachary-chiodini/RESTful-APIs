@@ -16,11 +16,11 @@ paths:
       operationId: operations.kinetics.get
       tags:
         - Kinetics
-      summary: Gets all records
-      description: Gets all records
+      summary: Gets first 1000 records
+      description: Gets first 1000 records
       responses:
         200:
-          description: Successfully got records
+          description: Successfully got records.
           schema:
             type: array
             items:
@@ -139,7 +139,7 @@ paths:
                 description: Record comments
       responses:
         201:
-          description: Sucessfully posted record
+          description: Sucessfully posted record.
           schema:
             properties:
               id:
@@ -194,7 +194,7 @@ paths:
                 type: string
                 description: Record comments
         409:
-          description: Record already exists
+          description: Record already exists.
   /kinetics/{primary_key}:
     get:
       operationId: operations.kinetics.get_record
@@ -210,7 +210,7 @@ paths:
           required: True
       responses:
         200:
-          description: Successfully got record
+          description: Successfully got record.
           schema:
             properties:
               id:
@@ -265,7 +265,7 @@ paths:
                 type: string
                 description: Record comments
         404:
-          description: Record not found
+          description: Record not found.
     put:
       operationId: operations.kinetics.put
       tags:
@@ -332,7 +332,7 @@ paths:
                 description: Record comments
       responses:
         200:
-          description: Successfully updated record
+          description: Successfully updated record.
           schema:
             properties:
               id:
@@ -387,7 +387,7 @@ paths:
                 type: string
                 description: Record comments
         201:
-          description: Successfully posted record
+          description: Successfully posted record.
           schema:
             properties:
               id:
@@ -442,7 +442,7 @@ paths:
                 type: string
                 description: Record comments
         409:
-          description: Record already exists
+          description: Record already exists.
     patch:
       operationId: operations.kinetics.patch
       tags:
@@ -509,7 +509,7 @@ paths:
                 description: Record comments
       responses:
         200:
-          description: Successfully patched record
+          description: Successfully patched record.
           schema:
             properties:
               id:
@@ -564,9 +564,9 @@ paths:
                 type: string
                 description: Record comments
         404:
-          description: Record not found
+          description: Record not found.
         409:
-          description: Record already exists
+          description: Record already exists.
     delete:
       operationId: operations.kinetics.delete
       tags:
@@ -581,19 +581,86 @@ paths:
           required: True
       responses:
         200:
-          description: Seccesfully deleted record
+          description: Successfully deleted record.
         404:
-          description: Record not found
-  /substance-relationships:
+          description: Record not found.
+  /kinetics/searchby:
+    get:
+      operationId: operations.kinetics.search
+      tags:
+        - Kinetics
+      summary: Searches records by keyword argument(s)
+      description: Searches records by keyword argument(s) and returns first 1000 records
+      responses:
+        200:
+          description: Successfully searched records.
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                fk_substance_relationship_id:
+                  type: string
+                  description: Forign key references 'substance_relationships.id'
+                pH:
+                  type: string
+                  description: The pH at which the reaction occured
+                pH_min:
+                  type: string
+                  description: Minimum of the pH at which the reaction occured
+                pH_max:
+                  type: string
+                  description: Maximum of the pH at which the reaction occured
+                half_life:
+                  type: string
+                  description: Half-life of the reaction
+                half_life_min:
+                  type: string
+                  description: Half-life minimum value
+                half_life_max:
+                  type: string
+                  description: Half-life maximum value
+                half_life_units:
+                  type: string
+                  description: Half-life units
+                rate:
+                  type: string
+                  description: Rate of the reaction
+                rate_min:
+                  type: string
+                  description: Rate minimum value
+                rate_max:
+                  type: string
+                  description: Rate maximum value
+                rate_units:
+                  type: string
+                  description: Units of the rate
+                reaction:
+                  type: string
+                  description: Reaction type
+                temp_C:
+                  type: string
+                  description: Temperature at which the reaction occured in degrees Celsius
+                activation_kcal_per_mol:
+                  type: string
+                  description: Activation energy in kilocalories per mole
+                comments:
+                  type: string
+                  description: Record comments
+        400:
+          description: The URL parameter(s) are incorrect or not specified.
+  /substance_relationships:
     get:
       operationId: operations.substance_relationships.get
       tags:
         - Substance Relationships
-      summary: Gets all records
-      description: Gets all records
+      summary: Gets first 1000 records
+      description: Gets first 1000 records
       responses:
         200:
-          description: Successfully got records
+          description: Successfully got records.
           schema:
             type: array
             items:
@@ -700,7 +767,7 @@ paths:
                 description: When the record was last updated
       responses:
         201:
-          description: Sucessfully posted record
+          description: Sucessfully posted record.
           schema:
             properties:
               id:
@@ -749,8 +816,8 @@ paths:
                 type: string
                 description: When the record was last updated
         409:
-          description: Record already exists
-  /substance-relationships/{primary_key}:
+          description: Record already exists.
+  /substance_relationships/{primary_key}:
     get:
       operationId: operations.substance_relationships.get_record
       tags:
@@ -765,7 +832,7 @@ paths:
           required: True
       responses:
         200:
-          description: Successfully got record
+          description: Successfully got record.
           schema:
             properties:
               id:
@@ -814,7 +881,7 @@ paths:
                 type: string
                 description: When the record was last updated
         404:
-          description: Record not found
+          description: Record not found.
     put:
       operationId: operations.substance_relationships.put
       tags:
@@ -875,7 +942,7 @@ paths:
                 description: When the record was last updated
       responses:
         200:
-          description: Successfully updated record
+          description: Successfully updated record.
           schema:
             properties:
               id:
@@ -924,7 +991,7 @@ paths:
                 type: string
                 description: When the record was last updated
         201:
-          description: Successfully posted record
+          description: Successfully posted record.
           schema:
             properties:
               id:
@@ -973,7 +1040,7 @@ paths:
                 type: string
                 description: When the record was last updated
         409:
-          description: Record already exists
+          description: Record already exists.
     patch:
       operationId: operations.substance_relationships.patch
       tags:
@@ -1034,7 +1101,7 @@ paths:
                 description: When the record was last updated
       responses:
         200:
-          description: Successfully patched record
+          description: Successfully patched record.
           schema:
             properties:
               id:
@@ -1083,9 +1150,9 @@ paths:
                 type: string
                 description: When the record was last updated
         404:
-          description: Record not found
+          description: Record not found.
         409:
-          description: Record already exists
+          description: Record already exists.
     delete:
       operationId: operations.substance_relationships.delete
       tags:
@@ -1100,19 +1167,80 @@ paths:
           required: True
       responses:
         200:
-          description: Seccesfully deleted record
+          description: Successfully deleted record.
         404:
-          description: Record not found
-  /generic-substances:
+          description: Record not found.
+  /substance_relationships/searchby:
+    get:
+      operationId: operations.substance_relationships.search
+      tags:
+        - Substance Relationships
+      summary: Searches records by keyword argument(s)
+      description: Searches records by keyword argument(s) and returns first 1000 records
+      responses:
+        200:
+          description: Successfully searched records.
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                fk_generic_substance_id_predecessor:
+                  type: string
+                  description: Foreign key references 'generic_substances.id'
+                fk_generic_substance_id_successor:
+                  type: string
+                  description: Foreign key references 'generic_substances.id'
+                relationship:
+                  type: string
+                  description: How are the two substances related
+                fk_substance_relationship_type_id:
+                  type: string
+                  description: The realtionship type between the two substances
+                source:
+                  type: string
+                  description: Source of the relationship
+                qc_notes:
+                  type: string
+                  description: Notes on the quality control of the record
+                mixture_percentage:
+                  type: string
+                  description: Percent of mixture
+                percentage_type:
+                  type: string
+                  description: Type of percentage
+                is_nearest_structure:
+                  type: string
+                  description: Nearest structure
+                is_nearest_casrn:
+                  type: string
+                  description: Neatest CASRN
+                created_by:
+                  type: string
+                  description: User who created the record
+                updated_by:
+                  type: string
+                  description: User who updated the record
+                created_at:
+                  type: string
+                  description: When the record was created
+                updated_at:
+                  type: string
+                  description: When the record was last updated
+        400:
+          description: The URL parameter(s) are incorrect or not specified.
+  /generic_substances:
     get:
       operationId: operations.generic_substances.get
       tags:
         - Generic Substances
-      summary: Gets all records
-      description: Gets all records
+      summary: Gets first 1000 records
+      description: Gets first 1000 records
       responses:
         200:
-          description: Successfully got records
+          description: Successfully got records.
           schema:
             type: array
             items:
@@ -1144,10 +1272,16 @@ paths:
                 source:
                   type: string
                   description: Source of preferred name, structure and CASRN assignment
-                created_at:
+                created_by:
                   type: string
                   description: When the record was created
                 updated_by:
+                  type: string
+                  description: User who last updated the record
+                created_at:
+                  type: string
+                  description: When the record was created
+                updated_at:
                   type: string
                   description: User who last updated the record
     post:
@@ -1187,15 +1321,21 @@ paths:
               source:
                 type: string
                 description: Source of preferred name, structure and CASRN assignment
-              created_at:
+              created_by:
                 type: string
                 description: When the record was created
               updated_by:
                 type: string
                 description: User who last updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: User who last updated the record
       responses:
         201:
-          description: Sucessfully posted record
+          description: Sucessfully posted record.
           schema:
             properties:
               id:
@@ -1225,15 +1365,21 @@ paths:
               source:
                 type: string
                 description: Source of preferred name, structure and CASRN assignment
-              created_at:
+              created_by:
                 type: string
                 description: When the record was created
               updated_by:
                 type: string
                 description: User who last updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: User who last updated the record
         409:
-          description: Record already exists
-  /generic-substances/{primary_key}:
+          description: Record already exists.
+  /generic_substances/{primary_key}:
     get:
       operationId: operations.generic_substances.get_record
       tags:
@@ -1248,7 +1394,7 @@ paths:
           required: True
       responses:
         200:
-          description: Successfully got record
+          description: Successfully got record.
           schema:
             properties:
               id:
@@ -1278,14 +1424,20 @@ paths:
               source:
                 type: string
                 description: Source of preferred name, structure and CASRN assignment
-              created_at:
+              created_by:
                 type: string
                 description: When the record was created
               updated_by:
                 type: string
                 description: User who last updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: User who last updated the record
         404:
-          description: Record not found
+          description: Record not found.
     put:
       operationId: operations.generic_substances.put
       tags:
@@ -1326,15 +1478,21 @@ paths:
               source:
                 type: string
                 description: Source of preferred name, structure and CASRN assignment
-              created_at:
+              created_by:
                 type: string
                 description: When the record was created
               updated_by:
+                type: string
+                description: User who last updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
                 type: string
                 description: User who last updated the record
       responses:
         200:
-          description: Successfully updated record
+          description: Successfully updated record.
           schema:
             properties:
               id:
@@ -1364,14 +1522,20 @@ paths:
               source:
                 type: string
                 description: Source of preferred name, structure and CASRN assignment
-              created_at:
+              created_by:
                 type: string
                 description: When the record was created
               updated_by:
+                type: string
+                description: User who last updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
                 type: string
                 description: User who last updated the record
         201:
-          description: Successfully posted record
+          description: Successfully posted record.
           schema:
             properties:
               id:
@@ -1401,14 +1565,20 @@ paths:
               source:
                 type: string
                 description: Source of preferred name, structure and CASRN assignment
-              created_at:
+              created_by:
                 type: string
                 description: When the record was created
               updated_by:
                 type: string
                 description: User who last updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: User who last updated the record
         409:
-          description: Record already exists
+          description: Record already exists.
     patch:
       operationId: operations.generic_substances.patch
       tags:
@@ -1449,15 +1619,21 @@ paths:
               source:
                 type: string
                 description: Source of preferred name, structure and CASRN assignment
-              created_at:
+              created_by:
                 type: string
                 description: When the record was created
               updated_by:
                 type: string
                 description: User who last updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: User who last updated the record
       responses:
         200:
-          description: Successfully patched record
+          description: Successfully patched record.
           schema:
             properties:
               id:
@@ -1487,16 +1663,22 @@ paths:
               source:
                 type: string
                 description: Source of preferred name, structure and CASRN assignment
-              created_at:
+              created_by:
                 type: string
                 description: When the record was created
               updated_by:
                 type: string
                 description: User who last updated the record
+              created_at:
+                type: string
+                description: When the record was created
+              updated_at:
+                type: string
+                description: User who last updated the record
         404:
-          description: Record not found
+          description: Record not found.
         409:
-          description: Record already exists
+          description: Record already exists.
     delete:
       operationId: operations.generic_substances.delete
       tags:
@@ -1511,19 +1693,74 @@ paths:
           required: True
       responses:
         200:
-          description: Seccesfully deleted record
+          description: Successfully deleted record.
         404:
-          description: Record not found
+          description: Record not found.
+  /generic_substances/searchby:
+    get:
+      operationId: operations.generic_substances.search
+      tags:
+        - Generic Substances
+      summary: Searches records by keyword argument(s)
+      description: Searches records by keyword argument(s) and returns first 1000 records
+      responses:
+        200:
+          description: Successfully searched records.
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                fk_qc_level_id:
+                  type: string
+                  description: Foreign key references quality control table
+                dsstox_substance_id:
+                  type: string
+                  description: DSSTox substance ID
+                casrn:
+                  type: string
+                  description: CASRN
+                preferred_name:
+                  type: string
+                  description: Preferred name of chemical
+                substance_type:
+                  type: string
+                  description: Type of substance
+                qc_notes:
+                  type: string
+                  description: Quality control notes
+                qc_notes_private:
+                  type: string
+                  description: Private quality control notes
+                source:
+                  type: string
+                  description: Source of preferred name, structure and CASRN assignment
+                created_by:
+                  type: string
+                  description: When the record was created
+                updated_by:
+                  type: string
+                  description: User who last updated the record
+                created_at:
+                  type: string
+                  description: When the record was created
+                updated_at:
+                  type: string
+                  description: User who last updated the record
+        400:
+          description: The URL parameter(s) are incorrect or not specified.
   /author:
     get:
       operationId: operations.author.get
       tags:
         - Author
-      summary: Gets all records
-      description: Gets all records
+      summary: Gets first 1000 records
+      description: Gets first 1000 records
       responses:
         200:
-          description: Successfully got records
+          description: Successfully got records.
           schema:
             type: array
             items:
@@ -1564,7 +1801,7 @@ paths:
                 description: Last name of the author
       responses:
         201:
-          description: Sucessfully posted record
+          description: Sucessfully posted record.
           schema:
             properties:
               id:
@@ -1580,7 +1817,7 @@ paths:
                 type: string
                 description: Last name of the author
         409:
-          description: Record already exists
+          description: Record already exists.
   /author/{primary_key}:
     get:
       operationId: operations.author.get_record
@@ -1596,7 +1833,7 @@ paths:
           required: True
       responses:
         200:
-          description: Successfully got record
+          description: Successfully got record.
           schema:
             properties:
               id:
@@ -1612,7 +1849,7 @@ paths:
                 type: string
                 description: Last name of the author
         404:
-          description: Record not found
+          description: Record not found.
     put:
       operationId: operations.author.put
       tags:
@@ -1640,7 +1877,7 @@ paths:
                 description: Last name of the author
       responses:
         200:
-          description: Successfully updated record
+          description: Successfully updated record.
           schema:
             properties:
               id:
@@ -1656,7 +1893,7 @@ paths:
                 type: string
                 description: Last name of the author
         201:
-          description: Successfully posted record
+          description: Successfully posted record.
           schema:
             properties:
               id:
@@ -1672,7 +1909,7 @@ paths:
                 type: string
                 description: Last name of the author
         409:
-          description: Record already exists
+          description: Record already exists.
     patch:
       operationId: operations.author.patch
       tags:
@@ -1700,7 +1937,7 @@ paths:
                 description: Last name of the author
       responses:
         200:
-          description: Successfully patched record
+          description: Successfully patched record.
           schema:
             properties:
               id:
@@ -1716,9 +1953,9 @@ paths:
                 type: string
                 description: Last name of the author
         404:
-          description: Record not found
+          description: Record not found.
         409:
-          description: Record already exists
+          description: Record already exists.
     delete:
       operationId: operations.author.delete
       tags:
@@ -1733,19 +1970,47 @@ paths:
           required: True
       responses:
         200:
-          description: Seccesfully deleted record
+          description: Successfully deleted record.
         404:
-          description: Record not found
+          description: Record not found.
+  /author/searchby:
+    get:
+      operationId: operations.author.search
+      tags:
+        - Author
+      summary: Searches records by keyword argument(s)
+      description: Searches records by keyword argument(s) and returns first 1000 records
+      responses:
+        200:
+          description: Successfully searched records.
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of the record
+                first_name:
+                  type: string
+                  description: First name of the author
+                middle_name:
+                  type: string
+                  description: Middle name of the author
+                last_name:
+                  type: string
+                  description: Last name of the author
+        400:
+          description: The URL parameter(s) are incorrect or not specified.
   /citation:
     get:
       operationId: operations.citation.get
       tags:
         - Citation
-      summary: Gets all records
-      description: Gets all records
+      summary: Gets first 1000 records
+      description: Gets first 1000 records
       responses:
         200:
-          description: Successfully got records
+          description: Successfully got records.
           schema:
             type: array
             items:
@@ -1828,7 +2093,7 @@ paths:
                 description: Pdf of article
       responses:
         201:
-          description: Sucessfully posted record
+          description: Sucessfully posted record.
           schema:
             properties:
               id:
@@ -1865,7 +2130,7 @@ paths:
                 type: string
                 description: Pdf of article
         409:
-          description: Record already exists
+          description: Record already exists.
   /citation/{primary_key}:
     get:
       operationId: operations.citation.get_record
@@ -1881,7 +2146,7 @@ paths:
           required: True
       responses:
         200:
-          description: Successfully got record
+          description: Successfully got record.
           schema:
             properties:
               id:
@@ -1918,7 +2183,7 @@ paths:
                 type: string
                 description: Pdf of article
         404:
-          description: Record not found
+          description: Record not found.
     put:
       operationId: operations.citation.put
       tags:
@@ -1967,7 +2232,7 @@ paths:
                 description: Pdf of article
       responses:
         200:
-          description: Successfully updated record
+          description: Successfully updated record.
           schema:
             properties:
               id:
@@ -2004,7 +2269,7 @@ paths:
                 type: string
                 description: Pdf of article
         201:
-          description: Successfully posted record
+          description: Successfully posted record.
           schema:
             properties:
               id:
@@ -2041,7 +2306,7 @@ paths:
                 type: string
                 description: Pdf of article
         409:
-          description: Record already exists
+          description: Record already exists.
     patch:
       operationId: operations.citation.patch
       tags:
@@ -2090,7 +2355,7 @@ paths:
                 description: Pdf of article
       responses:
         200:
-          description: Successfully patched record
+          description: Successfully patched record.
           schema:
             properties:
               id:
@@ -2127,9 +2392,9 @@ paths:
                 type: string
                 description: Pdf of article
         404:
-          description: Record not found
+          description: Record not found.
         409:
-          description: Record already exists
+          description: Record already exists.
     delete:
       operationId: operations.citation.delete
       tags:
@@ -2144,6 +2409,55 @@ paths:
           required: True
       responses:
         200:
-          description: Seccesfully deleted record
+          description: Successfully deleted record.
         404:
-          description: Record not found
+          description: Record not found.
+  /citation/searchby:
+    get:
+      operationId: operations.citation.search
+      tags:
+        - Citation
+      summary: Searches records by keyword argument(s)
+      description: Searches records by keyword argument(s) and returns first 1000 records
+      responses:
+        200:
+          description: Successfully searched records.
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                doi:
+                  type: string
+                  description: DOI of citation
+                url:
+                  type: string
+                  description: URL of citation
+                year:
+                  type: string
+                  description: Published year
+                month:
+                  type: string
+                  description: Published month
+                day:
+                  type: string
+                  description: Published day
+                volume:
+                  type: string
+                  description: Journal volume
+                issue:
+                  type: string
+                  description: Journal Issue
+                pages:
+                  type: string
+                  description: Journal Pages
+                title:
+                  type: string
+                  description: Article title
+                pdf:
+                  type: string
+                  description: Pdf of article
+        400:
+          description: The URL parameter(s) are incorrect or not specified.
