@@ -10,7 +10,10 @@ from responses import (
 
 
 class Entity:
-
+    """
+    This class contains all the methods that can
+    be performed on a database entity by the API
+    """
     def __init__(self, entity: db.Model,
                  schema: ma.SQLAlchemyAutoSchema):
         self.entity = entity
