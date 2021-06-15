@@ -11,6 +11,252 @@ produces:
 basePath: /api
 
 paths:
+  /transformation_view:
+    get:
+      operationId: operations.transformation_view.get
+      tags:
+        - Transformation View
+      summary: View of the transformation data
+      description: View of the transformation data
+      responses:
+        200:
+          description: Sucessfully got records.
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: The kinetics record ID
+                predecessor_preferred_name:
+                  type: string
+                  description: The preferred name of the predecessor chemical
+                predecessor_dsstox_id:
+                  type: string
+                  description: The DSSTox ID of the predecessor chemical
+                predecessor_casrn:
+                  type: string
+                  description: The CASRN of the predecessor chemical
+                predecessor_type:
+                  type: string
+                  description: The type of the predecessor chemical
+                predecessor_qc_level:
+                  type: string
+                  description: The Name:SMILES:CASRN quality control level for the predecessor chemical
+                successor_preferred_name:
+                  type: string
+                  description: The preferred name of the successor chemical
+                successor_dsstox_id:
+                  type: string
+                  description: The DSSTox ID of the successor chemical
+                successor_casrn:
+                  type: string
+                  description: The CASRN of the successor chemical
+                successor_type:
+                  type: string
+                  description: The type of the successor chemical
+                successor_qc_level:
+                  type: string
+                  description: The Name:SMILES:CASRN quality control level for the successor chemical
+                relationship:
+                  type: string
+                  description: The relationship between the predecessor and successor chemical
+                pH:
+                  type: string
+                  description: The pH at which the reaction occured
+                minimum_pH:
+                  type: string
+                  description: Minimum of the pH at which the reaction occured
+                maximum_pH:
+                  type: string
+                  description: Maximum of the pH at which the reaction occured
+                half_life:
+                  type: string
+                  description: Half-life of the reaction
+                minimum_half_life:
+                  type: string
+                  description: Half-life minimum value
+                maximum_half_life:
+                  type: string
+                  description: Half-life maximum value
+                half_life_units:
+                  type: string
+                  description: Half-life units
+                rate_constant:
+                  type: string
+                  description: Rate constant of the reaction
+                minimum_rate_constant:
+                  type: string
+                  description: Rate constant minimum value in a range
+                maximum_rate_constant:
+                  type: string
+                  description: Rate constant maximum value in a range
+                rate_constant_units:
+                  type: string
+                  description: Units of the rate constant
+                activation_energy:
+                  type: string
+                  description: Activation energy in kilocalories per mole
+                temperature:
+                  type: string
+                  description: Temperature at which the reaction occured in degrees Celsius
+                reaction:
+                  type: string
+                  description: Reaction type
+                comments:
+                  type: string
+                  description: Record comments
+                authors:
+                  type: string
+                  description: Authors from citation
+                date_published:
+                  type: string
+                  description: The date the citation was published (MM/DD/YYY)
+                publisher:
+                  type: string
+                  description: Publisher name
+                title:
+                  type: string
+                  description: Title of article
+                journal:
+                  type: string
+                  description: Journal name
+                volume:
+                  type: string
+                  description: Volume of journal
+                issue:
+                  type: string
+                  description: Issue of journal
+                pages:
+                  type: string
+                  description: Pages of journal
+                pdf:
+                  type: string
+                  description: Pdf of article
+  /transformation_view/searchby:
+    get:
+      operationId: operations.transformation_view.search
+      tags:
+        - Transformation View
+      summary: Searches records by keyword argument(s)
+      description: Searches records by keyword argument(s) and returns first 1000 records
+      responses:
+        200:
+          description: Successfully searched records.
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: The kinetics record ID
+                predecessor_preferred_name:
+                  type: string
+                  description: The preferred name of the predecessor chemical
+                predecessor_dsstox_id:
+                  type: string
+                  description: The DSSTox ID of the predecessor chemical
+                predecessor_casrn:
+                  type: string
+                  description: The CASRN of the predecessor chemical
+                predecessor_type:
+                  type: string
+                  description: The type of the predecessor chemical
+                predecessor_qc_level:
+                  type: string
+                  description: The Name:SMILES:CASRN quality control level for the predecessor chemical
+                successor_preferred_name:
+                  type: string
+                  description: The preferred name of the successor chemical
+                successor_dsstox_id:
+                  type: string
+                  description: The DSSTox ID of the successor chemical
+                successor_casrn:
+                  type: string
+                  description: The CASRN of the successor chemical
+                successor_type:
+                  type: string
+                  description: The type of the successor chemical
+                successor_qc_level:
+                  type: string
+                  description: The Name:SMILES:CASRN quality control level for the successor chemical
+                relationship:
+                  type: string
+                  description: The relationship between the predecessor and successor chemical
+                pH:
+                  type: string
+                  description: The pH at which the reaction occured
+                minimum_pH:
+                  type: string
+                  description: Minimum of the pH at which the reaction occured
+                maximum_pH:
+                  type: string
+                  description: Maximum of the pH at which the reaction occured
+                half_life:
+                  type: string
+                  description: Half-life of the reaction
+                minimum_half_life:
+                  type: string
+                  description: Half-life minimum value
+                maximum_half_life:
+                  type: string
+                  description: Half-life maximum value
+                half_life_units:
+                  type: string
+                  description: Half-life units
+                rate_constant:
+                  type: string
+                  description: Rate constant of the reaction
+                minimum_rate_constant:
+                  type: string
+                  description: Rate constant minimum value in a range
+                maximum_rate_constant:
+                  type: string
+                  description: Rate constant maximum value in a range
+                rate_constant_units:
+                  type: string
+                  description: Units of the rate constant
+                activation_energy:
+                  type: string
+                  description: Activation energy in kilocalories per mole
+                temperature:
+                  type: string
+                  description: Temperature at which the reaction occured in degrees Celsius
+                reaction:
+                  type: string
+                  description: Reaction type
+                comments:
+                  type: string
+                  description: Record comments
+                authors:
+                  type: string
+                  description: Authors from citation
+                date_published:
+                  type: string
+                  description: The date the citation was published (MM/DD/YYY)
+                publisher:
+                  type: string
+                  description: Publisher name
+                title:
+                  type: string
+                  description: Title of article
+                journal:
+                  type: string
+                  description: Journal name
+                volume:
+                  type: string
+                  description: Volume of journal
+                issue:
+                  type: string
+                  description: Issue of journal
+                pages:
+                  type: string
+                  description: Pages of journal
+                pdf:
+                  type: string
+                  description: Pdf of article
+        400:
+          description: The URL parameter(s) are incorrect or not specified.
   /kinetics:
     get:
       operationId: operations.kinetics.get
@@ -2033,6 +2279,9 @@ paths:
                 day:
                   type: string
                   description: Published day
+                publisher:
+                  type: string
+                  description: Publisher name
                 volume:
                   type: string
                   description: Journal volume
@@ -2045,6 +2294,9 @@ paths:
                 title:
                   type: string
                   description: Article title
+                journal:
+                  type: string
+                  description: Journal name
                 pdf:
                   type: string
                   description: Pdf of article
@@ -2076,6 +2328,9 @@ paths:
               day:
                 type: string
                 description: Published day
+              publisher:
+                type: string
+                description: Publisher name
               volume:
                 type: string
                 description: Journal volume
@@ -2088,6 +2343,9 @@ paths:
               title:
                 type: string
                 description: Article title
+              journal:
+                type: string
+                description: Journal name
               pdf:
                 type: string
                 description: Pdf of article
@@ -2114,6 +2372,9 @@ paths:
               day:
                 type: string
                 description: Published day
+              publisher:
+                type: string
+                description: Publisher name
               volume:
                 type: string
                 description: Journal volume
@@ -2126,6 +2387,9 @@ paths:
               title:
                 type: string
                 description: Article title
+              journal:
+                type: string
+                description: Journal name
               pdf:
                 type: string
                 description: Pdf of article
@@ -2167,6 +2431,9 @@ paths:
               day:
                 type: string
                 description: Published day
+              publisher:
+                type: string
+                description: Publisher name
               volume:
                 type: string
                 description: Journal volume
@@ -2179,6 +2446,9 @@ paths:
               title:
                 type: string
                 description: Article title
+              journal:
+                type: string
+                description: Journal name
               pdf:
                 type: string
                 description: Pdf of article
@@ -2215,6 +2485,9 @@ paths:
               day:
                 type: string
                 description: Published day
+              publisher:
+                type: string
+                description: Publisher name
               volume:
                 type: string
                 description: Journal volume
@@ -2227,6 +2500,9 @@ paths:
               title:
                 type: string
                 description: Article title
+              journal:
+                type: string
+                description: Journal name
               pdf:
                 type: string
                 description: Pdf of article
@@ -2253,6 +2529,9 @@ paths:
               day:
                 type: string
                 description: Published day
+              publisher:
+                type: string
+                description: Publisher name
               volume:
                 type: string
                 description: Journal volume
@@ -2265,6 +2544,9 @@ paths:
               title:
                 type: string
                 description: Article title
+              journal:
+                type: string
+                description: Journal name
               pdf:
                 type: string
                 description: Pdf of article
@@ -2290,6 +2572,9 @@ paths:
               day:
                 type: string
                 description: Published day
+              publisher:
+                type: string
+                description: Publisher name
               volume:
                 type: string
                 description: Journal volume
@@ -2302,6 +2587,9 @@ paths:
               title:
                 type: string
                 description: Article title
+              journal:
+                type: string
+                description: Journal name
               pdf:
                 type: string
                 description: Pdf of article
@@ -2338,6 +2626,9 @@ paths:
               day:
                 type: string
                 description: Published day
+              publisher:
+                type: string
+                description: Publisher name
               volume:
                 type: string
                 description: Journal volume
@@ -2350,6 +2641,9 @@ paths:
               title:
                 type: string
                 description: Article title
+              journal:
+                type: string
+                description: Journal name
               pdf:
                 type: string
                 description: Pdf of article
@@ -2376,6 +2670,9 @@ paths:
               day:
                 type: string
                 description: Published day
+              publisher:
+                type: string
+                description: Publisher name
               volume:
                 type: string
                 description: Journal volume
@@ -2388,6 +2685,9 @@ paths:
               title:
                 type: string
                 description: Article title
+              journal:
+                type: string
+                description: Journal name
               pdf:
                 type: string
                 description: Pdf of article
@@ -2444,6 +2744,9 @@ paths:
                 day:
                   type: string
                   description: Published day
+                publisher:
+                  type: string
+                  description: Publisher name
                 volume:
                   type: string
                   description: Journal volume
@@ -2456,6 +2759,9 @@ paths:
                 title:
                   type: string
                   description: Article title
+                journal:
+                  type: string
+                  description: Journal name
                 pdf:
                   type: string
                   description: Pdf of article

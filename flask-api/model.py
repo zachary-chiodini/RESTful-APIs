@@ -93,7 +93,10 @@ class GenericSubstances(db.Model):
         db.Integer, primary_key=True,
         autoincrement=True, nullable=False
         )
-    fk_qc_level_id = db.Column(db.Integer)
+    fk_qc_level_id = db.Column(
+        db.Integer, db.ForeignKey('qc_levels.id'),
+        nullable=False
+        )
     dsstox_substance_id = db.Column(db.String)
     casrn = db.Column(db.String)
     preferred_name = db.Column(db.String)
@@ -137,6 +140,35 @@ class GenericSubstancesSchema(ma.SQLAlchemyAutoSchema):
         url_for('/api.operations_generic_substances_get_record',
                 primary_key=obj.id, _external=True)
         )
+
+
+class QCLevels(db.Model):
+    __tablename__ = 'qc_levels'
+    id = db.Column(
+        db.Integer, primary_key=True,
+        autoincrement=True, nullable=False
+        )
+    name = db.Column(db.String)
+    label = db.Column(db.String)
+    description = db.Column(db.String)
+    created_by = db.Column(db.String, nullable=False)
+    updated_by = db.Column(db.String, nullable=False)
+    created_at = db.Column(
+        db.DateTime, default=datetime.utcnow,
+        onupdate=datetime.utcnow, nullable=False
+        )
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow,
+        onupdate=datetime.utcnow, nullable=False
+        )
+    # unidirectional
+    relationship = db.relationship('GenericSubstances')
+
+
+class QCLevelsSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = QCLevels
+        load_instance = True
 
 
 author_cited = db.Table(
@@ -239,3 +271,69 @@ class CitationSchema(ma.SQLAlchemyAutoSchema):
         url_for('/api.operations_citation_get_record',
                 primary_key=obj.id, _external=True)
         )
+
+
+class TransformationView(db.Model):
+    __tablename__ = 'transformation_view'
+    predecessor_preferred_name = db.Column(
+        'Predecessor Preferred Name', db.String, primary_key=True)
+    predecessor_dsstox_id = db.Column(
+        'Predecessor DSSTox ID', db.Integer, primary_key=True)
+    predecessor_casrn = db.Column(
+        'Predecessor CASRN', db.String, primary_key=True)
+    predecessor_type = db.Column(
+        'Predecessor Type', db.String, primary_key=True)
+    predecessor_qc_level = db.Column(
+        'Predecessor Name:SMILES:CASRN QC Level', db.String, primary_key=True)
+    successor_preferred_name = db.Column(
+        'Successor Preferred Name', db.String, primary_key=True)
+    successor_dsstox_id = db.Column(
+        'Successor DSSTox ID', db.Integer, primary_key=True)
+    successor_casrn = db.Column(
+        'Successor CASRN', db.String, primary_key=True)
+    successor_type = db.Column(
+        'Successor Type', db.String, primary_key=True)
+    successor_qc_level = db.Column(
+        'Successor Name:SMILES:CASRN QC Level', db.String, primary_key=True)
+    relationship = db.Column(
+        'Relationship', db.String, primary_key=True)
+    pH = db.Column(db.Float, primary_key=True)
+    minimum_pH = db.Column('Minimum pH', db.Float, primary_key=True)
+    maximum_pH = db.Column('Maximum pH', db.Float, primary_key=True)
+    half_life = db.Column('Half-life', db.Float, primary_key=True)
+    minimum_half_life = db.Column(
+        'Minimum Half-life', db.Float, primary_key=True)
+    maximum_half_life = db.Column(
+        'Maximum Half-life', db.Float, primary_key=True)
+    half_life_units = db.Column(
+        'Half-life Units', db.String, primary_key=True)
+    rate_constant = db.Column(
+        'Rate Constant', db.Float, primary_key=True)
+    minimum_rate_constant = db.Column(
+        'Minimum Rate Constant', db.Float, primary_key=True)
+    maximum_rate_constant = db.Column(
+        'Maximum Rate Constant', db.Float, primary_key=True)
+    rate_constant_units = db.Column(
+        'Rate Constant Units', db.String, primary_key=True)
+    activation_energy = db.Column(
+        'Activation Energy (kcal/mol)', db.Float, primary_key=True)
+    temperature = db.Column(
+        'Temperature Centigrade', db.Float, primary_key=True)
+    reaction = db.Column(
+        'Reaction', db.String, primary_key=True)
+    comments = db.Column('Comments', db.String, primary_key=True)
+    authors = db.Column('Authors', db.String, primary_key=True)
+    date_published = db.Column('Date Published', db.String)
+    publisher = db.Column('Publisher', db.String, primary_key=True)
+    title = db.Column('Title', db.String, primary_key=True)
+    journal = db.Column('Journal', db.String, primary_key=True)
+    volume = db.Column('Volume', db.Integer, primary_key=True)
+    issue = db.Column('Issue', db.String, primary_key=True)
+    pages = db.Column('Pages', db.String, primary_key=True)
+    pdf = db.Column('PDF Blob', db.LargeBinary, primary_key=True)
+
+
+class TransformationViewSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = TransformationView
+        load_instance = True
