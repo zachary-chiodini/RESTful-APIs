@@ -55,7 +55,10 @@ class SubstanceRelationships(db.Model):
         db.Integer, db.ForeignKey('generic_substances.id')
         )
     relationship = db.Column(db.String)
-    fk_substance_relationship_type_id = db.Column(db.Integer)
+    fk_substance_relationship_type_id = db.Column(
+        db.Integer, db.ForeignKey('substance_relationship_types.id'),
+        nullable=False
+        )
     source = db.Column(db.String)
     qc_notes = db.Column(db.String)
     mixture_percentage = db.Column(db.Float)
@@ -85,6 +88,40 @@ class SubstanceRelationshipsSchema(ma.SQLAlchemyAutoSchema):
         url_for('/api.operations_substance_relationships_get_record',
                 primary_key=obj.id, _external=True)
             )
+
+
+class SubstanceRelationshipTypes(db.Model):
+    __tablename__ = 'substance_relationship_types'
+    id = db.Column(
+        db.Integer, primary_key=True,
+        autoincrement=True, nullable=False
+        )
+    name = db.Column(db.String)
+    label_forward = db.Column(db.String)
+    short_description_forward = db.Column(db.String)
+    long_description_forward = db.Column(db.String)
+    label_backward = db.Column(db.String)
+    short_description_backward = db.Column(db.String)
+    long_description_backward = db.Column(db.String)
+    created_by = db.Column(db.String, nullable=False)
+    updated_by = db.Column(db.String, nullable=False)
+    created_at = db.Column(
+        db.DateTime, default=datetime.utcnow,
+        onupdate=datetime.utcnow, nullable=False
+        )
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow,
+        onupdate=datetime.utcnow, nullable=False
+        )
+    # unidirectional
+    substance_relationship_data = \
+        db.relationship('SubstanceRelationships')
+
+
+class SubstanceRelationshipTypesSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = SubstanceRelationshipTypes
+        load_instance = True
 
 
 class GenericSubstances(db.Model):
