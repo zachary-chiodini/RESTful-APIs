@@ -11,6 +11,144 @@ produces:
 basePath: /api
 
 paths:
+  /post_new_transformation_record:
+    post:
+      operationId: new_record_post.post_new_transformation_record
+      tags:
+        - Post New Transformation Record
+      summary: Post a new transformation record
+      description: Post a new transformation record
+      parameters:
+        - name: New Transformation Record
+          in: body
+          description: The record to post
+          required: True
+          schema:
+            properties:
+              predecessor_preferred_name:
+                type: string
+                description: The preferred name of the predecessor chemical
+              predecessor_dsstox_id:
+                type: string
+                description: The DSSTox ID of the predecessor chemical
+              predecessor_casrn:
+                type: string
+                description: The CASRN of the predecessor chemical
+              predecessor_type:
+                type: string
+                description: The type of the predecessor chemical
+              predecessor_qc_level:
+                type: string
+                description: The Name:SMILES:CASRN quality control level for the predecessor chemical
+              successor_preferred_name:
+                type: string
+                description: The preferred name of the successor chemical
+              successor_dsstox_id:
+                type: string
+                description: The DSSTox ID of the successor chemical
+              successor_casrn:
+                type: string
+                description: The CASRN of the successor chemical
+              successor_type:
+                type: string
+                description: The type of the successor chemical
+              successor_qc_level:
+                type: string
+                description: The Name:SMILES:CASRN quality control level for the successor chemical
+              relationship:
+                type: string
+                description: The relationship between the predecessor and successor chemical
+              pH:
+                type: string
+                description: The pH at which the reaction occured
+              pH_min:
+                type: string
+                description: Minimum of the pH at which the reaction occured
+              pH_max:
+                type: string
+                description: Maximum of the pH at which the reaction occured
+              half_life:
+                type: string
+                description: Half-life of the reaction
+              half_life_min:
+                type: string
+                description: Half-life minimum value
+              half_life_max:
+                type: string
+                description: Half-life maximum value
+              half_life_units:
+                type: string
+                description: Half-life units
+              rate:
+                type: string
+                description: Rate constant of the reaction
+              rate_min:
+                type: string
+                description: Rate constant minimum value in a range
+              rate_max:
+                type: string
+                description: Rate constant maximum value in a range
+              rate_units:
+                type: string
+                description: Units of the rate constant
+              activation_kcal_per_mol:
+                type: string
+                description: Activation energy in kilocalories per mole
+              temp_C:
+                type: string
+                description: Temperature at which the reaction occured in degrees Celsius
+              reaction:
+                type: string
+                description: Reaction type
+              comments:
+                type: string
+                description: Record comments
+              authors:
+                type: string
+                description: Authors from citation
+              year:
+                type: string
+                description: The year the citation was published
+              month:
+                type: string
+                description: The month the citation was published
+              day:
+                type: string
+                description: The day the citation was published
+              publisher:
+                type: string
+                description: Publisher name
+              title:
+                type: string
+                description: Title of article
+              journal:
+                type: string
+                description: Journal name
+              volume:
+                type: string
+                description: Volume of journal
+              issue:
+                type: string
+                description: Issue of journal
+              pages:
+                type: string
+                description: Pages of journal
+              doi:
+                type: string
+                description: Digital Object Identifier fo article
+              url:
+                type: string
+                description: URL of article
+              pdf:
+                type: string
+                description: PDF of article
+      responses:
+        200:
+          description: Record successfully posted.
+        404:
+          description: DSSTox Substance ID(s) not found.
+        409:
+          description: Record already exists.
   /transformation_view:
     get:
       operationId: operations.transformation_view.get
@@ -25,9 +163,6 @@ paths:
             type: array
             items:
               properties:
-                id:
-                  type: string
-                  description: The kinetics record ID
                 predecessor_preferred_name:
                   type: string
                   description: The preferred name of the predecessor chemical
@@ -64,40 +199,40 @@ paths:
                 pH:
                   type: string
                   description: The pH at which the reaction occured
-                minimum_pH:
+                pH_min:
                   type: string
                   description: Minimum of the pH at which the reaction occured
-                maximum_pH:
+                pH_max:
                   type: string
                   description: Maximum of the pH at which the reaction occured
                 half_life:
                   type: string
                   description: Half-life of the reaction
-                minimum_half_life:
+                half_life_min:
                   type: string
                   description: Half-life minimum value
-                maximum_half_life:
+                half_life_max:
                   type: string
                   description: Half-life maximum value
                 half_life_units:
                   type: string
                   description: Half-life units
-                rate_constant:
+                rate:
                   type: string
                   description: Rate constant of the reaction
-                minimum_rate_constant:
+                rate_min:
                   type: string
                   description: Rate constant minimum value in a range
-                maximum_rate_constant:
+                rate_max:
                   type: string
                   description: Rate constant maximum value in a range
-                rate_constant_units:
+                rate_units:
                   type: string
                   description: Units of the rate constant
-                activation_energy:
+                activation_kcal_per_mol:
                   type: string
                   description: Activation energy in kilocalories per mole
-                temperature:
+                temp_C:
                   type: string
                   description: Temperature at which the reaction occured in degrees Celsius
                 reaction:
@@ -109,9 +244,15 @@ paths:
                 authors:
                   type: string
                   description: Authors from citation
-                date_published:
+                year:
                   type: string
-                  description: The date the citation was published (MM/DD/YYY)
+                  description: The year the citation was published
+                month:
+                  type: string
+                  description: The month the citation was published
+                day:
+                  type: string
+                  description: The day the citation was published
                 publisher:
                   type: string
                   description: Publisher name
@@ -130,9 +271,15 @@ paths:
                 pages:
                   type: string
                   description: Pages of journal
+                doi:
+                  type: string
+                  description: Digital Object Identifier fo article
+                url:
+                  type: string
+                  description: URL of article
                 pdf:
                   type: string
-                  description: Pdf of article
+                  description: PDF of article
   /transformation_view/searchby:
     get:
       operationId: operations.transformation_view.search
@@ -147,9 +294,6 @@ paths:
             type: array
             items:
               properties:
-                id:
-                  type: string
-                  description: The kinetics record ID
                 predecessor_preferred_name:
                   type: string
                   description: The preferred name of the predecessor chemical
@@ -186,40 +330,40 @@ paths:
                 pH:
                   type: string
                   description: The pH at which the reaction occured
-                minimum_pH:
+                pH_min:
                   type: string
                   description: Minimum of the pH at which the reaction occured
-                maximum_pH:
+                pH_max:
                   type: string
                   description: Maximum of the pH at which the reaction occured
                 half_life:
                   type: string
                   description: Half-life of the reaction
-                minimum_half_life:
+                half_life_min:
                   type: string
                   description: Half-life minimum value
-                maximum_half_life:
+                half_life_max:
                   type: string
                   description: Half-life maximum value
                 half_life_units:
                   type: string
                   description: Half-life units
-                rate_constant:
+                rate:
                   type: string
                   description: Rate constant of the reaction
-                minimum_rate_constant:
+                rate_min:
                   type: string
                   description: Rate constant minimum value in a range
-                maximum_rate_constant:
+                rate_max:
                   type: string
                   description: Rate constant maximum value in a range
-                rate_constant_units:
+                rate_units:
                   type: string
                   description: Units of the rate constant
-                activation_energy:
+                activation_kcal_per_mol:
                   type: string
                   description: Activation energy in kilocalories per mole
-                temperature:
+                temp_C:
                   type: string
                   description: Temperature at which the reaction occured in degrees Celsius
                 reaction:
@@ -231,9 +375,15 @@ paths:
                 authors:
                   type: string
                   description: Authors from citation
-                date_published:
+                year:
                   type: string
-                  description: The date the citation was published (MM/DD/YYY)
+                  description: The year the citation was published
+                month:
+                  type: string
+                  description: The month the citation was published
+                day:
+                  type: string
+                  description: The day the citation was published
                 publisher:
                   type: string
                   description: Publisher name
@@ -252,9 +402,15 @@ paths:
                 pages:
                   type: string
                   description: Pages of journal
+                doi:
+                  type: string
+                  description: Digital Object Identifier fo article
+                url:
+                  type: string
+                  description: URL of article
                 pdf:
                   type: string
-                  description: Pdf of article
+                  description: PDF of article
         400:
           description: The URL parameter(s) are incorrect or not specified.
   /kinetics:

@@ -1,12 +1,17 @@
 import json
 from config import db, ma
 from flask import jsonify, Response, request
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Union
 
 
-def get_features_except_id(entity: db.Model) -> Dict:
+def get_features_except_id(
+        entity: db.Model, skip: List[str] = []
+        ) -> Dict[str, db.Column]:
     features = dict(entity.__table__.columns.items())
-    del features['id']
+    for label in skip:
+        del features[label]
+    if 'id' in features:
+        del features['id']
     return features
 
 

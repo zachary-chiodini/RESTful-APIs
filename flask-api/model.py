@@ -67,14 +67,8 @@ class SubstanceRelationships(db.Model):
     is_nearest_casrn = db.Column(db.Integer)
     created_by = db.Column(db.String, nullable=False)
     updated_by = db.Column(db.String, nullable=False)
-    created_at = db.Column(
-        db.DateTime, default=datetime.utcnow,
-        onupdate=datetime.utcnow, nullable=False
-        )
-    updated_at = db.Column(
-        db.DateTime, default=datetime.utcnow,
-        onupdate=datetime.utcnow, nullable=False
-        )
+    created_at = db.Column(db.String, nullable=False)
+    updated_at = db.Column(db.String, nullable=False)
     # unidirectional
     kinetic_data = db.relationship('Kinetics')
 
@@ -87,7 +81,7 @@ class SubstanceRelationshipsSchema(ma.SQLAlchemyAutoSchema):
         lambda obj:
         url_for('/api.operations_substance_relationships_get_record',
                 primary_key=obj.id, _external=True)
-            )
+        )
 
 
 class SubstanceRelationshipTypes(db.Model):
@@ -190,14 +184,8 @@ class QCLevels(db.Model):
     description = db.Column(db.String)
     created_by = db.Column(db.String, nullable=False)
     updated_by = db.Column(db.String, nullable=False)
-    created_at = db.Column(
-        db.DateTime, default=datetime.utcnow,
-        onupdate=datetime.utcnow, nullable=False
-        )
-    updated_at = db.Column(
-        db.DateTime, default=datetime.utcnow,
-        onupdate=datetime.utcnow, nullable=False
-        )
+    created_at = db.Column(db.String, nullable=False)
+    updated_at = db.Column(db.String, nullable=False)
     # unidirectional
     relationship = db.relationship('GenericSubstances')
 
@@ -335,38 +323,42 @@ class TransformationView(db.Model):
     relationship = db.Column(
         'Relationship', db.String, primary_key=True)
     pH = db.Column(db.Float, primary_key=True)
-    minimum_pH = db.Column('Minimum pH', db.Float, primary_key=True)
-    maximum_pH = db.Column('Maximum pH', db.Float, primary_key=True)
+    pH_min = db.Column('Minimum pH', db.Float, primary_key=True)
+    pH_max = db.Column('Maximum pH', db.Float, primary_key=True)
     half_life = db.Column('Half-life', db.Float, primary_key=True)
-    minimum_half_life = db.Column(
+    half_life_min = db.Column(
         'Minimum Half-life', db.Float, primary_key=True)
-    maximum_half_life = db.Column(
+    half_life_max = db.Column(
         'Maximum Half-life', db.Float, primary_key=True)
     half_life_units = db.Column(
         'Half-life Units', db.String, primary_key=True)
-    rate_constant = db.Column(
+    rate = db.Column(
         'Rate Constant', db.Float, primary_key=True)
-    minimum_rate_constant = db.Column(
+    rate_min = db.Column(
         'Minimum Rate Constant', db.Float, primary_key=True)
-    maximum_rate_constant = db.Column(
+    rate_max = db.Column(
         'Maximum Rate Constant', db.Float, primary_key=True)
-    rate_constant_units = db.Column(
+    rate_units = db.Column(
         'Rate Constant Units', db.String, primary_key=True)
-    activation_energy = db.Column(
+    activation_kcal_per_mol = db.Column(
         'Activation Energy (kcal/mol)', db.Float, primary_key=True)
-    temperature = db.Column(
+    temp_C = db.Column(
         'Temperature Centigrade', db.Float, primary_key=True)
     reaction = db.Column(
         'Reaction', db.String, primary_key=True)
     comments = db.Column('Comments', db.String, primary_key=True)
     authors = db.Column('Authors', db.String, primary_key=True)
-    date_published = db.Column('Date Published', db.String)
+    year = db.Column('Year', db.Integer, primary_key=True)
+    month = db.Column('Month', db.Integer, primary_key=True)
+    day = db.Column('Day', db.Integer, primary_key=True)
     publisher = db.Column('Publisher', db.String, primary_key=True)
     title = db.Column('Title', db.String, primary_key=True)
     journal = db.Column('Journal', db.String, primary_key=True)
     volume = db.Column('Volume', db.Integer, primary_key=True)
     issue = db.Column('Issue', db.String, primary_key=True)
     pages = db.Column('Pages', db.String, primary_key=True)
+    doi = db.Column('DOI', db.String, primary_key=True)
+    url = db.Column('URL', db.String, primary_key=True)
     pdf = db.Column('PDF Blob', db.LargeBinary, primary_key=True)
 
 
