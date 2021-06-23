@@ -117,17 +117,20 @@ def create_and_post_new_citation_record(
     return citation_record
 
 
-def get_kinetics_citation_mapping(
+def get_transformation_citation_mapping(
+        relationship_record_id: int,
         kinetics_record_id: int,
         citation_record_id: int
         ) -> Union[db.Model, None]:
-    kinetics_citation_mapping = model.kinetics_cited.query\
+    transformation_citation_mapping = model.transformation_cited.query\
         .filter(
-            model.kinetics_cited.fk_kinetics_id == kinetics_record_id,
-            model.kinetics_cited.fk_citation_id == citation_record_id
+            model.transformation_cited
+                .fk_substance_relationship_id == relationship_record_id,
+            model.transformation_cited.fk_kinetics_id == kinetics_record_id,
+            model.transformation_cited.fk_citation_id == citation_record_id
             )\
         .one_or_none()
-    return kinetics_citation_mapping
+    return transformation_citation_mapping
 
 
 def get_generic_substance_record(
@@ -139,15 +142,17 @@ def get_generic_substance_record(
     return generic_substance_record
 
 
-def create_and_post_new_kinetics_citation_mapping(
+def create_and_post_new_transformation_citation_mapping(
+        relationship_record_id: int,
         kinetics_record_id: int,
         citation_record_id: int
         ) -> Union[db.Model, None]:
     new_mapping_data = dict(
+        fk_substance_relationship_id=relationship_record_id,
         fk_kineitcs_id=kinetics_record_id,
         fk_citation_id=citation_record_id
         )
-    schema = model.kinetics_cited()
+    schema = model.transformation_cited()
     new_mapping_record = schema.load(
         new_mapping_data, session=db.session)
     db.session.add(new_mapping_record)
@@ -191,7 +196,7 @@ def post_and_map_authors(citation_id, payload: Dict) -> None:
     return None
 
 
-def get_substance_id(identifier: str) -> Union[str, None]:
+def get_dsstox_id(identifier: str) -> Union[str, int]:
     substance_id = model.SynonymMv\
         .query(model.SynonymMv.fk_generic_substance_id)\
         .filter(model.SynonymMv.identifier == identifier)\
@@ -200,20 +205,21 @@ def get_substance_id(identifier: str) -> Union[str, None]:
     return substance_id.fk_generic_substance_id
 
 
-def get_substance_id_if_valid(
+def get_dsstox_id_if_valid(
         chem_name: str, smiles: str
-        ) -> Union[str, None]:
-    substance_id_by_name = get_substance_id(chem_name)
+        ) -> Union[int, None]:
+    substance_id_by_name = get_dsstox_id(chem_name)
     if substance_id_by_name:
-        substance_id_by_smiles = get_substance_id(smiles)
+        substance_id_by_smiles = get_dsstox_id(smiles)
         if substance_id_by_name == substance_id_by_smiles:
             return substance_id_by_name
-    return None
+        return None
+    return substance_id_by_name
 
 
 def post_new_transformation_record() -> Response:
+    record_already_exists = True
     payload = json.loads(request.get_json())
-    predecessor_dsstox_id = payload.get('predecessor_dsstox_id')
     predecessor_dsstox_id = payload.get('predecessor_dsstox_id')
     successor_dsstox_id = payload.get('successor_dsstox_id')
     if predecessor_dsstox_id and successor_dsstox_id:
@@ -222,9 +228,23 @@ def post_new_transformation_record() -> Response:
         successor_generic_substance_record = \
             get_generic_substance_record(successor_dsstox_id)
     else:
-        response = Response('DSSTox Substance ID(s) not found.',
-                            status=404)
-        return response
+        predecessor_name = payload.get('predecessor_name')
+        predecessor_smiles = payload.get('predecessor_smiles')
+        successor_name = payload.get('successor_name')
+        successor_smiles = payload.get('successor_smiles')
+        predecessor_dsstox_id = get_dsstox_id_if_valid(
+            predecessor_name, predecessor_smiles)
+        successor_dsstox_id = get_dsstox_id_if_valid(
+            successor_name, successor_smiles)
+        if predecessor_dsstox_id and successor_dsstox_id:
+            predecessor_generic_substance_record = \
+                get_generic_substance_record(predecessor_dsstox_id)
+            successor_generic_substance_record = \
+                get_generic_substance_record(successor_dsstox_id)
+        else:
+            response = Response('DSSTox Substance ID(s) not found.',
+                                status=404)
+            return response
     if (predecessor_generic_substance_record
             and successor_generic_substance_record):
         substance_relationship_record = \
@@ -237,6 +257,7 @@ def post_new_transformation_record() -> Response:
                             status=404)
         return response
     if not substance_relationship_record:
+        record_already_exists = False
         substance_relationship_record = \
             create_and_post_new_substance_relationship(
                 predecessor_generic_substance_record.id,
@@ -245,18 +266,27 @@ def post_new_transformation_record() -> Response:
     kinetics_record = get_kinetics_record(
         substance_relationship_record.id, payload)
     if not kinetics_record:
+        record_already_exists = False
         kinetics_record = create_and_post_new_kinetics_record(
             substance_relationship_record.id, payload)
     citation_record = get_citation_record(payload)
     if not citation_record:
         citation_record = create_and_post_new_citation_record(payload)
         post_and_map_authors(citation_record.id, payload)
-    kinetics_citation_mapping = get_kinetics_citation_mapping(
-        kinetics_record.id, citation_record.id)
+        record_already_exists = False
+    kinetics_citation_mapping = get_transformation_citation_mapping(
+        substance_relationship_record,
+        kinetics_record.id,
+        citation_record.id
+        )
     if not kinetics_citation_mapping:
-        create_and_post_new_kinetics_citation_mapping(
-            kinetics_record.id, citation_record.id)
-    else:
+        record_already_exists = False
+        create_and_post_new_transformation_citation_mapping(
+            substance_relationship_record.id,
+            kinetics_record.id,
+            citation_record.id
+            )
+    if record_already_exists:
         response = Response('Record already exists.', status=409)
         return response
     response = Response('Record successfully posted.', status=200)
