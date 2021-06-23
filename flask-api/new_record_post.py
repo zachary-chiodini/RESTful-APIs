@@ -191,10 +191,30 @@ def post_and_map_authors(citation_id, payload: Dict) -> None:
     return None
 
 
+def get_substance_id(identifier: str) -> Union[str, None]:
+    substance_id = model.SynonymMv\
+        .query(model.SynonymMv.fk_generic_substance_id)\
+        .filter(model.SynonymMv.identifier == identifier)\
+        .order_by(model.SynonymMv.rank)\
+        .first()
+    return substance_id.fk_generic_substance_id
+
+
+def get_substance_id_if_valid(
+        chem_name: str, smiles: str
+        ) -> Union[str, None]:
+    substance_id_by_name = get_substance_id(chem_name)
+    if substance_id_by_name:
+        substance_id_by_smiles = get_substance_id(smiles)
+        if substance_id_by_name == substance_id_by_smiles:
+            return substance_id_by_name
+    return None
+
+
 def post_new_transformation_record() -> Response:
     payload = json.loads(request.get_json())
     predecessor_dsstox_id = payload.get('predecessor_dsstox_id')
-    successor_preferred_name = payload.get('successor_preferred_name')
+    predecessor_dsstox_id = payload.get('predecessor_dsstox_id')
     successor_dsstox_id = payload.get('successor_dsstox_id')
     if predecessor_dsstox_id and successor_dsstox_id:
         predecessor_generic_substance_record = \

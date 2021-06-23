@@ -28,15 +28,21 @@ paths:
               predecessor_dsstox_id:
                 type: string
                 description: The DSSTox ID of the predecessor chemical
-              predecessor_preferred_name:
+              predecessor_name:
                 type: string
-                description: The preferred name of the predecessor chemical
+                description: The name of the predecessor chemical
+              predecessor_smiles:
+                type: string
+                description: The SMILES of the predecessor chemical
               successor_dsstox_id:
                 type: string
                 description: The DSSTox ID of the successor chemical
-              successor_preferred_name:
+              successor_name:
                 type: string
-                description: The preferred name of the successor chemical
+                description: The name of the successor chemical
+              successor_smiles:
+                type: string
+                description: The SMILES of the successor chemical
               pH:
                 type: string
                 description: The pH at which the reaction occured
@@ -142,12 +148,15 @@ paths:
             type: array
             items:
               properties:
-                predecessor_preferred_name:
-                  type: string
-                  description: The preferred name of the predecessor chemical
                 predecessor_dsstox_id:
                   type: string
                   description: The DSSTox ID of the predecessor chemical
+                predecessor_preferred_name:
+                  type: string
+                  description: The preferred name of the predecessor chemical
+                predecessor_smiles:
+                  type: string
+                  description: The SMILES of the predecessor chemical
                 predecessor_casrn:
                   type: string
                   description: The CASRN of the predecessor chemical
@@ -157,12 +166,15 @@ paths:
                 predecessor_qc_level:
                   type: string
                   description: The Name:SMILES:CASRN quality control level for the predecessor chemical
-                successor_preferred_name:
-                  type: string
-                  description: The preferred name of the successor chemical
                 successor_dsstox_id:
                   type: string
                   description: The DSSTox ID of the successor chemical
+                successor_preferred_name:
+                  type: string
+                  description: The preferred name of the successor chemical
+                successor_smiles:
+                  type: string
+                  description: The SMILES of the successor chemical
                 successor_casrn:
                   type: string
                   description: The CASRN of the successor chemical
@@ -273,12 +285,15 @@ paths:
             type: array
             items:
               properties:
-                predecessor_preferred_name:
-                  type: string
-                  description: The preferred name of the predecessor chemical
                 predecessor_dsstox_id:
                   type: string
                   description: The DSSTox ID of the predecessor chemical
+                predecessor_preferred_name:
+                  type: string
+                  description: The preferred name of the predecessor chemical
+                predecessor_smiles:
+                  type: string
+                  description: The SMILES of the predecessor chemical
                 predecessor_casrn:
                   type: string
                   description: The CASRN of the predecessor chemical
@@ -288,12 +303,15 @@ paths:
                 predecessor_qc_level:
                   type: string
                   description: The Name:SMILES:CASRN quality control level for the predecessor chemical
-                successor_preferred_name:
-                  type: string
-                  description: The preferred name of the successor chemical
                 successor_dsstox_id:
                   type: string
                   description: The DSSTox ID of the successor chemical
+                successor_preferred_name:
+                  type: string
+                  description: The preferred name of the successor chemical
+                successor_smiles:
+                  type: string
+                  description: The SMILES of the successor chemical
                 successor_casrn:
                   type: string
                   description: The CASRN of the successor chemical
@@ -1030,6 +1048,1036 @@ paths:
                 comments:
                   type: string
                   description: Record comments
+        400:
+          description: The URL parameter(s) are incorrect or not specified.
+  /compounds:
+    get:
+      operationId: operations.compounds.get
+      tags:
+        - Compounds
+      summary: Gets first 1000 records
+      description: Gets first 1000 records
+      responses:
+        200:
+          description: Successfully got records.
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                dsstox_compound_id:
+                  type: string
+                  description: DSSTox id of compound
+                chiral_stereo:
+                  type: string
+                  description: Chiral stereo of compound
+                double_stereo:
+                  type: string
+                  description: Double stereo of compound
+                chemical_type:
+                  type: string
+                  description: Type of chemical
+                organic_form:
+                  type: string
+                  description: Form of chemical
+                mrv_file:
+                  type: string
+                  description: MRV file
+                mol_file:
+                  type: string
+                  description: MOL file
+                mol_file_3d:
+                  type: string
+                  description: 3D MOL file
+                smiles:
+                  type: string
+                  description: Simplified Molecular-Input Line-Entry System
+                inchi:
+                  type: string
+                  description: International Chemical Identifier
+                jchem_inchi_key:
+                  type: string
+                  description: JChem INCHI key
+                indigo_inchi_key:
+                  type: string
+                  description: Indigo INCHI key
+                acd_iupac_name:
+                  type: string
+                  description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+                acd_index_name:
+                  type: string
+                  description: The Advanced Chemistry Development's Index name
+                pubchem_iupac_name:
+                  type: string
+                  description: PubChem IUPAC name
+                mol_formula:
+                  type: string
+                  description: MOL formula
+                mol_weight:
+                  type: string
+                  description: MOL weight
+                monoisotopic_mass:
+                  type: string
+                  description: Monoisotopic mass
+                fragment_count:
+                  type: string
+                  description: Fragment count
+                has_defined_isotope:
+                  type: string
+                  description: Whether the compound has a defined isotope
+                radical_count:
+                  type: string
+                  description: Radical count
+                pubchem_cid:
+                  type: string
+                  description: PubChem CID
+                chemspider_id:
+                  type: string
+                  description: ChemSpider ID
+                chebi_id:
+                  type: string
+                  description: CHEBI ID
+                created_by:
+                  type: string
+                  description: User the record was created by
+                updated_by:
+                  type: string
+                  description: User the record was updated by
+                created_at:
+                  type: string
+                  description: Date and time the record was created
+                updated_at:
+                  type: string
+                  description: Date and time the record was updated
+                mol_image_png:
+                  type: string
+                  description: MOL image
+    post:
+      operationId: operations.compounds.post
+      tags:
+        - Compounds
+      summary: Posts a new record
+      description: Posts a new record
+      parameters:
+        - name: compound
+          in: body
+          description: The record to post
+          required: True
+          schema:
+            properties:
+              dsstox_compound_id:
+                type: string
+                description: DSSTox id of compound
+              chiral_stereo:
+                type: string
+                description: Chiral stereo of compound
+              double_stereo:
+                type: string
+                description: Double stereo of compound
+              chemical_type:
+                type: string
+                description: Type of chemical
+              organic_form:
+                type: string
+                description: Form of chemical
+              mrv_file:
+                type: string
+                description: MRV file
+              mol_file:
+                type: string
+                description: MOL file
+              mol_file_3d:
+                type: string
+                description: 3D MOL file
+              smiles:
+                type: string
+                description: Simplified Molecular-Input Line-Entry System
+              inchi:
+                type: string
+                description: International Chemical Identifier
+              jchem_inchi_key:
+                type: string
+                description: JChem INCHI key
+              indigo_inchi_key:
+                type: string
+                description: Indigo INCHI key
+              acd_iupac_name:
+                type: string
+                description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+              acd_index_name:
+                type: string
+                description: The Advanced Chemistry Development's Index name
+              pubchem_iupac_name:
+                type: string
+                description: PubChem IUPAC name
+              mol_formula:
+                type: string
+                description: MOL formula
+              mol_weight:
+                type: string
+                description: MOL weight
+              monoisotopic_mass:
+                type: string
+                description: Monoisotopic mass
+              fragment_count:
+                type: string
+                description: Fragment count
+              has_defined_isotope:
+                type: string
+                description: Whether the compound has a defined isotope
+              radical_count:
+                type: string
+                description: Radical count
+              pubchem_cid:
+                type: string
+                description: PubChem CID
+              chemspider_id:
+                type: string
+                description: ChemSpider ID
+              chebi_id:
+                type: string
+                description: CHEBI ID
+              created_by:
+                type: string
+                description: User the record was created by
+              updated_by:
+                type: string
+                description: User the record was updated by
+              created_at:
+                type: string
+                description: Date and time the record was created
+              updated_at:
+                type: string
+                description: Date and time the record was updated
+              mol_image_png:
+                type: string
+                description: MOL image
+      responses:
+        201:
+          description: Sucessfully posted record.
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              dsstox_compound_id:
+                type: string
+                description: DSSTox id of compound
+              chiral_stereo:
+                type: string
+                description: Chiral stereo of compound
+              double_stereo:
+                type: string
+                description: Double stereo of compound
+              chemical_type:
+                type: string
+                description: Type of chemical
+              organic_form:
+                type: string
+                description: Form of chemical
+              mrv_file:
+                type: string
+                description: MRV file
+              mol_file:
+                type: string
+                description: MOL file
+              mol_file_3d:
+                type: string
+                description: 3D MOL file
+              smiles:
+                type: string
+                description: Simplified Molecular-Input Line-Entry System
+              inchi:
+                type: string
+                description: International Chemical Identifier
+              jchem_inchi_key:
+                type: string
+                description: JChem INCHI key
+              indigo_inchi_key:
+                type: string
+                description: Indigo INCHI key
+              acd_iupac_name:
+                type: string
+                description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+              acd_index_name:
+                type: string
+                description: The Advanced Chemistry Development's Index name
+              pubchem_iupac_name:
+                type: string
+                description: PubChem IUPAC name
+              mol_formula:
+                type: string
+                description: MOL formula
+              mol_weight:
+                type: string
+                description: MOL weight
+              monoisotopic_mass:
+                type: string
+                description: Monoisotopic mass
+              fragment_count:
+                type: string
+                description: Fragment count
+              has_defined_isotope:
+                type: string
+                description: Whether the compound has a defined isotope
+              radical_count:
+                type: string
+                description: Radical count
+              pubchem_cid:
+                type: string
+                description: PubChem CID
+              chemspider_id:
+                type: string
+                description: ChemSpider ID
+              chebi_id:
+                type: string
+                description: CHEBI ID
+              created_by:
+                type: string
+                description: User the record was created by
+              updated_by:
+                type: string
+                description: User the record was updated by
+              created_at:
+                type: string
+                description: Date and time the record was created
+              updated_at:
+                type: string
+                description: Date and time the record was updated
+              mol_image_png:
+                type: string
+                description: MOL image
+        409:
+          description: Record already exists.
+  /compounds/{primary_key}:
+    get:
+      operationId: operations.compounds.get_record
+      tags:
+        - Compounds
+      summary: Get record by primary key
+      description: Get record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully got record.
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              dsstox_compound_id:
+                type: string
+                description: DSSTox id of compound
+              chiral_stereo:
+                type: string
+                description: Chiral stereo of compound
+              double_stereo:
+                type: string
+                description: Double stereo of compound
+              chemical_type:
+                type: string
+                description: Type of chemical
+              organic_form:
+                type: string
+                description: Form of chemical
+              mrv_file:
+                type: string
+                description: MRV file
+              mol_file:
+                type: string
+                description: MOL file
+              mol_file_3d:
+                type: string
+                description: 3D MOL file
+              smiles:
+                type: string
+                description: Simplified Molecular-Input Line-Entry System
+              inchi:
+                type: string
+                description: International Chemical Identifier
+              jchem_inchi_key:
+                type: string
+                description: JChem INCHI key
+              indigo_inchi_key:
+                type: string
+                description: Indigo INCHI key
+              acd_iupac_name:
+                type: string
+                description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+              acd_index_name:
+                type: string
+                description: The Advanced Chemistry Development's Index name
+              pubchem_iupac_name:
+                type: string
+                description: PubChem IUPAC name
+              mol_formula:
+                type: string
+                description: MOL formula
+              mol_weight:
+                type: string
+                description: MOL weight
+              monoisotopic_mass:
+                type: string
+                description: Monoisotopic mass
+              fragment_count:
+                type: string
+                description: Fragment count
+              has_defined_isotope:
+                type: string
+                description: Whether the compound has a defined isotope
+              radical_count:
+                type: string
+                description: Radical count
+              pubchem_cid:
+                type: string
+                description: PubChem CID
+              chemspider_id:
+                type: string
+                description: ChemSpider ID
+              chebi_id:
+                type: string
+                description: CHEBI ID
+              created_by:
+                type: string
+                description: User the record was created by
+              updated_by:
+                type: string
+                description: User the record was updated by
+              created_at:
+                type: string
+                description: Date and time the record was created
+              updated_at:
+                type: string
+                description: Date and time the record was updated
+              mol_image_png:
+                type: string
+                description: MOL image
+        404:
+          description: Record not found.
+    put:
+      operationId: operations.compounds.put
+      tags:
+        - Compounds
+      summary: Updates an existing record or posts a new record
+      description: Updates an existing record by primary key or posts a new record if the primary key is not found
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record to update
+          type: integer
+          required: True
+        - name: author
+          in: body
+          schema:
+            properties:
+              dsstox_compound_id:
+                type: string
+                description: DSSTox id of compound
+              chiral_stereo:
+                type: string
+                description: Chiral stereo of compound
+              double_stereo:
+                type: string
+                description: Double stereo of compound
+              chemical_type:
+                type: string
+                description: Type of chemical
+              organic_form:
+                type: string
+                description: Form of chemical
+              mrv_file:
+                type: string
+                description: MRV file
+              mol_file:
+                type: string
+                description: MOL file
+              mol_file_3d:
+                type: string
+                description: 3D MOL file
+              smiles:
+                type: string
+                description: Simplified Molecular-Input Line-Entry System
+              inchi:
+                type: string
+                description: International Chemical Identifier
+              jchem_inchi_key:
+                type: string
+                description: JChem INCHI key
+              indigo_inchi_key:
+                type: string
+                description: Indigo INCHI key
+              acd_iupac_name:
+                type: string
+                description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+              acd_index_name:
+                type: string
+                description: The Advanced Chemistry Development's Index name
+              pubchem_iupac_name:
+                type: string
+                description: PubChem IUPAC name
+              mol_formula:
+                type: string
+                description: MOL formula
+              mol_weight:
+                type: string
+                description: MOL weight
+              monoisotopic_mass:
+                type: string
+                description: Monoisotopic mass
+              fragment_count:
+                type: string
+                description: Fragment count
+              has_defined_isotope:
+                type: string
+                description: Whether the compound has a defined isotope
+              radical_count:
+                type: string
+                description: Radical count
+              pubchem_cid:
+                type: string
+                description: PubChem CID
+              chemspider_id:
+                type: string
+                description: ChemSpider ID
+              chebi_id:
+                type: string
+                description: CHEBI ID
+              created_by:
+                type: string
+                description: User the record was created by
+              updated_by:
+                type: string
+                description: User the record was updated by
+              created_at:
+                type: string
+                description: Date and time the record was created
+              updated_at:
+                type: string
+                description: Date and time the record was updated
+              mol_image_png:
+                type: string
+                description: MOL image
+      responses:
+        200:
+          description: Successfully updated record.
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              dsstox_compound_id:
+                type: string
+                description: DSSTox id of compound
+              chiral_stereo:
+                type: string
+                description: Chiral stereo of compound
+              double_stereo:
+                type: string
+                description: Double stereo of compound
+              chemical_type:
+                type: string
+                description: Type of chemical
+              organic_form:
+                type: string
+                description: Form of chemical
+              mrv_file:
+                type: string
+                description: MRV file
+              mol_file:
+                type: string
+                description: MOL file
+              mol_file_3d:
+                type: string
+                description: 3D MOL file
+              smiles:
+                type: string
+                description: Simplified Molecular-Input Line-Entry System
+              inchi:
+                type: string
+                description: International Chemical Identifier
+              jchem_inchi_key:
+                type: string
+                description: JChem INCHI key
+              indigo_inchi_key:
+                type: string
+                description: Indigo INCHI key
+              acd_iupac_name:
+                type: string
+                description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+              acd_index_name:
+                type: string
+                description: The Advanced Chemistry Development's Index name
+              pubchem_iupac_name:
+                type: string
+                description: PubChem IUPAC name
+              mol_formula:
+                type: string
+                description: MOL formula
+              mol_weight:
+                type: string
+                description: MOL weight
+              monoisotopic_mass:
+                type: string
+                description: Monoisotopic mass
+              fragment_count:
+                type: string
+                description: Fragment count
+              has_defined_isotope:
+                type: string
+                description: Whether the compound has a defined isotope
+              radical_count:
+                type: string
+                description: Radical count
+              pubchem_cid:
+                type: string
+                description: PubChem CID
+              chemspider_id:
+                type: string
+                description: ChemSpider ID
+              chebi_id:
+                type: string
+                description: CHEBI ID
+              created_by:
+                type: string
+                description: User the record was created by
+              updated_by:
+                type: string
+                description: User the record was updated by
+              created_at:
+                type: string
+                description: Date and time the record was created
+              updated_at:
+                type: string
+                description: Date and time the record was updated
+              mol_image_png:
+                type: string
+                description: MOL image
+        201:
+          description: Successfully posted record.
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              dsstox_compound_id:
+                type: string
+                description: DSSTox id of compound
+              chiral_stereo:
+                type: string
+                description: Chiral stereo of compound
+              double_stereo:
+                type: string
+                description: Double stereo of compound
+              chemical_type:
+                type: string
+                description: Type of chemical
+              organic_form:
+                type: string
+                description: Form of chemical
+              mrv_file:
+                type: string
+                description: MRV file
+              mol_file:
+                type: string
+                description: MOL file
+              mol_file_3d:
+                type: string
+                description: 3D MOL file
+              smiles:
+                type: string
+                description: Simplified Molecular-Input Line-Entry System
+              inchi:
+                type: string
+                description: International Chemical Identifier
+              jchem_inchi_key:
+                type: string
+                description: JChem INCHI key
+              indigo_inchi_key:
+                type: string
+                description: Indigo INCHI key
+              acd_iupac_name:
+                type: string
+                description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+              acd_index_name:
+                type: string
+                description: The Advanced Chemistry Development's Index name
+              pubchem_iupac_name:
+                type: string
+                description: PubChem IUPAC name
+              mol_formula:
+                type: string
+                description: MOL formula
+              mol_weight:
+                type: string
+                description: MOL weight
+              monoisotopic_mass:
+                type: string
+                description: Monoisotopic mass
+              fragment_count:
+                type: string
+                description: Fragment count
+              has_defined_isotope:
+                type: string
+                description: Whether the compound has a defined isotope
+              radical_count:
+                type: string
+                description: Radical count
+              pubchem_cid:
+                type: string
+                description: PubChem CID
+              chemspider_id:
+                type: string
+                description: ChemSpider ID
+              chebi_id:
+                type: string
+                description: CHEBI ID
+              created_by:
+                type: string
+                description: User the record was created by
+              updated_by:
+                type: string
+                description: User the record was updated by
+              created_at:
+                type: string
+                description: Date and time the record was created
+              updated_at:
+                type: string
+                description: Date and time the record was updated
+              mol_image_png:
+                type: string
+                description: MOL image
+        409:
+          description: Record already exists.
+    patch:
+      operationId: operations.compounds.patch
+      tags:
+        - Compounds
+      summary: Patches an existing record
+      description: Patches an existing record
+      parameters:
+        - name: primary_key
+          in: path
+          description: Primary key of the record to update
+          type: integer
+          required: True
+        - name: compound
+          in: body
+          schema:
+            properties:
+              dsstox_compound_id:
+                type: string
+                description: DSSTox id of compound
+              chiral_stereo:
+                type: string
+                description: Chiral stereo of compound
+              double_stereo:
+                type: string
+                description: Double stereo of compound
+              chemical_type:
+                type: string
+                description: Type of chemical
+              organic_form:
+                type: string
+                description: Form of chemical
+              mrv_file:
+                type: string
+                description: MRV file
+              mol_file:
+                type: string
+                description: MOL file
+              mol_file_3d:
+                type: string
+                description: 3D MOL file
+              smiles:
+                type: string
+                description: Simplified Molecular-Input Line-Entry System
+              inchi:
+                type: string
+                description: International Chemical Identifier
+              jchem_inchi_key:
+                type: string
+                description: JChem INCHI key
+              indigo_inchi_key:
+                type: string
+                description: Indigo INCHI key
+              acd_iupac_name:
+                type: string
+                description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+              acd_index_name:
+                type: string
+                description: The Advanced Chemistry Development's Index name
+              pubchem_iupac_name:
+                type: string
+                description: PubChem IUPAC name
+              mol_formula:
+                type: string
+                description: MOL formula
+              mol_weight:
+                type: string
+                description: MOL weight
+              monoisotopic_mass:
+                type: string
+                description: Monoisotopic mass
+              fragment_count:
+                type: string
+                description: Fragment count
+              has_defined_isotope:
+                type: string
+                description: Whether the compound has a defined isotope
+              radical_count:
+                type: string
+                description: Radical count
+              pubchem_cid:
+                type: string
+                description: PubChem CID
+              chemspider_id:
+                type: string
+                description: ChemSpider ID
+              chebi_id:
+                type: string
+                description: CHEBI ID
+              created_by:
+                type: string
+                description: User the record was created by
+              updated_by:
+                type: string
+                description: User the record was updated by
+              created_at:
+                type: string
+                description: Date and time the record was created
+              updated_at:
+                type: string
+                description: Date and time the record was updated
+              mol_image_png:
+                type: string
+                description: MOL image
+      responses:
+        200:
+          description: Successfully patched record.
+          schema:
+            properties:
+              id:
+                type: string
+                description: Primary key of record
+              dsstox_compound_id:
+                type: string
+                description: DSSTox id of compound
+              chiral_stereo:
+                type: string
+                description: Chiral stereo of compound
+              double_stereo:
+                type: string
+                description: Double stereo of compound
+              chemical_type:
+                type: string
+                description: Type of chemical
+              organic_form:
+                type: string
+                description: Form of chemical
+              mrv_file:
+                type: string
+                description: MRV file
+              mol_file:
+                type: string
+                description: MOL file
+              mol_file_3d:
+                type: string
+                description: 3D MOL file
+              smiles:
+                type: string
+                description: Simplified Molecular-Input Line-Entry System
+              inchi:
+                type: string
+                description: International Chemical Identifier
+              jchem_inchi_key:
+                type: string
+                description: JChem INCHI key
+              indigo_inchi_key:
+                type: string
+                description: Indigo INCHI key
+              acd_iupac_name:
+                type: string
+                description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+              acd_index_name:
+                type: string
+                description: The Advanced Chemistry Development's Index name
+              pubchem_iupac_name:
+                type: string
+                description: PubChem IUPAC name
+              mol_formula:
+                type: string
+                description: MOL formula
+              mol_weight:
+                type: string
+                description: MOL weight
+              monoisotopic_mass:
+                type: string
+                description: Monoisotopic mass
+              fragment_count:
+                type: string
+                description: Fragment count
+              has_defined_isotope:
+                type: string
+                description: Whether the compound has a defined isotope
+              radical_count:
+                type: string
+                description: Radical count
+              pubchem_cid:
+                type: string
+                description: PubChem CID
+              chemspider_id:
+                type: string
+                description: ChemSpider ID
+              chebi_id:
+                type: string
+                description: CHEBI ID
+              created_by:
+                type: string
+                description: User the record was created by
+              updated_by:
+                type: string
+                description: User the record was updated by
+              created_at:
+                type: string
+                description: Date and time the record was created
+              updated_at:
+                type: string
+                description: Date and time the record was updated
+              mol_image_png:
+                type: string
+                description: MOL image
+        404:
+          description: Record not found.
+        409:
+          description: Record already exists.
+    delete:
+      operationId: operations.compounds.delete
+      tags:
+        - Compounds
+      summary: Delete record by primary key
+      description: Delete record by primary key
+      parameters:
+        - name: primary_key
+          in: path
+          type: integer
+          description: Primary key of the record to delete
+          required: True
+      responses:
+        200:
+          description: Successfully deleted record.
+        404:
+          description: Record not found.
+  /Compounds/searchby:
+    get:
+      operationId: operations.compounds.search
+      tags:
+        - Compounds
+      summary: Searches records by keyword argument(s)
+      description: Searches records by keyword argument(s) and returns first 1000 records
+      responses:
+        200:
+          description: Successfully searched records.
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Primary key of record
+                dsstox_compound_id:
+                  type: string
+                  description: DSSTox id of compound
+                chiral_stereo:
+                  type: string
+                  description: Chiral stereo of compound
+                double_stereo:
+                  type: string
+                  description: Double stereo of compound
+                chemical_type:
+                  type: string
+                  description: Type of chemical
+                organic_form:
+                  type: string
+                  description: Form of chemical
+                mrv_file:
+                  type: string
+                  description: MRV file
+                mol_file:
+                  type: string
+                  description: MOL file
+                mol_file_3d:
+                  type: string
+                  description: 3D MOL file
+                smiles:
+                  type: string
+                  description: Simplified Molecular-Input Line-Entry System
+                inchi:
+                  type: string
+                  description: International Chemical Identifier
+                jchem_inchi_key:
+                  type: string
+                  description: JChem INCHI key
+                indigo_inchi_key:
+                  type: string
+                  description: Indigo INCHI key
+                acd_iupac_name:
+                  type: string
+                  description: The Advanced Chemistry Development's International Union of Pure and Applied Chemistry naming scheme
+                acd_index_name:
+                  type: string
+                  description: The Advanced Chemistry Development's Index name
+                pubchem_iupac_name:
+                  type: string
+                  description: PubChem IUPAC name
+                mol_formula:
+                  type: string
+                  description: MOL formula
+                mol_weight:
+                  type: string
+                  description: MOL weight
+                monoisotopic_mass:
+                  type: string
+                  description: Monoisotopic mass
+                fragment_count:
+                  type: string
+                  description: Fragment count
+                has_defined_isotope:
+                  type: string
+                  description: Whether the compound has a defined isotope
+                radical_count:
+                  type: string
+                  description: Radical count
+                pubchem_cid:
+                  type: string
+                  description: PubChem CID
+                chemspider_id:
+                  type: string
+                  description: ChemSpider ID
+                chebi_id:
+                  type: string
+                  description: CHEBI ID
+                created_by:
+                  type: string
+                  description: User the record was created by
+                updated_by:
+                  type: string
+                  description: User the record was updated by
+                created_at:
+                  type: string
+                  description: Date and time the record was created
+                updated_at:
+                  type: string
+                  description: Date and time the record was updated
+                mol_image_png:
+                  type: string
+                  description: MOL image
         400:
           description: The URL parameter(s) are incorrect or not specified.
   /substance_relationships:

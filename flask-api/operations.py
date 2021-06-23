@@ -47,12 +47,13 @@ class Entity(View):
         return record_id_delete_response(primary_key, self.entity)
 
 
+transformation_view = View(
+    model.TransformationView, model.TransformationViewSchema)
 kinetics = Entity(model.Kinetics, model.KineticsSchema)
 substance_relationships = Entity(
     model.SubstanceRelationships, model.SubstanceRelationshipsSchema)
 generic_substances = Entity(
     model.GenericSubstances, model.GenericSubstancesSchema)
+compounds = Entity(model.Compounds, model.CompoundsSchema)
 author = Entity(model.Author, model.AuthorSchema)
 citation = Entity(model.Citation, model.CitationSchema)
-transformation_view = View(
-    model.TransformationView, model.TransformationViewSchema)

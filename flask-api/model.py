@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask import url_for
 from config import db, ma
 
@@ -99,14 +98,8 @@ class SubstanceRelationshipTypes(db.Model):
     long_description_backward = db.Column(db.String)
     created_by = db.Column(db.String, nullable=False)
     updated_by = db.Column(db.String, nullable=False)
-    created_at = db.Column(
-        db.DateTime, default=datetime.utcnow,
-        onupdate=datetime.utcnow, nullable=False
-        )
-    updated_at = db.Column(
-        db.DateTime, default=datetime.utcnow,
-        onupdate=datetime.utcnow, nullable=False
-        )
+    created_at = db.Column(db.String, nullable=False)
+    updated_at = db.Column(db.String, nullable=False)
     # unidirectional
     substance_relationship_data = \
         db.relationship('SubstanceRelationships')
@@ -125,7 +118,7 @@ class SynonymMv(db.Model):
         autoincrement=True, nullable=False
         )
     fk_generic_substance_id = db.Column(
-        db.String, db.ForeignKey('generic_substances.id'),
+        db.Integer, db.ForeignKey('generic_substances.id'),
         nullable=True
         )
     identifier = db.Column(db.String)
@@ -137,6 +130,74 @@ class SynonymMvSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = SynonymMv
         load_instance = True
+
+
+generic_substance_compounds = db.Table(
+    'generic_substance_compounds',
+    db.Column('id', db.Integer, primary_key=True,
+              autoincrement=True, nullable=False),
+    db.Column(
+        'fk_generic_substance_id', db.Integer,
+        db.ForeignKey('generic_substances.id'),
+        nullable=False
+        ),
+    db.Column(
+        'fk_compound_id', db.Integer, db.ForeignKey('compounds.id'),
+        nullable=False
+        ),
+    db.Column('relationship', db.String),
+    db.Column('source', db.String),
+    db.Column('created_by', db.String, nullable=False),
+    db.Column('updated_by', db.String, nullable=False),
+    db.Column('created_at', db.String, nullable=False),
+    db.Column('updated_at', db.String, nullable=False)
+    )
+
+
+class Compounds(db.Model):
+    __tablename__ = 'compounds'
+    id = db.Column(
+        db.Integer, primary_key=True,
+        autoincrement=True, nullable=False
+        )
+    dsstox_compound_id = db.Column(db.String)
+    chiral_stereo = db.Column(db.String)
+    chemical_type = db.Column(db.String)
+    organic_form = db.Column(db.String)
+    mrv_file = db.Column(db.String)
+    mol_file = db.Column(db.String)
+    mol_file_3d = db.Column(db.String)
+    smiles = db.Column(db.String)
+    inchi = db.Column(db.String)
+    jchem_inchi_key = db.Column(db.String)
+    indigo_inchi_key = db.Column(db.String)
+    acd_iupac_name = db.Column(db.String)
+    acd_index_name = db.Column(db.String)
+    mol_formula = db.Column(db.String)
+    mol_weight = db.Column(db.Float)
+    monoisotopic_mass = db.Column(db.Float)
+    fragment_count = db.Column(db.Integer)
+    has_defined_isotope = db.Column(db.Integer)
+    radical_count = db.Column(db.Integer)
+    pubchem_cid = db.Column(db.Integer)
+    chemspider_id = db.Column(db.Integer)
+    chebi_id = db.Column(db.Integer)
+    created_by = db.Column(db.String)
+    updated_by = db.Column(db.String)
+    created_at = db.Column(db.String)
+    updated_at = db.Column(db.String)
+    mol_image_png = db.Column(db.LargeBinary)
+
+
+class CompoundsSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Compounds
+        load_instance = True
+    uri = ma.Function(
+        lambda obj:
+        url_for('/api.operations_compounds_get_record',
+                primary_key=obj.id, _external=True)
+        )
 
 
 class GenericSubstances(db.Model):
@@ -158,13 +219,13 @@ class GenericSubstances(db.Model):
     source = db.Column(db.String)
     created_by = db.Column(db.String, nullable=False)
     updated_by = db.Column(db.String, nullable=False)
-    created_at = db.Column(
-        db.DateTime, default=datetime.utcnow,
-        onupdate=datetime.utcnow, nullable=False
-        )
-    updated_at = db.Column(
-        db.DateTime, default=datetime.utcnow,
-        onupdate=datetime.utcnow, nullable=False
+    created_at = db.Column(db.String, nullable=False)
+    updated_at = db.Column(db.String, nullable=False)
+    structure = db.relationship(
+        'Compounds',
+        secondary=generic_substance_compounds,
+        lazy='subquery',
+        backref=db.backref('generic_substances', lazy=True)
         )
     # unidirectional
     predecessor_relationship = db.relationship(
@@ -324,20 +385,24 @@ class CitationSchema(ma.SQLAlchemyAutoSchema):
 
 class TransformationView(db.Model):
     __tablename__ = 'transformation_view'
-    predecessor_preferred_name = db.Column(
-        'Predecessor Preferred Name', db.String, primary_key=True)
     predecessor_dsstox_id = db.Column(
         'Predecessor DSSTox ID', db.Integer, primary_key=True)
+    predecessor_preferred_name = db.Column(
+        'Predecessor Preferred Name', db.String, primary_key=True)
+    predecessor_smiles = db.Column(
+        'Predecessor SMILES', db.String, primary_key=True)
     predecessor_casrn = db.Column(
         'Predecessor CASRN', db.String, primary_key=True)
     predecessor_type = db.Column(
         'Predecessor Type', db.String, primary_key=True)
     predecessor_qc_level = db.Column(
         'Predecessor Name:SMILES:CASRN QC Level', db.String, primary_key=True)
-    successor_preferred_name = db.Column(
-        'Successor Preferred Name', db.String, primary_key=True)
     successor_dsstox_id = db.Column(
         'Successor DSSTox ID', db.Integer, primary_key=True)
+    successor_preferred_name = db.Column(
+        'Successor Preferred Name', db.String, primary_key=True)
+    successor_smiles = db.Column(
+        'Successor SMILES', db.String, primary_key=True)
     successor_casrn = db.Column(
         'Successor CASRN', db.String, primary_key=True)
     successor_type = db.Column(
