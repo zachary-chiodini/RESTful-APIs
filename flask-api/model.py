@@ -118,6 +118,27 @@ class SubstanceRelationshipTypesSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
 
 
+class SynonymMv(db.Model):
+    __tablename__ = 'synonym_mv'
+    id = db.Column(
+        db.Integer, primary_key=True,
+        autoincrement=True, nullable=False
+        )
+    fk_generic_substance_id = db.Column(
+        db.String, db.ForeignKey('generic_substances.id'),
+        nullable=True
+        )
+    identifier = db.Column(db.String)
+    synonym_type = db.Column(db.String)
+    rank = db.Column(db.Integer)
+
+
+class SynonymMvSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = SynonymMv
+        load_instance = True
+
+
 class GenericSubstances(db.Model):
     __tablename__ = 'generic_substances'
     id = db.Column(
@@ -160,6 +181,12 @@ class GenericSubstances(db.Model):
                 .fk_generic_substance_id_successor
             ]
         )
+    synonym_mv = db.relationship(
+        'SynonymMv',
+        foreign_keys=[
+            SynonymMv.fk_generic_substance_id
+            ]
+        )
 
 
 class GenericSubstancesSchema(ma.SQLAlchemyAutoSchema):
@@ -198,37 +225,34 @@ class QCLevelsSchema(ma.SQLAlchemyAutoSchema):
 
 author_cited = db.Table(
     'author_cited',
+    db.Column('id', db.Integer, primary_key=True,
+              autoincrement=True, nullable=False),
     db.Column(
         'fk_citation_id', db.Integer, db.ForeignKey('citation.id'),
-        primary_key=True
+        nullable=False
         ),
     db.Column(
         'fk_author_id', db.Integer, db.ForeignKey('author.id'),
-        primary_key=True
+        nullable=False
         )
     )
 
-journal_cited = db.Table(
-    'journal_cited',
+transformation_cited = db.Table(
+    'transformation_cited',
+    db.Column('id', db.Integer, primary_key=True,
+              autoincrement=True, nullable=False),
     db.Column(
-        'fk_citation_id', db.Integer, db.ForeignKey('citation.id'),
-        primary_key=True
-        ),
-    db.Column(
-        'fk_journal_id', db.Integer, db.ForeignKey('journal.id'),
-        primary_key=True
-        )
-    )
-
-kinetics_cited = db.Table(
-    'kinetics_cited',
-    db.Column(
-        'fk_citation_id', db.Integer, db.ForeignKey('citation.id'),
-        primary_key=True
+        'fk_substance_relationship_id', db.Integer,
+        db.ForeignKey('substance_relationships.id'),
+        nullable=False
         ),
     db.Column(
         'fk_kinetics_id', db.Integer, db.ForeignKey('kinetics.id'),
-        primary_key=True
+        nullable=True
+        ),
+    db.Column(
+        'fk_citation_id', db.Integer, db.ForeignKey('citation.id'),
+        nullable=False
         )
     )
 
@@ -281,7 +305,7 @@ class Citation(db.Model):
         )
     kinetics = db.relationship(
         'Kinetics',
-        secondary=kinetics_cited,
+        secondary=transformation_cited,
         lazy='subquery',
         backref=db.backref('citation', lazy=True)
         )
