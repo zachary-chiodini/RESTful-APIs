@@ -31,7 +31,6 @@ class Entity(View):
     This class contains all the methods that can
     be performed on a database entity by the API
     """
-
     def get_record(self, primary_key: int) -> Response:
         return record_id_get_response(primary_key, self.entity, self.schema)
 
@@ -44,7 +43,7 @@ class Entity(View):
     def patch(self, primary_key: int) -> Response:
         return record_id_patch_response(primary_key, self.entity, self.schema)
 
-    def delete(self, primary_key) -> Response:
+    def delete(self, primary_key: int) -> Response:
         return record_id_delete_response(primary_key, self.entity)
 
 

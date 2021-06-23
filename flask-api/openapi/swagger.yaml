@@ -25,39 +25,18 @@ paths:
           required: True
           schema:
             properties:
-              predecessor_preferred_name:
-                type: string
-                description: The preferred name of the predecessor chemical
               predecessor_dsstox_id:
                 type: string
                 description: The DSSTox ID of the predecessor chemical
-              predecessor_casrn:
+              predecessor_preferred_name:
                 type: string
-                description: The CASRN of the predecessor chemical
-              predecessor_type:
-                type: string
-                description: The type of the predecessor chemical
-              predecessor_qc_level:
-                type: string
-                description: The Name:SMILES:CASRN quality control level for the predecessor chemical
-              successor_preferred_name:
-                type: string
-                description: The preferred name of the successor chemical
+                description: The preferred name of the predecessor chemical
               successor_dsstox_id:
                 type: string
                 description: The DSSTox ID of the successor chemical
-              successor_casrn:
+              successor_preferred_name:
                 type: string
-                description: The CASRN of the successor chemical
-              successor_type:
-                type: string
-                description: The type of the successor chemical
-              successor_qc_level:
-                type: string
-                description: The Name:SMILES:CASRN quality control level for the successor chemical
-              relationship:
-                type: string
-                description: The relationship between the predecessor and successor chemical
+                description: The preferred name of the successor chemical
               pH:
                 type: string
                 description: The pH at which the reaction occured

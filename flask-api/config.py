@@ -54,6 +54,7 @@ connexion_app = connexion.App(
 app = connexion_app.app
 app.secret_key = urandom(16)
 app.config['USERNAME'] = ''
+app.config['JSON_SORT_KEYS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = ''
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
