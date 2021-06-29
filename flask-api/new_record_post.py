@@ -300,8 +300,19 @@ def post_new_transformation_record() -> Response:
                 predecessor_generic_substance_record.id,
                 successor_generic_substance_record.id
                 )
-    kinetics_record = get_kinetics_record(
-        substance_relationship_record.id, payload)
+    kinetic_data = [
+        'pH', 'pH_min', 'pH_max', 'half_life', 'half_life_min',
+        'half_life_max', 'half_life_units', 'rate', 'rate_min',
+        'rate_max', 'rate_units', 'reaction', 'temp_C',
+        'activation_kcal_per_mol'
+        ]
+    if not any([True if payload.get(key)
+                else False for key in kinetic_data]):
+        # Null record
+        kinetics_record = model.Kinetics()
+    else:
+        kinetics_record = get_kinetics_record(
+            substance_relationship_record.id, payload)
     if not kinetics_record:
         record_already_exists = False
         kinetics_record = create_and_post_new_kinetics_record(
