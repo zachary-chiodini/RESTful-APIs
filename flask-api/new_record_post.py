@@ -2,6 +2,8 @@ import json
 import model
 from config import db
 from flask import Response, request
+from indigo import Indigo, IndigoObject
+from indigo.inchi import IndigoInchi
 from responses import get_features_except_id, query_payload
 from typing import Dict, Union
 
@@ -134,7 +136,7 @@ def get_transformation_citation_mapping(
 
 
 def get_generic_substance_record(
-        dsstox_id: int) -> Union[db.Model, None]:
+        dsstox_id: str) -> Union[db.Model, None]:
     generic_substance_record = model.GenericSubstances.query\
         .filter(model.GenericSubstances
                 .dsstox_substance_id == dsstox_id)\
@@ -196,7 +198,7 @@ def post_and_map_authors(citation_id, payload: Dict) -> None:
     return None
 
 
-def get_dsstox_id(identifier: str) -> Union[str, int]:
+def get_dsstox_id(identifier: str) -> Union[str, None]:
     substance_id = model.SynonymMv\
         .query(model.SynonymMv.fk_generic_substance_id)\
         .filter(model.SynonymMv.identifier == identifier)\
@@ -205,57 +207,88 @@ def get_dsstox_id(identifier: str) -> Union[str, int]:
     return substance_id.fk_generic_substance_id
 
 
-def get_dsstox_id_if_valid(
-        chem_name: str, smiles: str
-        ) -> Union[int, None]:
-    substance_id_by_name = get_dsstox_id(chem_name)
-    if substance_id_by_name:
-        substance_id_by_smiles = get_dsstox_id(smiles)
-        if substance_id_by_name == substance_id_by_smiles:
-            return substance_id_by_name
-        return None
-    return substance_id_by_name
-
-
 def post_new_transformation_record() -> Response:
-    record_already_exists = True
+    indigo = Indigo()
+    indigo_inchi = IndigoInchi(indigo)
     payload = json.loads(request.get_json())
     predecessor_dsstox_id = payload.get('predecessor_dsstox_id')
-    successor_dsstox_id = payload.get('successor_dsstox_id')
-    if predecessor_dsstox_id and successor_dsstox_id:
+    record_already_exists = True
+    if predecessor_dsstox_id:
         predecessor_generic_substance_record = \
             get_generic_substance_record(predecessor_dsstox_id)
-        successor_generic_substance_record = \
-            get_generic_substance_record(successor_dsstox_id)
-    else:
-        predecessor_name = payload.get('predecessor_name')
-        predecessor_smiles = payload.get('predecessor_smiles')
-        successor_name = payload.get('successor_name')
-        successor_smiles = payload.get('successor_smiles')
-        predecessor_dsstox_id = get_dsstox_id_if_valid(
-            predecessor_name, predecessor_smiles)
-        successor_dsstox_id = get_dsstox_id_if_valid(
-            successor_name, successor_smiles)
-        if predecessor_dsstox_id and successor_dsstox_id:
-            predecessor_generic_substance_record = \
-                get_generic_substance_record(predecessor_dsstox_id)
-            successor_generic_substance_record = \
-                get_generic_substance_record(successor_dsstox_id)
-        else:
+        if not predecessor_generic_substance_record:
             response = Response('DSSTox Substance ID(s) not found.',
                                 status=404)
             return response
-    if (predecessor_generic_substance_record
-            and successor_generic_substance_record):
-        substance_relationship_record = \
-            get_substance_relationship_record(
-                predecessor_generic_substance_record.id,
-                successor_generic_substance_record.id
-                )
     else:
+        predecessor_name = payload.get('predecessor_name')
+        if not predecessor_name:
+            response = Response('DSSTox Substance ID(s) not found.',
+                                status=404)
+            return response
+        dsstox_id_by_name = get_dsstox_id(predecessor_name)
+        if not dsstox_id_by_name:
+            response = Response('DSSTox Substance ID(s) not found.',
+                                status=404)
+            return response
+        predecessor_smiles = payload.get('predecessor_smiles')
+        if not predecessor_smiles:
+            predecessor_generic_substance_record = \
+                get_generic_substance_record(dsstox_id_by_name)
+        else:
+            inchi = indigo_inchi.getInchi(
+                indigo.loadMolecule(predecessor_smiles))
+            inchi_key = indigo_inchi.getInchiKey(inchi)
+            dsstox_id_by_smiles = get_dsstox_id(inchi_key)
+            if dsstox_id_by_name != dsstox_id_by_smiles:
+                response = Response('DSSTox Substance ID(s) not found.',
+                                    status=404)
+                return response
+            predecessor_generic_substance_record = \
+                get_generic_substance_record(dsstox_id_by_name)
+    if not predecessor_generic_substance_record:
         response = Response('DSSTox Substance ID(s) not found.',
                             status=404)
         return response
+    successor_dsstox_id = payload.get('predecessor_dsstox_id')
+    if successor_dsstox_id:
+        successor_generic_substance_record = \
+            get_generic_substance_record(predecessor_dsstox_id)
+        if not predecessor_generic_substance_record:
+            response = Response('DSSTox Substance ID(s) not found.',
+                                status=404)
+            return response
+    else:
+        successor_name = payload.get('predecessor_name')
+        if successor_name:
+            dsstox_id_by_name = get_dsstox_id(successor_name)
+            if not dsstox_id_by_name:
+                response = Response('DSSTox Substance ID(s) not found.',
+                                    status=404)
+                return response
+            successor_smiles = payload.get('predecessor_smiles')
+            if not successor_smiles:
+                successor_generic_substance_record = \
+                    get_generic_substance_record(dsstox_id_by_name)
+            else:
+                dsstox_id_by_smiles = get_dsstox_id(successor_smiles)
+                if dsstox_id_by_name != dsstox_id_by_smiles:
+                    response = Response('DSSTox Substance ID(s) not found.',
+                                        status=404)
+                    return response
+                successor_generic_substance_record = \
+                    get_generic_substance_record(dsstox_id_by_name)
+        else:
+            successor_generic_substance_record = model.GenericSubstances()
+    if not successor_generic_substance_record:
+        response = Response('DSSTox Substance ID(s) not found.',
+                            status=404)
+        return response
+    substance_relationship_record = \
+        get_substance_relationship_record(
+            predecessor_generic_substance_record.id,
+            successor_generic_substance_record.id
+            )
     if not substance_relationship_record:
         record_already_exists = False
         substance_relationship_record = \
