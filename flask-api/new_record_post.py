@@ -282,6 +282,7 @@ def post_new_transformation_record() -> Response:
                 successor_generic_substance_record = \
                     get_generic_substance_record(dsstox_id_by_name)
         else:
+            # Null record
             successor_generic_substance_record = model.GenericSubstances()
     if not successor_generic_substance_record:
         response = Response('DSSTox Substance ID(s) not found.',
