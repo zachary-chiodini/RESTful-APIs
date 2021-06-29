@@ -250,23 +250,23 @@ def post_new_transformation_record() -> Response:
         response = Response('DSSTox Substance ID(s) not found.',
                             status=404)
         return response
-    successor_dsstox_id = payload.get('predecessor_dsstox_id')
+    successor_dsstox_id = payload.get('successor_dsstox_id')
     if successor_dsstox_id:
         successor_generic_substance_record = \
-            get_generic_substance_record(predecessor_dsstox_id)
-        if not predecessor_generic_substance_record:
+            get_generic_substance_record(successor_dsstox_id)
+        if not successor_generic_substance_record:
             response = Response('DSSTox Substance ID(s) not found.',
                                 status=404)
             return response
     else:
-        successor_name = payload.get('predecessor_name')
+        successor_name = payload.get('successor_name')
         if successor_name:
             dsstox_id_by_name = get_dsstox_id(successor_name)
             if not dsstox_id_by_name:
                 response = Response('DSSTox Substance ID(s) not found.',
                                     status=404)
                 return response
-            successor_smiles = payload.get('predecessor_smiles')
+            successor_smiles = payload.get('successor_smiles')
             if not successor_smiles:
                 successor_generic_substance_record = \
                     get_generic_substance_record(dsstox_id_by_name)
