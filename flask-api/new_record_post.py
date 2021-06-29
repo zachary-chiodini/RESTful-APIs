@@ -306,8 +306,7 @@ def post_new_transformation_record() -> Response:
         'rate_max', 'rate_units', 'reaction', 'temp_C',
         'activation_kcal_per_mol'
         ]
-    if not any([True if payload.get(key)
-                else False for key in kinetic_data]):
+    if not any([payload.get(key) for key in kinetic_data]):
         # Null record
         kinetics_record = model.Kinetics()
     else:
