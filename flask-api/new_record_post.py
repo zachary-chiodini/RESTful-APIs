@@ -271,7 +271,10 @@ def post_new_transformation_record() -> Response:
                 successor_generic_substance_record = \
                     get_generic_substance_record(dsstox_id_by_name)
             else:
-                dsstox_id_by_smiles = get_dsstox_id(successor_smiles)
+                inchi = indigo_inchi.getInchi(
+                    indigo.loadMolecule(successor_smiles))
+                inchi_key = indigo_inchi.getInchiKey(inchi)
+                dsstox_id_by_smiles = get_dsstox_id(inchi_key)
                 if dsstox_id_by_name != dsstox_id_by_smiles:
                     response = Response('DSSTox Substance ID(s) not found.',
                                         status=404)
