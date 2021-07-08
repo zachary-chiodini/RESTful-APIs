@@ -440,58 +440,58 @@ class TransformationView(db.Model):
         C.pdf AS 'PDF Blob'
     FROM
         substance_relationships SR
-            INNER JOIN substance_relationship_types SRT
-                ON SR.fk_substance_relationship_type_id = SRT.id
-            INNER JOIN ( -- predecessor substance
-                SELECT
-                    GSP.id,
-                    GSP.dsstox_substance_id,
-                    GSP.preferred_name,
-                    GSP.casrn,
-                    CP.smiles,
-                    GSP.substance_type,
-                    QCP.label
-                FROM
-                    generic_substances GSP
-                    INNER JOIN qc_levels QCP
-                        ON GSP.fk_qc_level_id = QCP.id
-                    LEFT JOIN generic_substance_compounds GSCP
-                        ON GSCP.fk_generic_substance_id = GSP.id
-                    LEFT JOIN compounds CP
-                        ON GSCP.fk_compound_id = CP.id
-                )
-            AS PRED
-                ON SR.fk_generic_substance_id_predecessor = PRED.id
-            LEFT JOIN ( -- successor substance
-                SELECT
-                    GSS.id,
-                    GSS.dsstox_substance_id,
-                    GSS.preferred_name,
-                    GSS.casrn,
-                    CS.smiles,
-                    GSS.substance_type,
-                    QCS.label
-                FROM
-                    generic_substances GSS
-                    INNER JOIN qc_levels QCS
-                        ON GSS.fk_qc_level_id = QCS.id
-                    LEFT JOIN generic_substance_compounds GSCS
-                        ON GSCS.fk_generic_substance_id = GSS.id
-                    LEFT JOIN compounds CS
-                        ON GSCS.fk_compound_id = CS.id
-                )
-            AS SUCC
-                ON SR.fk_generic_substance_id_successor = SUCC.id
-            LEFT JOIN kinetics K
-                ON K.fk_substance_relationship_id = SR.id
-            INNER JOIN transformation_cited TC
-                ON TC.fk_substance_relationship_id = SR.id
-            INNER JOIN citation C
-                ON TC.fk_citation_id = C.id
-            LEFT JOIN author_cited AC
-                ON AC.fk_citation_id = C.id
-            LEFT JOIN author A
-                ON AC.fk_author_id = A.id
+        INNER JOIN substance_relationship_types SRT
+            ON SR.fk_substance_relationship_type_id = SRT.id
+        INNER JOIN ( -- predecessor substance
+            SELECT
+                GSP.id,
+                GSP.dsstox_substance_id,
+                GSP.preferred_name,
+                GSP.casrn,
+                CP.smiles,
+                GSP.substance_type,
+                QCP.label
+            FROM
+                generic_substances GSP
+                INNER JOIN qc_levels QCP
+                    ON GSP.fk_qc_level_id = QCP.id
+                LEFT JOIN generic_substance_compounds GSCP
+                    ON GSCP.fk_generic_substance_id = GSP.id
+                LEFT JOIN compounds CP
+                    ON GSCP.fk_compound_id = CP.id
+            )
+        AS PRED
+            ON SR.fk_generic_substance_id_predecessor = PRED.id
+        LEFT JOIN ( -- successor substance
+            SELECT
+                GSS.id,
+                GSS.dsstox_substance_id,
+                GSS.preferred_name,
+                GSS.casrn,
+                CS.smiles,
+                GSS.substance_type,
+                QCS.label
+            FROM
+                generic_substances GSS
+                INNER JOIN qc_levels QCS
+                    ON GSS.fk_qc_level_id = QCS.id
+                LEFT JOIN generic_substance_compounds GSCS
+                    ON GSCS.fk_generic_substance_id = GSS.id
+                LEFT JOIN compounds CS
+                    ON GSCS.fk_compound_id = CS.id
+            )
+        AS SUCC
+            ON SR.fk_generic_substance_id_successor = SUCC.id
+        LEFT JOIN kinetics K
+            ON K.fk_substance_relationship_id = SR.id
+        INNER JOIN transformation_cited TC
+            ON TC.fk_substance_relationship_id = SR.id
+        INNER JOIN citation C
+            ON TC.fk_citation_id = C.id
+        LEFT JOIN author_cited AC
+            ON AC.fk_citation_id = C.id
+        LEFT JOIN author A
+            ON AC.fk_author_id = A.id
     WHERE
         SRT.name = 'transformation_product'
     GROUP BY
