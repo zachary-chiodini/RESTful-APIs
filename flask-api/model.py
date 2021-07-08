@@ -387,6 +387,155 @@ class CitationSchema(ma.SQLAlchemyAutoSchema):
 
 
 class TransformationView(db.Model):
+    """
+    SELECT
+        PRED.dsstox_substance_id AS 'Predecessor DSSTox ID',
+        PRED.preferred_name AS 'Predecessor Preferred Name',
+        PRED.casrn AS 'Predecessor CASRN',
+        PRED.smiles AS 'Predecessor SMILES',
+        PRED.substance_type AS 'Predecessor Type',
+        PRED.label AS 'Predecessor Name:SMILES:CASRN QC Level',
+        SUCC.dsstox_substance_id AS 'Successor DSSTox ID',
+        SUCC.preferred_name AS 'Successor Preferred Name',
+        SUCC.smiles AS 'Successor SMILES',
+        SUCC.casrn AS 'Successor CASRN',
+        SUCC.substance_type AS 'Successor Type',
+        SUCC.label AS 'Successor Name:SMILES:CASRN QC Level',
+        SR.relationship AS 'Relationship',
+        K.pH, K.pH_min AS 'Minimum pH',
+        K.pH_max as 'Maximum pH',
+        K.half_life AS 'Half-life',
+        K.half_life_min AS 'Minimum Half-life',
+        K.half_life_max AS 'Maximum Half-life',
+        K.half_life_units AS 'Half-life Units',
+        K.rate AS 'Rate Constant',
+        K.rate_min AS 'Minimum Rate Constant',
+        K.rate_max AS 'Maximum Rate Constant',
+        K.rate_units AS 'Rate Constant Units',
+        K.activation_kcal_per_mol AS 'Activation Energy (kcal/mol)',
+        K.temp_C AS 'Temperature Centigrade',
+        K.reaction AS 'Reaction',
+        K.comments AS 'Comments',
+        GROUP_CONCAT(
+            CASE
+                WHEN CONCAT_WS(' ', A.first_name, A.middle_name, A.last_name) = ' '
+                THEN NULL
+                ELSE CONCAT_WS(' ', A.first_name, A.middle_name, A.last_name)
+            END
+            ORDER BY A.last_name
+            SEPARATOR ', '
+            ) AS 'Authors',
+        C.year AS 'Year',
+        C.month AS 'Month',
+        C.day AS 'Day',
+        C.publisher AS 'Publisher',
+        C.title AS 'Title',
+        C.journal AS 'Journal',
+        C.volume AS 'Volume',
+        C.issue AS 'Issue',
+        C.pages AS 'Pages',
+        C.doi AS 'DOI',
+        c.url AS 'URL',
+        C.pdf AS 'PDF Blob'
+    FROM
+        substance_relationships SR
+            INNER JOIN substance_relationship_types SRT
+            ON SR.fk_substance_relationship_type_id = SRT.id
+            INNER JOIN ( -- predecessor substance
+                SELECT
+                    GSP.id,
+                    GSP.dsstox_substance_id,
+                    GSP.preferred_name,
+                    GSP.casrn,
+                    CP.smiles,
+                    GSP.substance_type,
+                    QCP.label
+                FROM
+                    generic_substances GSP
+                    INNER JOIN qc_levels QCP
+                    ON GSP.fk_qc_level_id = QCP.id
+                    LEFT JOIN generic_substance_compounds GSCP
+                    ON GSCP.fk_generic_substance_id = GSP.id
+                    LEFT JOIN compounds CP
+                    ON GSCP.fk_compound_id = CP.id
+                )
+            AS PRED
+            ON SR.fk_generic_substance_id_predecessor = PRED.id
+            LEFT JOIN ( -- successor substance
+                SELECT
+                    GSS.id,
+                    GSS.dsstox_substance_id,
+                    GSS.preferred_name,
+                    GSS.casrn,
+                    CS.smiles,
+                    GSS.substance_type,
+                    QCS.label
+                FROM
+                    generic_substances GSS
+                    INNER JOIN qc_levels QCS
+                    ON GSS.fk_qc_level_id = QCS.id
+                    LEFT JOIN generic_substance_compounds GSCS
+                    ON GSCS.fk_generic_substance_id = GSS.id
+                    LEFT JOIN compounds CS
+                    ON GSCS.fk_compound_id = CS.id
+                )
+            AS SUCC
+            ON SR.fk_generic_substance_id_successor = SUCC.id
+            LEFT JOIN kinetics K
+            ON K.fk_substance_relationship_id = SR.id
+            INNER JOIN transformation_cited TC
+            ON TC.fk_substance_relationship_id = SR.id
+            INNER JOIN citation C
+            ON TC.fk_citation_id = C.id
+            LEFT JOIN author_cited AC
+            ON AC.fk_citation_id = C.id
+            LEFT JOIN author A
+            ON AC.fk_author_id = A.id
+    WHERE
+        SRT.name = 'transformation_product'
+        GROUP BY
+        PRED.dsstox_substance_id,
+        PRED.preferred_name,
+        PRED.smiles,
+        PRED.casrn,
+        PRED.substance_type,
+        PRED.label,
+        SUCC.dsstox_substance_id,
+        SUCC.preferred_name,
+        SUCC.smiles,
+        SUCC.casrn,
+        SUCC.substance_type,
+        SUCC.label,
+        SR.relationship,
+        K.pH,
+        K.pH_min,
+        K.pH_max,
+        K.half_life,
+        K.half_life_min,
+        K.half_life_max,
+        K.half_life_units,
+        K.rate,
+        K.rate_min,
+        K.rate_max,
+        K.rate_units,
+        K.activation_kcal_per_mol,
+        K.temp_C,
+        K.reaction,
+        K.comments,
+        C.month,
+        C.day,
+        C.year,
+        C.publisher,
+        C.title,
+        C.journal,
+        C.volume,
+        C.issue,
+        C.pages,
+        C.doi,
+        C.url,
+        C.pdf
+    ;
+    """
     __tablename__ = 'transformation_view'
     predecessor_dsstox_id = db.Column(
         'Predecessor DSSTox ID', db.String, primary_key=True)
