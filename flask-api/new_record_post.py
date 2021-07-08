@@ -2,7 +2,7 @@ import json
 import model
 from config import db
 from flask import Response, request
-from indigo import Indigo, IndigoObject
+from indigo import Indigo
 from indigo.inchi import IndigoInchi
 from responses import get_features_except_id, query_payload
 from typing import Dict, Union
@@ -42,7 +42,7 @@ def create_and_post_new_substance_relationship(
         'fk_generic_substance_id_successor':
             successor_generic_substance_id,
         'relationship': 'Transformation Product',
-        'fk_relationship_type_id': 1,
+        'fk_substance_relationship_type_id': 1,
         'source': 'Caroline Stevens',
         'qc_notes': None,
         'mixture_percentage': None,
@@ -65,14 +65,14 @@ def create_and_post_new_kinetics_record(
         payload: Dict
         ) -> Union[db.Model, None]:
     new_kinetics_data = {}
-    for label in get_features_except_id(
+    for column in get_features_except_id(
             model.Kinetics, skip=['fk_substance_relationship_id']
             ).keys():
-        value = payload.get(label)
-        new_kinetics_data.update(label=value)
-    new_kinetics_data.update(
-        fk_substance_relationship_id=substance_relationship_id)
-    schema = model.SubstanceRelationshipsSchema()
+        value = payload.get(column)
+        new_kinetics_data[column] = value
+    new_kinetics_data['fk_substance_relationship_id'] = \
+        substance_relationship_id
+    schema = model.KineticsSchema()
     kinetics_record = schema.load(
         new_kinetics_data, session=db.session)
     db.session.add(kinetics_record)
@@ -82,16 +82,15 @@ def create_and_post_new_kinetics_record(
 
 def get_kinetics_record(substance_relationship_id: int,
                         payload: Dict) -> Union[db.Model, None]:
-    new_kinetics_data = {}
-    for label in get_features_except_id(
+    kinetics_data = {}
+    for column in get_features_except_id(
             model.Kinetics, skip=['fk_substance_relationship_id']
             ).keys():
-        value = payload.get(label)
-        new_kinetics_data.update(label=value)
-    new_kinetics_data.update(
-        fk_substance_relationship_id=substance_relationship_id)
-    kinetics_record = query_payload(
-        model.Kinetics, new_kinetics_data)
+        value = payload.get(column)
+        kinetics_data[column] = value
+    kinetics_data['fk_substance_relationship_id'] = \
+        substance_relationship_id
+    kinetics_record = query_payload(model.Kinetics, kinetics_data)
     return kinetics_record
 
 
@@ -108,9 +107,9 @@ def get_citation_record(payload: Dict) -> Union[db.Model, None]:
 def create_and_post_new_citation_record(
         payload: Dict) -> Union[db.Model, None]:
     new_citation_data = {}
-    for label in get_features_except_id(model.Citation).keys():
-        value = payload.get(label)
-        new_citation_data.update(label=value)
+    for column in get_features_except_id(model.Citation).keys():
+        value = payload.get(column)
+        new_citation_data[column] = value
     schema = model.CitationSchema()
     citation_record = schema.load(
         new_citation_data, session=db.session)
@@ -124,12 +123,12 @@ def get_transformation_citation_mapping(
         kinetics_record_id: int,
         citation_record_id: int
         ) -> Union[db.Model, None]:
-    transformation_citation_mapping = model.transformation_cited.query\
+    transformation_citation_mapping = db.session.query(model.transformation_cited)\
         .filter(
-            model.transformation_cited
+            model.transformation_cited.c
                 .fk_substance_relationship_id == relationship_record_id,
-            model.transformation_cited.fk_kinetics_id == kinetics_record_id,
-            model.transformation_cited.fk_citation_id == citation_record_id
+            model.transformation_cited.c.fk_kinetics_id == kinetics_record_id,
+            model.transformation_cited.c.fk_citation_id == citation_record_id
             )\
         .one_or_none()
     return transformation_citation_mapping
@@ -149,31 +148,38 @@ def create_and_post_new_transformation_citation_mapping(
         kinetics_record_id: int,
         citation_record_id: int
         ) -> Union[db.Model, None]:
-    new_mapping_data = dict(
+    new_mapping_record = model.transformation_cited.insert().values(
         fk_substance_relationship_id=relationship_record_id,
-        fk_kineitcs_id=kinetics_record_id,
+        fk_kinetics_id=kinetics_record_id,
         fk_citation_id=citation_record_id
         )
-    schema = model.transformation_cited()
-    new_mapping_record = schema.load(
-        new_mapping_data, session=db.session)
-    db.session.add(new_mapping_record)
+    db.engine.execute(new_mapping_record)
     db.session.commit()
     return new_mapping_record
 
 
 def post_and_map_authors(citation_id, payload: Dict) -> None:
     for author in payload.get('authors').split(','):
-        first_name, middle_name, last_name = author.split()
+        author = author.strip()
+        if not author:
+            first_name, middle_name, last_name = None, None, None
+        elif author.count(' ') == 1:
+            middle_name = None
+            first_name, last_name = author.split()
+        elif author.count(' ') == 2:
+            first_name, middle_name, last_name = author.split()
+        else:
+            first_name, middle_name = None, None
+            last_name = author
         author_data = {'first_name': first_name,
                        'middle_name': middle_name,
                        'last_name': last_name}
         author_record = query_payload(model.Author, author_data)
         if author_record:
-            author_citation_mapping = model.author_cited\
+            author_citation_mapping = db.session.query(model.author_cited)\
                 .filter(
-                    model.author_cited.fk_author_id == author_record.id,
-                    model.author_cited.fk_citation_id == citation_id
+                    model.author_cited.c.fk_author_id == author_record.id,
+                    model.author_cited.c.fk_citation_id == citation_id
                     )
             if author_citation_mapping:
                 # record already exists
@@ -186,21 +192,16 @@ def post_and_map_authors(citation_id, payload: Dict) -> None:
             db.session.add(author_record)
             db.session.commit()
         # insert new author-citation mapping
-        new_mapping_data = dict(
-            fk_citation_id=citation_id,
-            fk_author_id=author_record.id
+        new_mapping_record = model.author_cited.insert().values(
+            fk_citation_id=citation_id, fk_author_id=author_record.id
             )
-        schema = model.author_cited()
-        new_mapping_record = schema.load(
-            new_mapping_data, session=db.session)
-        db.session.add(new_mapping_record)
+        db.engine.execute(new_mapping_record)
         db.session.commit()
     return None
 
 
 def get_dsstox_id(identifier: str) -> Union[str, None]:
-    substance_id = model.SynonymMv\
-        .query(model.SynonymMv.fk_generic_substance_id)\
+    substance_id = model.SynonymMv.query\
         .filter(model.SynonymMv.identifier == identifier)\
         .order_by(model.SynonymMv.rank)\
         .first()
@@ -306,7 +307,7 @@ def post_new_transformation_record() -> Response:
         'rate_max', 'rate_units', 'reaction', 'temp_C',
         'activation_kcal_per_mol'
         ]
-    if not any([payload.get(key) for key in kinetic_data]):
+    if not any([payload.get(column) for column in kinetic_data]):
         # Null record
         kinetics_record = model.Kinetics()
     else:
@@ -322,7 +323,7 @@ def post_new_transformation_record() -> Response:
         post_and_map_authors(citation_record.id, payload)
         record_already_exists = False
     kinetics_citation_mapping = get_transformation_citation_mapping(
-        substance_relationship_record,
+        substance_relationship_record.id,
         kinetics_record.id,
         citation_record.id
         )
