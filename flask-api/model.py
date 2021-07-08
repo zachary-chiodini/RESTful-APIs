@@ -493,7 +493,7 @@ class TransformationView(db.Model):
             ON AC.fk_author_id = A.id
     WHERE
         SRT.name = 'transformation_product'
-        GROUP BY
+    GROUP BY
         PRED.dsstox_substance_id,
         PRED.preferred_name,
         PRED.smiles,
