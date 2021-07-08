@@ -33,6 +33,7 @@ class KineticsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Kinetics
         load_instance = True
+        include_fk = True
     uri = ma.Function(
         lambda obj:
         url_for('/api.operations_kinetics_get_record',
@@ -64,10 +65,8 @@ class SubstanceRelationships(db.Model):
     percentage_type = db.Column(db.String)
     is_nearest_structure = db.Column(db.Integer)
     is_nearest_casrn = db.Column(db.Integer)
-    created_by = db.Column(db.String, nullable=False)
-    updated_by = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.String, nullable=False)
-    updated_at = db.Column(db.String, nullable=False)
+    created_by = db.Column(db.String)
+    updated_by = db.Column(db.String)
     # unidirectional
     kinetic_data = db.relationship('Kinetics')
 
@@ -76,6 +75,7 @@ class SubstanceRelationshipsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = SubstanceRelationships
         load_instance = True
+        include_fk = True
     uri = ma.Function(
         lambda obj:
         url_for('/api.operations_substance_relationships_get_record',
@@ -96,10 +96,10 @@ class SubstanceRelationshipTypes(db.Model):
     label_backward = db.Column(db.String)
     short_description_backward = db.Column(db.String)
     long_description_backward = db.Column(db.String)
-    created_by = db.Column(db.String, nullable=False)
-    updated_by = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.String, nullable=False)
-    updated_at = db.Column(db.String, nullable=False)
+    created_by = db.Column(db.String)
+    updated_by = db.Column(db.String)
+    created_at = db.Column(db.String)
+    updated_at = db.Column(db.String)
     # unidirectional
     substance_relationship_data = \
         db.relationship('SubstanceRelationships')
@@ -130,6 +130,7 @@ class SynonymMvSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = SynonymMv
         load_instance = True
+        include_fk = True
 
 
 generic_substance_compounds = db.Table(
@@ -147,10 +148,10 @@ generic_substance_compounds = db.Table(
         ),
     db.Column('relationship', db.String),
     db.Column('source', db.String),
-    db.Column('created_by', db.String, nullable=False),
-    db.Column('updated_by', db.String, nullable=False),
-    db.Column('created_at', db.String, nullable=False),
-    db.Column('updated_at', db.String, nullable=False)
+    db.Column('created_by', db.String),
+    db.Column('updated_by', db.String),
+    db.Column('created_at', db.String),
+    db.Column('updated_at', db.String)
     )
 
 
@@ -217,10 +218,10 @@ class GenericSubstances(db.Model):
     qc_notes = db.Column(db.String)
     qc_notes_private = db.Column(db.String)
     source = db.Column(db.String)
-    created_by = db.Column(db.String, nullable=False)
-    updated_by = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.String, nullable=False)
-    updated_at = db.Column(db.String, nullable=False)
+    created_by = db.Column(db.String)
+    updated_by = db.Column(db.String)
+    created_at = db.Column(db.String)
+    updated_at = db.Column(db.String)
     structure = db.relationship(
         'Compounds',
         secondary=generic_substance_compounds,
@@ -254,6 +255,7 @@ class GenericSubstancesSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = GenericSubstances
         load_instance = True
+        include_fk = True
     uri = ma.Function(
         lambda obj:
         url_for('/api.operations_generic_substances_get_record',
@@ -270,10 +272,10 @@ class QCLevels(db.Model):
     name = db.Column(db.String)
     label = db.Column(db.String)
     description = db.Column(db.String)
-    created_by = db.Column(db.String, nullable=False)
-    updated_by = db.Column(db.String, nullable=False)
-    created_at = db.Column(db.String, nullable=False)
-    updated_at = db.Column(db.String, nullable=False)
+    created_by = db.Column(db.String)
+    updated_by = db.Column(db.String)
+    created_at = db.Column(db.String)
+    updated_at = db.Column(db.String)
     # unidirectional
     relationship = db.relationship('GenericSubstances')
 
@@ -297,6 +299,7 @@ author_cited = db.Table(
         nullable=False
         )
     )
+
 
 transformation_cited = db.Table(
     'transformation_cited',
@@ -386,7 +389,7 @@ class CitationSchema(ma.SQLAlchemyAutoSchema):
 class TransformationView(db.Model):
     __tablename__ = 'transformation_view'
     predecessor_dsstox_id = db.Column(
-        'Predecessor DSSTox ID', db.Integer, primary_key=True)
+        'Predecessor DSSTox ID', db.String, primary_key=True)
     predecessor_preferred_name = db.Column(
         'Predecessor Preferred Name', db.String, primary_key=True)
     predecessor_smiles = db.Column(
@@ -398,7 +401,7 @@ class TransformationView(db.Model):
     predecessor_qc_level = db.Column(
         'Predecessor Name:SMILES:CASRN QC Level', db.String, primary_key=True)
     successor_dsstox_id = db.Column(
-        'Successor DSSTox ID', db.Integer, primary_key=True)
+        'Successor DSSTox ID', db.String, primary_key=True)
     successor_preferred_name = db.Column(
         'Successor Preferred Name', db.String, primary_key=True)
     successor_smiles = db.Column(
