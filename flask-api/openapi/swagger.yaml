@@ -1974,7 +1974,7 @@ paths:
           description: Successfully deleted record.
         404:
           description: Record not found.
-  /Compounds/searchby:
+  /compounds/searchby:
     get:
       operationId: operations.compounds.search
       tags:
