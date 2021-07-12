@@ -5,7 +5,7 @@ from config import connexion_app, app, connect_db, db
 
 HOST = '127.0.0.1'
 PORT = '5000'
-PATH = 'flask-api'
+PATH = 'flask-api/chemical-transformation-api'
 
 connexion_app.add_api('swagger.yaml')
 
