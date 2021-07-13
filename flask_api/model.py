@@ -1,6 +1,6 @@
 from flask import url_for
 
-from .config import db, ma
+from flask_api.config import db, ma
 
 
 class Kinetics(db.Model):

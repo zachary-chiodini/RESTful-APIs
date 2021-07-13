@@ -1,7 +1,7 @@
 from flask import Response
 
-from .config import db, ma
-from .responses import (
+from flask_api.config import db, ma
+from flask_api.responses import (
     entity_post_response, entity_get_response,
     record_id_get_response, record_id_put_response,
     record_id_patch_response, record_id_delete_response,
