@@ -1,10 +1,10 @@
 import json
-import model
-from config import db
+from ..shared import model
+from ..shared.config import db
+from ..shared.responses import get_features_except_id, query_payload
 from flask import Response, request
 from indigo import Indigo
 from indigo.inchi import IndigoInchi
-from responses import get_features_except_id, query_payload
 from typing import Dict, Union
 
 indigo = Indigo()

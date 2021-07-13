@@ -439,8 +439,8 @@ class TransformationView(db.Model):
         c.url AS 'URL',
         C.pdf AS 'PDF Blob'
     FROM
-        substance_relationships SR
-        INNER JOIN substance_relationship_types SRT
+        sbox_zchiodini_dsstox.substance_relationships SR
+        INNER JOIN sbox_zchiodini_dsstox.substance_relationship_types SRT
             ON SR.fk_substance_relationship_type_id = SRT.id
         INNER JOIN ( -- predecessor substance
             SELECT
@@ -452,12 +452,12 @@ class TransformationView(db.Model):
                 GSP.substance_type,
                 QCP.label
             FROM
-                generic_substances GSP
-                INNER JOIN qc_levels QCP
+                sbox_zchiodini_dsstox.generic_substances GSP
+                INNER JOIN sbox_zchiodini_dsstox.qc_levels QCP
                     ON GSP.fk_qc_level_id = QCP.id
-                LEFT JOIN generic_substance_compounds GSCP
+                LEFT JOIN sbox_zchiodini_dsstox.generic_substance_compounds GSCP
                     ON GSCP.fk_generic_substance_id = GSP.id
-                LEFT JOIN compounds CP
+                LEFT JOIN sbox_zchiodini_dsstox.compounds CP
                     ON GSCP.fk_compound_id = CP.id
             )
         AS PRED
@@ -472,12 +472,12 @@ class TransformationView(db.Model):
                 GSS.substance_type,
                 QCS.label
             FROM
-                generic_substances GSS
-                INNER JOIN qc_levels QCS
+                sbox_zchiodini_dsstox.generic_substances GSS
+                INNER JOIN sbox_zchiodini_dsstox.qc_levels QCS
                     ON GSS.fk_qc_level_id = QCS.id
-                LEFT JOIN generic_substance_compounds GSCS
+                LEFT JOIN sbox_zchiodini_dsstox.generic_substance_compounds GSCS
                     ON GSCS.fk_generic_substance_id = GSS.id
-                LEFT JOIN compounds CS
+                LEFT JOIN sbox_zchiodini_dsstox.compounds CS
                     ON GSCS.fk_compound_id = CS.id
             )
         AS SUCC

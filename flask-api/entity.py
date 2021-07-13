@@ -1,4 +1,3 @@
-import model
 from config import db, ma
 from flask import Response
 from responses import (
@@ -45,15 +44,3 @@ class Entity(View):
 
     def delete(self, primary_key: int) -> Response:
         return record_id_delete_response(primary_key, self.entity)
-
-
-transformation_view = View(
-    model.TransformationView, model.TransformationViewSchema)
-kinetics = Entity(model.Kinetics, model.KineticsSchema)
-substance_relationships = Entity(
-    model.SubstanceRelationships, model.SubstanceRelationshipsSchema)
-generic_substances = Entity(
-    model.GenericSubstances, model.GenericSubstancesSchema)
-compounds = Entity(model.Compounds, model.CompoundsSchema)
-author = Entity(model.Author, model.AuthorSchema)
-citation = Entity(model.Citation, model.CitationSchema)
