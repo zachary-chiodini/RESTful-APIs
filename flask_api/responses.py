@@ -1,7 +1,9 @@
 import json
-from config import db, ma
-from flask import jsonify, Response, request
 from typing import Dict, List, Optional, Union
+
+from flask import jsonify, Response, request
+
+from .config import db, ma
 
 
 def get_features_except_id(

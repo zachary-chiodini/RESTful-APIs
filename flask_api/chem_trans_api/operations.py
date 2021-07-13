@@ -1,5 +1,5 @@
-from ..shared import model
-from ..shared.entity import View, Entity
+from flask_api import model
+from flask_api.entity import View, Entity
 
 transformation_view = View(
     model.TransformationView, model.TransformationViewSchema)

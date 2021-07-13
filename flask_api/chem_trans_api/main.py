@@ -1,11 +1,13 @@
 import json
 from os import path
+
 from flask import Response
-from ..shared.config import connexion_app, app, connect_db, db
+
+from flask_api.config import app, connect_db, connexion_app, db
 
 HOST = '127.0.0.1'
 PORT = '5000'
-PATH = 'flask-api/dsstox-api'
+PATH = ''
 
 connexion_app.add_api('swagger.yaml')
 

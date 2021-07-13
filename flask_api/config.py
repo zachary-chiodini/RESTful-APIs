@@ -1,12 +1,13 @@
+from os import getcwd, path, urandom
+from typing import Dict
+
 import connexion
-from os import path, urandom
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from sshtunnel import SSHTunnelForwarder
-from typing import Dict
 
-PATH = ''
+PATH = getcwd()
 
 
 def url_encoded(s: str) -> str:

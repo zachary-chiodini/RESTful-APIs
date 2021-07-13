@@ -1,11 +1,13 @@
 import json
-from ..shared import model
-from ..shared.config import db
-from ..shared.responses import get_features_except_id, query_payload
+from typing import Dict, Union
+
 from flask import Response, request
 from indigo import Indigo
 from indigo.inchi import IndigoInchi
-from typing import Dict, Union
+
+from flask_api import model
+from flask_api.config import db
+from flask_api.responses import get_features_except_id, query_payload
 
 indigo = Indigo()
 indigo_inchi = IndigoInchi(indigo)
