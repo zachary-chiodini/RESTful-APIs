@@ -5,9 +5,9 @@ from flask import Response, request
 from indigo import Indigo
 from indigo.inchi import IndigoInchi
 
-from flask_api import model
-from flask_api.config import db
-from flask_api.responses import get_features_except_id, query_payload
+import model
+from config import db
+from responses import get_features_except_id, query_payload
 
 indigo = Indigo()
 indigo_inchi = IndigoInchi(indigo)

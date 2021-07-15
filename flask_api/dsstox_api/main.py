@@ -1,7 +1,7 @@
 import json
 from os import path
 from flask import Response
-from flask_api.config import connexion_app, app, connect_db, db
+from config import connexion_app, app, connect_db, db
 
 HOST = '127.0.0.1'
 PORT = '5000'

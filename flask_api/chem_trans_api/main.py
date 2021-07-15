@@ -3,7 +3,7 @@ from os import path
 
 from flask import Response
 
-from flask_api.config import app, connect_db, connexion_app, db
+from config import app, connect_db, connexion_app, db
 
 HOST = '127.0.0.1'
 PORT = '5000'

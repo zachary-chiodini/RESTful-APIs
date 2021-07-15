@@ -1,11 +1,11 @@
 from flask import Response
 
-from flask_api.config import db, ma
-from flask_api.responses import (
+from config import db, ma
+from responses import (
     entity_post_response, entity_get_response,
     record_id_get_response, record_id_put_response,
     record_id_patch_response, record_id_delete_response,
-    entity_search_response
+    entity_search_response, entity_inner_join_response
     )
 
 
@@ -45,3 +45,6 @@ class Entity(View):
 
     def delete(self, primary_key: int) -> Response:
         return record_id_delete_response(primary_key, self.entity)
+
+    def inner_join(self, *args) -> Response:
+        return entity_inner_join_response(self.entity, *args)

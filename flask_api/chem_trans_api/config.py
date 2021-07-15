@@ -1,4 +1,4 @@
-from os import getcwd, path, urandom
+from os import path, urandom
 from typing import Dict
 
 import connexion
@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from sshtunnel import SSHTunnelForwarder
 
-PATH = getcwd()
+PATH = ''
 
 
 def url_encoded(s: str) -> str:

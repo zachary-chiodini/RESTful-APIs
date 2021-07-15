@@ -3,7 +3,7 @@ from typing import Dict, List, Optional, Union
 
 from flask import jsonify, Response, request
 
-from flask_api.config import db, ma
+from config import db, ma
 
 
 def get_features_except_id(
@@ -168,3 +168,20 @@ def entity_search_response(
     response = jsonify(entity_schema.dump(query))
     response.status_code = 200
     return response
+
+
+def entity_inner_join_response(entity: db.Model, *args: str) -> Response:
+    """
+    join_entities = []
+    for class_ in dir(model):
+        obj = getattr(model, class_)
+        if getattr(obj, '__tablename__', None) in args:
+            join_entities.append(obj)
+    """
+    query = entity.query
+    for tablename in args:
+        query = query.join(tablename)
+    query = query.limit(1000).all()
+
+
+
