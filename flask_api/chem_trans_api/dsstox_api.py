@@ -1,7 +1,8 @@
 from os import path
 from requests import Response, Session
 
-from flask_api.dsstox_api import HOST, PORT
+HOST = ''
+PORT = ''
 
 DSSTOX_API_URL = 'http://{host}:{port}/api/'\
     .format(host=HOST, port=PORT)
