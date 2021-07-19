@@ -5,9 +5,9 @@ from flask import Response, request
 from indigo import Indigo
 from indigo.inchi import IndigoInchi
 
-import model
-from config import db
-from responses import get_features_except_id, query_payload
+from flask_api import model
+from flask_api.config import db
+from flask_api.responses import get_features_except_id, query_payload
 
 indigo = Indigo()
 indigo_inchi = IndigoInchi(indigo)
@@ -21,17 +21,17 @@ def get_substance_relationship_record(
         model.SubstanceRelationships.query\
             .join(model.SubstanceRelationshipTypes)\
             .filter(
-                model.SubstanceRelationshipTypes.id
-                    == model.SubstanceRelationships
-                        .fk_substance_relationship_type_id,
-                model.SubstanceRelationships
-                .fk_generic_substance_id_predecessor
-                    == predecessor_generic_substance_id,
-                model.SubstanceRelationships
-                .fk_generic_substance_id_successor
-                    == successor_generic_substance_id,
-                model.SubstanceRelationshipTypes.name
-                    == 'transformation_product'
+            model.SubstanceRelationshipTypes.id
+            == model.SubstanceRelationships
+            .fk_substance_relationship_type_id,
+            model.SubstanceRelationships
+            .fk_generic_substance_id_predecessor
+            == predecessor_generic_substance_id,
+            model.SubstanceRelationships
+            .fk_generic_substance_id_successor
+            == successor_generic_substance_id,
+            model.SubstanceRelationshipTypes.name
+            == 'transformation_product'
                 )\
             .one_or_none()
     return substance_relationship_record
@@ -130,10 +130,10 @@ def get_transformation_citation_mapping(
         ) -> Union[db.Model, None]:
     transformation_citation_mapping = db.session.query(model.transformation_cited)\
         .filter(
-            model.transformation_cited.c
-                .fk_substance_relationship_id == relationship_record_id,
-            model.transformation_cited.c.fk_kinetics_id == kinetics_record_id,
-            model.transformation_cited.c.fk_citation_id == citation_record_id
+        model.transformation_cited.c
+        .fk_substance_relationship_id == relationship_record_id,
+        model.transformation_cited.c.fk_kinetics_id == kinetics_record_id,
+        model.transformation_cited.c.fk_citation_id == citation_record_id
             )\
         .one_or_none()
     return transformation_citation_mapping
@@ -192,8 +192,8 @@ def post_and_map_authors(citation_id, payload: Dict) -> None:
         if author_record:
             author_citation_mapping = db.session.query(model.author_cited)\
                 .filter(
-                    model.author_cited.c.fk_author_id == author_record.id,
-                    model.author_cited.c.fk_citation_id == citation_id
+                model.author_cited.c.fk_author_id == author_record.id,
+                model.author_cited.c.fk_citation_id == citation_id
                     )
             if author_citation_mapping:
                 # record already exists

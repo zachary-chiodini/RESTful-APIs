@@ -1,6 +1,6 @@
 from flask import url_for
 
-from config import db, ma
+from flask_api.config import db, ma
 
 
 class Kinetics(db.Model):
@@ -69,7 +69,7 @@ class SubstanceRelationships(db.Model):
     created_by = db.Column(db.String)
     updated_by = db.Column(db.String)
     # unidirectional
-    kinetic_data = db.relationship('Kinetics')
+    kinetics = db.relationship('Kinetics')
 
 
 class SubstanceRelationshipsSchema(ma.SQLAlchemyAutoSchema):
@@ -144,7 +144,8 @@ generic_substance_compounds = db.Table(
         nullable=False
         ),
     db.Column(
-        'fk_compound_id', db.Integer, db.ForeignKey('compounds.id'),
+        'fk_compound_id', db.Integer,
+        db.ForeignKey('compounds.id'),
         nullable=False
         ),
     db.Column('relationship', db.String),
@@ -164,6 +165,7 @@ class Compounds(db.Model):
         )
     dsstox_compound_id = db.Column(db.String)
     chiral_stereo = db.Column(db.String)
+    double_stereo = db.Column(db.String)
     chemical_type = db.Column(db.String)
     organic_form = db.Column(db.String)
     mrv_file = db.Column(db.String)
@@ -188,7 +190,11 @@ class Compounds(db.Model):
     updated_by = db.Column(db.String)
     created_at = db.Column(db.String)
     updated_at = db.Column(db.String)
-    mol_image_png = db.Column(db.LargeBinary)
+    # mol_image_png = db.Column(db.LargeBinary)
+    has_stereochemistry = db.Column(db.Integer)
+    pubchem_sources = db.Column(db.Integer)
+    indigo_inchi = db.Column(db.String)
+    jchem_inchi = db.Column(db.String)
 
 
 class CompoundsSchema(ma.SQLAlchemyAutoSchema):
@@ -227,7 +233,11 @@ class GenericSubstances(db.Model):
         'Compounds',
         secondary=generic_substance_compounds,
         lazy='subquery',
-        backref=db.backref('generic_substances', lazy=True)
+        backref=db.backref('generic_substances', lazy=True),
+        primaryjoin='GenericSubstances.id == '
+                    'generic_substance_compounds.c.fk_generic_substance_id',
+        secondaryjoin='Compounds.id == '
+                      'generic_substance_compounds.c.fk_compound_id'
         )
     # unidirectional
     predecessor_relationship = db.relationship(

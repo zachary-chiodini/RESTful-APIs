@@ -434,7 +434,7 @@ paths:
           description: Primary key of the record to update
           type: integer
           required: True
-        - name: author
+        - name: compound
           in: body
           schema:
             properties:
@@ -1041,6 +1041,24 @@ paths:
                   description: MOL image
         400:
           description: The URL parameter(s) are incorrect or not specified.
+  /compounds/inner_join/{args}:
+    get:
+      operationId: operations.compounds.inner_join
+      tags:
+        - Compounds
+      summary: Execute an inner join with other entites
+      description: Execute an inner join with other entites
+      parameters:
+        - name: args
+          in: path
+          description: Entities to join on
+          type: array
+          items:
+            type: string
+          required: True
+      responses:
+        200:
+          description: Successfully joined records.
   /substance_relationships:
     get:
       operationId: operations.substance_relationships.get
@@ -1621,6 +1639,24 @@ paths:
                   description: When the record was last updated
         400:
           description: The URL parameter(s) are incorrect or not specified.
+  /substance_relationships/inner_join/{args}:
+    get:
+      operationId: operations.substance_relationships.inner_join
+      tags:
+        - Substance Relationships
+      summary: Execute an inner join with other entites
+      description: Execute an inner join with other entites
+      parameters:
+        - name: args
+          in: path
+          description: Entities to join on
+          type: array
+          items:
+            type: string
+          required: True
+      responses:
+        200:
+          description: Successfully joined records.
   /generic_substances:
     get:
       operationId: operations.generic_substances.get

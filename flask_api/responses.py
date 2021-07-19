@@ -1,9 +1,10 @@
 import json
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from flask import jsonify, Response, request
 
-from config import db, ma
+from flask_api import model
+from flask_api.config import db, ma
 
 
 def get_features_except_id(
@@ -170,18 +171,35 @@ def entity_search_response(
     return response
 
 
-def entity_inner_join_response(entity: db.Model, *args: str) -> Response:
-    """
-    join_entities = []
+def reformat_joined_query(
+        entities: List[db.Model],
+        query: List[Tuple[db.Model]]
+        ) -> List[Dict[str, db.Model]]:
+    reformatted_query = []
+    for tuple_ in query:
+        for entity, record in zip(entities, tuple_):
+            reformatted_query.append({entity.__tablename__: record})
+    return reformatted_query
+
+
+def entity_inner_join_response(
+        main_entity: db.Model, *args: str) -> Response:
+    entities = [main_entity]
+    schemas = [getattr(model, main_entity.__name__ + 'Schema')]
     for class_ in dir(model):
         obj = getattr(model, class_)
         if getattr(obj, '__tablename__', None) in args:
-            join_entities.append(obj)
-    """
-    query = entity.query
-    for tablename in args:
-        query = query.join(tablename)
+            entities.append(obj)
+            schemas.append(getattr(model, obj.__name__ + 'Schema'))
+    query = db.session.query(*entities)
+    for other_entity in entities[1:]:
+        query = query.join(other_entity)
     query = query.limit(1000).all()
-
-
-
+    query = reformat_joined_query(entities, query)
+    DynamicSchema = ma.Schema.from_dict({
+        entity.__tablename__: ma.Nested(schema, dump_only=True)
+        for entity, schema in zip(entities, schemas)
+        })
+    dynamic_schema = DynamicSchema(many=True)
+    response = jsonify(dynamic_schema.dump(query))
+    return response
