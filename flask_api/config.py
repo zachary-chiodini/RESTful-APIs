@@ -3,6 +3,7 @@ from typing import Dict
 
 import connexion
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from sshtunnel import SSHTunnelForwarder
@@ -53,6 +54,7 @@ connexion_app = connexion.App(
     __name__, specification_dir=path.join(PATH, 'openapi'))
 # This gets the underlying flask app instance.
 app = connexion_app.app
+CORS(app)  # add CORS support
 app.secret_key = urandom(16)
 app.config['USERNAME'] = ''
 app.config['JSON_SORT_KEYS'] = False
