@@ -21,18 +21,18 @@ def get_substance_relationship_record(
         model.SubstanceRelationships.query\
             .join(model.SubstanceRelationshipTypes)\
             .filter(
-            model.SubstanceRelationshipTypes.id
-            == model.SubstanceRelationships
-            .fk_substance_relationship_type_id,
-            model.SubstanceRelationships
-            .fk_generic_substance_id_predecessor
-            == predecessor_generic_substance_id,
-            model.SubstanceRelationships
-            .fk_generic_substance_id_successor
-            == successor_generic_substance_id,
-            model.SubstanceRelationshipTypes.name
-            == 'transformation_product'
-                )\
+                model.SubstanceRelationshipTypes.id
+                == model.SubstanceRelationships
+                    .fk_substance_relationship_type_id,
+                model.SubstanceRelationships
+                    .fk_generic_substance_id_predecessor
+                == predecessor_generic_substance_id,
+                model.SubstanceRelationships
+                    .fk_generic_substance_id_successor
+                == successor_generic_substance_id,
+                model.SubstanceRelationshipTypes.name
+                == 'transformation_product'
+            )\
             .one_or_none()
     return substance_relationship_record
 

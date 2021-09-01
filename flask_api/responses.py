@@ -183,7 +183,45 @@ def reformat_joined_query(
 
 
 def entity_inner_join_response(
-        main_entity: db.Model, *args: str) -> Response:
+        main_entity: db.Model,
+        secondary_entity: str,
+        one_or_none: Optional[bool] = False
+        ) -> Response:
+    main_schema = getattr(model, main_entity.__name__ + 'Schema')
+    for class_ in dir(model):
+        model_object = getattr(model, class_)
+        if getattr(model_object, '__tablename__', None) == secondary_entity:
+            secondary_entity = model_object
+            break
+    # params: {'tablename.column': 'value'}
+    parameters = request.args.to_dict()
+    filters = []
+    if parameters:
+        model_features = {
+            main_entity.__name__: get_features_except_id(main_entity),
+            secondary_entity.__name__: get_features_except_id(secondary_entity)
+            }
+        for table_column, value in parameters:
+            model_name, column_name = table_column.split('.')
+            if column_name in model_features[model_name]:
+                column_object = model_features[model_name][column_name]
+                filters.append(column_object == value)
+    if one_or_none:
+        query = main_entity.query.join(secondary_entity)\
+            .filter(*filters).one_or_none()
+        entity_schema = main_schema()
+    else:
+        query = main_entity.query.join(secondary_entity) \
+            .filter(*filters).limit(1000).all()
+        entity_schema = main_schema(many=True)
+    response = jsonify(entity_schema.dump(query))
+    response.status_code = 200
+    return response
+
+
+def entity_inner_join_response2(
+        main_entity: db.Model, *args: str
+        ) -> Response:
     entities = [main_entity]
     schemas = [getattr(model, main_entity.__name__ + 'Schema')]
     for class_ in dir(model):
