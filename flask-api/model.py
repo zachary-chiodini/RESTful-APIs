@@ -187,7 +187,7 @@ class Compounds(db.Model):
     updated_by = db.Column(db.String)
     created_at = db.Column(db.String)
     updated_at = db.Column(db.String)
-    mol_image_png = db.Column(db.LargeBinary)
+    # mol_image_png = db.Column(db.LargeBinary)
 
 
 class CompoundsSchema(ma.SQLAlchemyAutoSchema):
