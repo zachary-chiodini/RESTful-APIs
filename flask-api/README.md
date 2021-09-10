@@ -16,4 +16,4 @@ The API currently requires a config.json file, which has the format below.
 
 This will be replaced with a login system in the future.
 
-This API is functional. However, separating this API into two APIs, one for DSSTox and another for the Chemical Transformation Database is underway in the branches and will replace this one.
+This API is functional. However, separating this API into two APIs, one for DSSTox and another for the Chemical Transformation Database is underway in the branches. The two distinct APIs will replace this single API.
