@@ -30,4 +30,7 @@ def home():
 
 
 if __name__ == '__main__':
+    # automatically connecting until an
+    # account login system is developed
+    connect()
     connexion_app.run(host=HOST, port=PORT, debug=True)
