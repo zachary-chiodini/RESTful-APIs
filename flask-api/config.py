@@ -37,7 +37,7 @@ def connect_db(application: Flask,
         remote_bind_address=(login_info['remote bind address'], 3306)
         )
     ssh_tunnel.start()
-    register(ssh_tunnel.close)
+    register(ssh_tunnel.stop)
     application.config['SQLALCHEMY_DATABASE_URI'] = \
         'mysql://{sql_usr}:{sql_pswd}@127.0.0.1:{port}/{database}'\
         .format(
