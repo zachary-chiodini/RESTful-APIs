@@ -1,12 +1,13 @@
 import model
 from config import db, ma
-from flask import Response
 from responses import (
     entity_post_response, entity_get_response,
     record_id_get_response, record_id_put_response,
     record_id_patch_response, record_id_delete_response,
     entity_search_response
     )
+
+from flask import Response
 
 
 class View:
