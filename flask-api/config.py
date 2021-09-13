@@ -10,6 +10,7 @@ from flask_marshmallow import Marshmallow
 from sshtunnel import SSHTunnelForwarder
 
 
+HOST = '127.0.0.1'
 PATH = ''
 
 
@@ -39,10 +40,11 @@ def connect_db(application: Flask,
     ssh_tunnel.start()
     register(ssh_tunnel.stop)
     application.config['SQLALCHEMY_DATABASE_URI'] = \
-        'mysql://{sql_usr}:{sql_pswd}@127.0.0.1:{port}/{database}'\
+        'mysql://{sql_usr}:{sql_pswd}@{host}:{port}/{database}'\
         .format(
             sql_usr=login_info['sql username'],
             sql_pswd=url_encoded(login_info['sql password']),
+            host=HOST,
             port=ssh_tunnel.local_bind_port,
             database=login_info['database']
             )
