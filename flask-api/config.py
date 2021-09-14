@@ -1,4 +1,3 @@
-from atexit import register
 from os import path, urandom
 from typing import Dict
 
