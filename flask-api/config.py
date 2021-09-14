@@ -7,10 +7,10 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-from sshtunnel import SSHTunnelForwarder
 
 
-HOST = '127.0.0.1'
+HOST = 'v2626umcth819.rtord.epa.gov'
+PORT = '5000'
 PATH = ''
 
 
@@ -31,21 +31,13 @@ def url_encoded(s: str) -> str:
 
 def connect_db(application: Flask,
                database: SQLAlchemy, login_info: Dict) -> None:
-    ssh_tunnel = SSHTunnelForwarder(
-        ssh_address_or_host=login_info['ssh host address'],
-        ssh_username=login_info['ssh username'],
-        ssh_password=login_info['ssh password'],
-        remote_bind_address=(login_info['remote bind address'], 3306)
-        )
-    ssh_tunnel.start()
-    register(ssh_tunnel.stop)
     application.config['SQLALCHEMY_DATABASE_URI'] = \
         'mysql://{sql_usr}:{sql_pswd}@{host}:{port}/{database}'\
         .format(
             sql_usr=login_info['sql username'],
             sql_pswd=url_encoded(login_info['sql password']),
             host=HOST,
-            port=ssh_tunnel.local_bind_port,
+            port=PORT,
             database=login_info['database']
             )
     # This tests the database connection.
