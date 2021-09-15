@@ -5,9 +5,9 @@ import argparse
 # Parse through optional arguments
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument("-h", "--hostname", help="Host URL", required=False, default='0.0.0.0')
-parser.add_argument("-p", "--port", help="Port Number", required=False, default=5000)
+parser.add_argument("-p", "--port", help="Port Number", required=False, default=5011)
 parser.add_argument("-n", "--containername", help="Docker Container Name", required=False,
-                    default="Chemical Transformation Database")
+                    default="chemical-transformation-database")
 args = parser.parse_args()
 
 # Build image
