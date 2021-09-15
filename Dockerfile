@@ -19,4 +19,4 @@ RUN echo "Y" | apt install default-libmysqlclient-dev
 RUN /usr/bin/pip3 install -r /app/flask-api/requirements.txt
 
 # Expose port
-EXPOSE 5000
+EXPOSE 5011
