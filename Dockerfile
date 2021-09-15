@@ -12,8 +12,8 @@ RUN echo "Y" | apt install python3.8.5
 # Install pip
 RUN echo "Y" | apt install python3-pip
 
-# Install mysql-client
-RUN echo "Y" | apt-get install mysql-client
+# Install library for mysqlclient
+RUN echo "Y" | apt install default-libmysqlclient-dev
 
 # Install backend dependencies
 RUN /usr/bin/pip3 install -r /app/flask-api/requirements.txt
