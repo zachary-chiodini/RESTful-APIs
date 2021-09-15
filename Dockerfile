@@ -7,7 +7,7 @@ COPY . /app/
 RUN apt-get update
 
 # Install python
-RUN echo "Y" | apt install python3.8.5
+RUN echo "Y" | apt install python3.8
 
 # Install pip
 RUN echo "Y" | apt install python3-pip
