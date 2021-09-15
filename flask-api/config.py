@@ -10,7 +10,7 @@ from flask_marshmallow import Marshmallow
 from sshtunnel import SSHTunnelForwarder
 
 
-HOST = '127.0.0.1'
+HOST = '0.0.0.0'
 PATH = ''
 
 

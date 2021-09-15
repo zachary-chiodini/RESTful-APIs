@@ -1,3 +1,5 @@
+from flask import Response
+
 import model
 from config import db, ma
 from responses import (
@@ -6,8 +8,6 @@ from responses import (
     record_id_patch_response, record_id_delete_response,
     entity_search_response
     )
-
-from flask import Response
 
 
 class View:
