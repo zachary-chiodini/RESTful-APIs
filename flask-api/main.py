@@ -6,7 +6,7 @@ from flask import Response
 from config import connexion_app, app, connect_db, db
 
 HOST = '0.0.0.0'
-PORT = 5011
+PORT = 5000
 PATH = ''
 
 connexion_app.add_api('swagger.yaml')
