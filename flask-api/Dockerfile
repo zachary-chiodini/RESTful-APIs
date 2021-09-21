@@ -1,6 +1,8 @@
 FROM ubuntu:20.04
 
-LABEL maintainer="Zachary Chiodini"
+LABEL maintainer="Zachary Chiodini" \
+      name="chem-trans-api" \
+      version="1.0"
 
 # set env variables
 ENV DEBIAN_FRONTEND noninteractive
