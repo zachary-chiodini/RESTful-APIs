@@ -1,5 +1,5 @@
 
-name: CI
+name: Build and Run Flask API
 
 on:
   push:
