@@ -38,18 +38,3 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: SSH Remote Commands
-        if: github.event_name != 'pull_request'
-        uses: appleboy/ssh-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-      -
-        name: Docker Build Dockerfile
-        run: docker build -t chem-trans-api-img .
-      -
-        name: Docker Run Container
-        run: docker run --name chem-trans-api-ctr -d -p 5011:5000 chem-trans-api-img  
