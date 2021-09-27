@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /app
 
 # copy contents to directory
-COPY . .
+COPY . /app
 
 # install packages
 RUN apt update -y
