@@ -19,7 +19,7 @@ RUN apt upgrade -y
 RUN apt install python3.8 -y
 RUN apt install python3-pip -y
 RUN apt install default-libmysqlclient-dev -y
-RUN /usr/bin/pip3 install -r requirements.txt
+RUN /usr/bin/pip3 install -r flask-api/requirements.txt
 RUN apt-get clean autoclean
 RUN apt-get autoremove -y
 RUN rm -rf /var/lib/apt/lists/*
