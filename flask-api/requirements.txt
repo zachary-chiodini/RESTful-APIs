@@ -38,4 +38,3 @@ sshtunnel==0.4.0
 swagger-ui-bundle==0.0.8
 urllib3==1.26.5
 Werkzeug==2.0.1
-epam.indigo==1.4.3
