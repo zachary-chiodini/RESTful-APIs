@@ -1,5 +1,5 @@
 
-name: Build and Run Flask API
+name: Build Flask API
 
 on:
   push:
