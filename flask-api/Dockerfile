@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /app
 
 # copy contents to directory
-COPY . /app
+COPY . .
 
 # install packages
 RUN apt update -y
@@ -19,7 +19,7 @@ RUN apt upgrade -y
 RUN apt install python3.8 -y
 RUN apt install python3-pip -y
 RUN apt install default-libmysqlclient-dev -y
-RUN /usr/bin/pip3 install -r app/requirements.txt
+RUN /usr/bin/pip3 install -r requirements.txt -y
 RUN apt-get clean autoclean
 RUN apt-get autoremove -y
 RUN rm -rf /var/lib/apt/lists/*
