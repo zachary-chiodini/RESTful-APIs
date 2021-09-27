@@ -1,13 +1,19 @@
+name: Build Flask API
 
-name: Build and Run Flask API
+# Environment variables
+env:
+  OWNER: zachary-chiodini
+  IMG_NAME: flask-api-img
+  CONTEXT: flask-api
+  YML_FILE_NM: flask-api
 
 on:
   push:
     branches:
       - 'main'
     paths:
-      - 'flask-api/**'
-      - '.github/workflows/flask-api.yml'
+      - '${CONTEXT}/**'
+      - '.github/workflows/${YML_FILE_NM}.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,11 +23,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Environment variables
-    env:
-      OWNER: zachary-chiodini
-      IMG_NAME: flask-api-img
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -63,7 +64,7 @@ jobs:
         id: dockerbuild
         uses: docker/build-push-action@v2
         with:
-          context: flask-api
+          context: ${{ env.CONTEXT }}
           platforms: linux/amd64,linux/arm64
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
