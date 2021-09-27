@@ -14,15 +14,15 @@ WORKDIR /app
 COPY . .
 
 # install packages
-RUN apt update -y \
-    && apt upgrade -y \
-    && apt install python3.8 -y \
-    && apt install python3-pip -y \
-    && apt install default-libmysqlclient-dev -y \
-    && /usr/bin/pip3 install -r requirements.txt \
-    && apt-get clean autoclean \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update -y
+RUN apt upgrade -y
+RUN apt install python3.8 -y
+RUN apt install python3-pip -y
+RUN apt install default-libmysqlclient-dev -y
+RUN /usr/bin/pip3 install -r requirements.txt
+RUN apt-get clean autoclean
+RUN apt-get autoremove -y
+RUN rm -rf /var/lib/apt/lists/*
 
 # API port
 EXPOSE 5000
