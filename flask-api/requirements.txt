@@ -8,7 +8,7 @@ clickclick==20.10.2
 colorama==0.4.4
 connexion==2.7.0
 cryptography==3.4.7
-epam.indigo==1.4.0
+epam.indigo==1.5.0
 Flask==2.0.1
 Flask-Cors==3.0.10
 flask-marshmallow==0.14.0
